@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AFL Live Scores</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Static deploy-ready MVP</p>
+          <h1>AFL Live Scores</h1>
+          <p id="subtitle">Loading latest round…</p>
+        </div>
+        <div class="meta">
+          <span id="refresh-status">Refreshing…</span>
+          <button id="refresh-button" type="button">Refresh now</button>
+        </div>
+      </header>
+
+      <section id="games" class="games"></section>
+
+      <template id="game-template">
+        <article class="card">
+          <div class="card-head">
+            <span class="pill"></span>
+            <span class="time"></span>
+          </div>
+          <div class="teams">
+            <div class="team-row">
+              <span class="team-name home-name"></span>
+              <span class="team-score home-score"></span>
+            </div>
+            <div class="team-row">
+              <span class="team-name away-name"></span>
+              <span class="team-score away-score"></span>
+            </div>
+          </div>
+          <div class="card-foot">
+            <span class="venue"></span>
+            <span class="updated"></span>
+          </div>
+        </article>
+      </template>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
