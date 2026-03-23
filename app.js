@@ -4,7 +4,10 @@ const subtitleEl = document.getElementById('subtitle');
 const refreshStatusEl = document.getElementById('refresh-status');
 const refreshButton = document.getElementById('refresh-button');
 const mcgOnlyCheckbox = document.getElementById('mcg-only');
+const roundSelect = document.getElementById('round-select');
 const template = document.getElementById('game-template');
+
+let allGames = [];
 
 function getStatus(game) {
   const timestr = String(game.timestr || '').toLowerCase();
@@ -17,6 +20,14 @@ function formatScore(goals, behinds, total) {
   if (typeof total !== 'number') return '-';
   if (typeof goals === 'number' && typeof behinds === 'number') return `${goals}.${behinds} (${total})`;
   return String(total);
+}
+
+function normalizeVenue(venue) {
+  return String(venue || '').toUpperCase().replace(/[^A-Z]/g, '');
+}
+
+function isMcgVenue(venue) {
+  return normalizeVenue(venue) === 'MCG';
 }
 
 function normalizeGame(game) {
@@ -42,7 +53,7 @@ function normalizeGame(game) {
   };
 }
 
-function pickRound(games) {
+function pickDefaultRound(games) {
   const grouped = new Map();
   for (const game of games) {
     if (!grouped.has(game.round)) grouped.set(game.round, []);
@@ -50,14 +61,32 @@ function pickRound(games) {
   }
 
   for (const [round, list] of [...grouped.entries()].sort((a, b) => a[0] - b[0])) {
-    if (list.some(game => game.status === 'live')) return round;
+    if (list.some(game => game.status === 'live')) return String(round);
   }
 
   for (const [round, list] of [...grouped.entries()].sort((a, b) => a[0] - b[0])) {
-    if (list.some(game => game.status === 'upcoming')) return round;
+    if (list.some(game => game.status === 'upcoming')) return String(round);
   }
 
-  return [...grouped.keys()].sort((a, b) => b - a)[0];
+  return String([...grouped.keys()].sort((a, b) => b - a)[0] || 'all');
+}
+
+function populateRoundOptions(games) {
+  const currentValue = roundSelect.value;
+  const rounds = [...new Set(games.map(game => game.round))].sort((a, b) => a - b);
+  roundSelect.innerHTML = '<option value="all">All Rounds</option>';
+
+  for (const round of rounds) {
+    const option = document.createElement('option');
+    option.value = String(round);
+    const sample = games.find(game => game.round === round);
+    option.textContent = sample?.roundName || `Round ${round}`;
+    roundSelect.appendChild(option);
+  }
+
+  roundSelect.value = rounds.includes(Number(currentValue)) || currentValue === 'all'
+    ? currentValue
+    : pickDefaultRound(games);
 }
 
 function formatKickoff(unixTime) {
@@ -76,17 +105,50 @@ function formatUpdated(ts) {
   return `Updated ${date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`;
 }
 
-function renderGames(payload) {
-  gamesEl.innerHTML = '';
-  const filterLabel = payload.isMcgOnly ? ' • MCG only' : '';
-  subtitleEl.textContent = `${payload.roundName}${filterLabel} • Auto-refresh every 30s`;
+function getFilteredGames() {
+  const selectedRound = roundSelect.value;
+  const isMcgOnly = mcgOnlyCheckbox.checked;
 
-  if (!payload.games.length) {
-    gamesEl.innerHTML = `<p class="empty">No ${payload.isMcgOnly ? 'MCG ' : ''}games found for the selected round.</p>`;
+  let filtered = [...allGames];
+
+  if (selectedRound !== 'all') {
+    filtered = filtered.filter(game => String(game.round) === selectedRound);
+  }
+
+  if (isMcgOnly) {
+    filtered = filtered.filter(game => isMcgVenue(game.venue));
+  }
+
+  filtered.sort((a, b) => {
+    if ((a.unixTime || 0) !== (b.unixTime || 0)) return (a.unixTime || 0) - (b.unixTime || 0);
+    return a.round - b.round;
+  });
+
+  return { filtered, selectedRound, isMcgOnly };
+}
+
+function renderGames() {
+  const { filtered, selectedRound, isMcgOnly } = getFilteredGames();
+  gamesEl.innerHTML = '';
+
+  let heading = selectedRound === 'all'
+    ? 'All Rounds'
+    : (filtered[0]?.roundName || allGames.find(game => String(game.round) === selectedRound)?.roundName || `Round ${selectedRound}`);
+
+  if (isMcgOnly && selectedRound === 'all') {
+    heading = 'All Rounds • MCG only';
+  } else if (isMcgOnly) {
+    heading = `${heading} • MCG only`;
+  }
+
+  subtitleEl.textContent = `${heading} • Auto-refresh every 30s`;
+
+  if (!filtered.length) {
+    gamesEl.innerHTML = '<p class="empty">No games match the current filters.</p>';
     return;
   }
 
-  for (const game of payload.games) {
+  for (const game of filtered) {
     const node = template.content.cloneNode(true);
     const article = node.querySelector('.card');
     const pill = node.querySelector('.pill');
@@ -97,7 +159,7 @@ function renderGames(payload) {
     node.querySelector('.away-name').textContent = game.away.name;
     node.querySelector('.home-score').textContent = game.home.score;
     node.querySelector('.away-score').textContent = game.away.score;
-    node.querySelector('.venue').textContent = game.venue;
+    node.querySelector('.venue').textContent = `${game.roundName} • ${game.venue}`;
     node.querySelector('.updated').textContent = game.status === 'upcoming' ? '' : formatUpdated(game.updated);
     if (game.status === 'live') article.classList.add('card-live');
     gamesEl.appendChild(node);
@@ -107,27 +169,29 @@ function renderGames(payload) {
 async function loadGames() {
   refreshStatusEl.textContent = 'Refreshing…';
   refreshButton.disabled = true;
+  roundSelect.disabled = true;
+  mcgOnlyCheckbox.disabled = true;
   try {
     const year = new Date().getFullYear();
     const res = await fetch(`${API_BASE}${year};format=json`, { cache: 'no-store' });
     if (!res.ok) throw new Error(`Request failed: ${res.status}`);
     const data = await res.json();
-    const games = (data.games || []).map(normalizeGame);
-    const round = pickRound(games);
-    const roundGames = games.filter(game => game.round === round).sort((a, b) => (a.unixTime || 0) - (b.unixTime || 0));
-    const isMcgOnly = mcgOnlyCheckbox.checked;
-    const selected = isMcgOnly ? roundGames.filter(game => String(game.venue).toUpperCase() === 'M.C.G.') : roundGames;
-    renderGames({ roundName: roundGames[0]?.roundName || `Round ${round}`, games: selected, isMcgOnly });
+    allGames = (data.games || []).map(normalizeGame);
+    populateRoundOptions(allGames);
+    renderGames();
     refreshStatusEl.textContent = `Last refresh ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' })}`;
   } catch (error) {
     gamesEl.innerHTML = `<p class="empty">Couldn’t load AFL scores. ${error.message}</p>`;
     refreshStatusEl.textContent = 'Refresh failed';
   } finally {
     refreshButton.disabled = false;
+    roundSelect.disabled = false;
+    mcgOnlyCheckbox.disabled = false;
   }
 }
 
 refreshButton.addEventListener('click', loadGames);
-mcgOnlyCheckbox.addEventListener('change', loadGames);
+mcgOnlyCheckbox.addEventListener('change', renderGames);
+roundSelect.addEventListener('change', renderGames);
 loadGames();
 setInterval(loadGames, 30000);
