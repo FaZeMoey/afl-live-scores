@@ -3,6 +3,7 @@ const gamesEl = document.getElementById('games');
 const subtitleEl = document.getElementById('subtitle');
 const refreshStatusEl = document.getElementById('refresh-status');
 const refreshButton = document.getElementById('refresh-button');
+const mcgOnlyCheckbox = document.getElementById('mcg-only');
 const template = document.getElementById('game-template');
 
 function getStatus(game) {
@@ -77,10 +78,11 @@ function formatUpdated(ts) {
 
 function renderGames(payload) {
   gamesEl.innerHTML = '';
-  subtitleEl.textContent = `${payload.roundName} • Auto-refresh every 30s`;
+  const filterLabel = payload.isMcgOnly ? ' • MCG only' : '';
+  subtitleEl.textContent = `${payload.roundName}${filterLabel} • Auto-refresh every 30s`;
 
   if (!payload.games.length) {
-    gamesEl.innerHTML = '<p class="empty">No games found for the selected round.</p>';
+    gamesEl.innerHTML = `<p class="empty">No ${payload.isMcgOnly ? 'MCG ' : ''}games found for the selected round.</p>`;
     return;
   }
 
@@ -112,8 +114,10 @@ async function loadGames() {
     const data = await res.json();
     const games = (data.games || []).map(normalizeGame);
     const round = pickRound(games);
-    const selected = games.filter(game => game.round === round).sort((a, b) => (a.unixTime || 0) - (b.unixTime || 0));
-    renderGames({ roundName: selected[0]?.roundName || `Round ${round}`, games: selected });
+    const roundGames = games.filter(game => game.round === round).sort((a, b) => (a.unixTime || 0) - (b.unixTime || 0));
+    const isMcgOnly = mcgOnlyCheckbox.checked;
+    const selected = isMcgOnly ? roundGames.filter(game => String(game.venue).toUpperCase() === 'M.C.G.') : roundGames;
+    renderGames({ roundName: roundGames[0]?.roundName || `Round ${round}`, games: selected, isMcgOnly });
     refreshStatusEl.textContent = `Last refresh ${new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' })}`;
   } catch (error) {
     gamesEl.innerHTML = `<p class="empty">Couldn’t load AFL scores. ${error.message}</p>`;
@@ -124,5 +128,6 @@ async function loadGames() {
 }
 
 refreshButton.addEventListener('click', loadGames);
+mcgOnlyCheckbox.addEventListener('change', loadGames);
 loadGames();
 setInterval(loadGames, 30000);
