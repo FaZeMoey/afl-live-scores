@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Australian Tax Calculator 2025-26 — For Visa Holders & Citizens</title>
+  <meta name="description" content="Free Australian income tax calculator for 2025-26. Covers residents, non-residents, working holiday makers (417/462), Medicare levy, HELP debt, and take-home pay.">
+  <meta name="keywords" content="australian tax calculator, tax calculator visa holder, 482 visa tax, working holiday tax, medicare levy visa, non resident tax australia">
+  <link rel="canonical" href="https://centrelinkestimator.com.au/tools/tax-calculator">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Australian Tax Calculator 2025-26",
+    "description": "Free income tax calculator for Australian residents, non-residents, and working holiday visa holders.",
+    "url": "https://centrelinkestimator.com.au/tools/tax-calculator",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "AUD" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: hidden; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      line-height: 1.6;
+      -webkit-text-size-adjust: 100%;
+    }
+    a { color: #2b6cb0; text-decoration: none; font-weight: 600; }
+    a:hover { text-decoration: underline; }
+    h1, h2, h3, p { overflow-wrap: break-word; }
+
+    /* Nav */
+    nav {
+      background: #1a365d;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-logo { font-weight: 800; font-size: 1.05rem; color: white; text-decoration: none; }
+    .nav-logo:hover { text-decoration: none; }
+    .nav-links { display: flex; align-items: center; gap: 16px; }
+    .nav-link { color: rgba(255,255,255,0.7); font-size: 0.82rem; font-weight: 500; }
+    .nav-link:hover { color: white; text-decoration: none; }
+    .nav-cta {
+      background: #48bb78; color: white; padding: 7px 16px;
+      border-radius: 8px; font-weight: 600; font-size: 0.82rem;
+    }
+    .nav-cta:hover { text-decoration: none; background: #38a169; }
+    @media (max-width: 640px) { .nav-link { display: none; } }
+
+    /* Container */
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    /* Header */
+    .page-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .page-header h1 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #1a365d;
+      margin-bottom: 6px;
+    }
+    .page-header p {
+      color: #718096;
+      font-size: 0.95rem;
+    }
+
+    /* Card */
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      margin-bottom: 20px;
+    }
+
+    /* Form */
+    .form-group { margin-bottom: 18px; }
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+      color: #2d3748;
+    }
+    label small { font-weight: 400; color: #718096; }
+    input, select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus { outline: none; border-color: #3182ce; }
+    .row { display: flex; gap: 14px; }
+    .row .form-group { flex: 1; }
+    .checkbox-row {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 12px; font-size: 0.9rem;
+    }
+    .checkbox-row input { width: auto; }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 14px;
+      background: #2b6cb0;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
+    button[type="submit"]:hover { background: #2c5282; }
+
+    /* Results */
+    .results { display: none; }
+    .results.active { display: block; }
+    .results h2 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: #1a365d;
+      margin-bottom: 16px;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0f4f8;
+      font-size: 0.9rem;
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-row .label { color: #4a5568; }
+    .result-row .value { font-weight: 700; color: #1a365d; }
+    .result-row.negative .value { color: #c53030; }
+    .result-row.highlight {
+      background: #f0fff4;
+      margin: 0 -28px;
+      padding: 14px 28px;
+      border-radius: 8px;
+      border-bottom: none;
+    }
+    .result-row.highlight .label { font-weight: 700; color: #276749; }
+    .result-row.highlight .value { font-size: 1.3rem; color: #276749; }
+
+    .section-divider {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #a0aec0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 14px 0 6px;
+      border-bottom: none;
+    }
+
+    /* Breakdown bar */
+    .tax-bar-wrap { margin: 20px 0; }
+    .tax-bar {
+      height: 32px;
+      border-radius: 16px;
+      display: flex;
+      overflow: hidden;
+      background: #e2e8f0;
+    }
+    .tax-bar div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: white;
+      min-width: 2px;
+      transition: width 0.4s ease;
+    }
+    .bar-tax { background: #e53e3e; }
+    .bar-medicare { background: #dd6b20; }
+    .bar-help { background: #805ad5; }
+    .bar-take { background: #38a169; }
+    .tax-bar-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: #4a5568;
+    }
+    .legend-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      display: inline-block; margin-right: 4px; vertical-align: middle;
+    }
+
+    /* Info boxes */
+    .info-box {
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      margin: 16px 0;
+    }
+    .info-box.blue { background: #ebf8ff; border-left: 4px solid #3182ce; color: #2c5282; }
+    .info-box.orange { background: #fffaf0; border-left: 4px solid #dd6b20; color: #744210; }
+    .info-box.green { background: #f0fff4; border-left: 4px solid #38a169; color: #276749; }
+
+    /* Tooltip */
+    .tooltip-wrap { position: relative; display: inline; }
+    .tooltip-icon {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 16px; height: 16px; border-radius: 50%; background: #cbd5e0;
+      color: #2d3748; font-size: 0.7rem; font-weight: 700; cursor: help;
+      margin-left: 4px; vertical-align: middle;
+    }
+    .tooltip-text {
+      display: none; position: absolute; bottom: calc(100% + 8px);
+      left: 50%; transform: translateX(-50%); background: #2d3748;
+      color: #f7fafc; padding: 8px 12px; border-radius: 6px;
+      font-size: 0.78rem; font-weight: 400; width: 240px; z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .tooltip-text::after {
+      content: ''; position: absolute; top: 100%; left: 50%;
+      transform: translateX(-50%); border: 6px solid transparent;
+      border-top-color: #2d3748;
+    }
+    .tooltip-wrap:hover .tooltip-text { display: block; }
+
+    /* CTA */
+    .cta-box {
+      background: linear-gradient(135deg, #1a365d, #2c5282);
+      color: white; padding: 28px; border-radius: 14px;
+      text-align: center; margin: 24px 0;
+    }
+    .cta-box h3 { color: white; font-size: 1.1rem; margin-bottom: 6px; }
+    .cta-box p { color: #bee3f8; font-size: 0.9rem; margin-bottom: 14px; }
+    .cta-btn {
+      display: inline-block; background: #48bb78; color: white;
+      padding: 10px 28px; border-radius: 10px; font-weight: 700; font-size: 0.95rem;
+    }
+    .cta-btn:hover { text-decoration: none; background: #38a169; }
+
+    /* Disclaimer */
+    .disclaimer {
+      margin-top: 20px; padding: 14px; background: #fffff0;
+      border-left: 4px solid #d69e2e; border-radius: 4px;
+      font-size: 0.82rem; color: #744210;
+    }
+
+    /* Footer */
+    footer {
+      background: #1a202c; color: #a0aec0; padding: 32px 16px;
+      text-align: center; font-size: 0.82rem;
+    }
+    footer a { color: #63b3ed; }
+    footer p { margin-bottom: 6px; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .row { flex-direction: column; gap: 0; }
+      .card { padding: 20px; }
+      .page-header h1 { font-size: 1.4rem; }
+      .result-row.highlight { margin: 0 -20px; padding: 14px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../landing.html" class="nav-logo">Centrelink Estimator</a>
+    <div class="nav-links">
+      <a href="../landing.html" class="nav-link">Home</a>
+      <a href="../centrelink-calculator.html" class="nav-link">Payments</a>
+      <a href="../landing.html#blog" class="nav-link">Blog</a>
+      <a href="../centrelink-calculator.html" class="nav-cta">Payment Calculator</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Australian Tax Calculator 2025-26</h1>
+      <p>For citizens, permanent residents, visa holders & working holiday makers</p>
+    </div>
+
+    <div class="card">
+      <form id="taxForm">
+        <div class="form-group">
+          <label>Your tax residency status
+            <span class="tooltip-wrap"><span class="tooltip-icon">?</span><span class="tooltip-text">Most visa holders who live in Australia for more than 6 months are tax residents. Working holiday makers (417/462) have their own flat tax rate. Non-residents are taxed from the first dollar with no tax-free threshold.</span></span>
+          </label>
+          <select id="residency">
+            <option value="resident">Australian Resident (citizen, PR, or most visa holders living here 6+ months)</option>
+            <option value="non-resident">Non-Resident (living overseas or here &lt; 6 months)</option>
+            <option value="whm">Working Holiday Maker (417 / 462 visa)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Annual gross income <small>(before tax, $/year)</small>
+            <span class="tooltip-wrap"><span class="tooltip-icon">?</span><span class="tooltip-text">Your total salary/wages before any deductions. Include overtime, bonuses, and allowances. If you're paid hourly, multiply your hourly rate x hours per week x 52.</span></span>
+          </label>
+          <input type="number" id="income" placeholder="e.g. 75000" required min="0">
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label>Super rate <small>(%)</small></label>
+            <input type="number" id="superRate" value="11.5" min="0" max="30" step="0.5">
+          </div>
+          <div class="form-group">
+            <label>Pay frequency</label>
+            <select id="frequency">
+              <option value="annual">Annual</option>
+              <option value="monthly">Monthly</option>
+              <option value="fortnightly" selected>Fortnightly</option>
+              <option value="weekly">Weekly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="hasHELP">
+          <label for="hasHELP" style="margin:0;font-weight:500">I have a HELP/HECS debt</label>
+        </div>
+
+        <div class="checkbox-row">
+          <input type="checkbox" id="noMedicare">
+          <label for="noMedicare" style="margin:0;font-weight:500">I have a Medicare levy exemption <small style="color:#718096">(some temp visas)</small></label>
+        </div>
+
+        <button type="submit">Calculate My Tax</button>
+      </form>
+    </div>
+
+    <div class="results" id="results">
+      <div class="card">
+        <h2>Your Tax Breakdown</h2>
+        <div id="resultContent"></div>
+      </div>
+
+      <div class="cta-box">
+        <h3>Now calculate your Centrelink payments</h3>
+        <p>See what family payments you're eligible for based on this income.</p>
+        <a href="../centrelink-calculator.html" class="cta-btn">Centrelink Calculator</a>
+      </div>
+
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> This is an estimate only based on 2025-26 tax rates.
+        Does not include offsets (e.g. LITO, LMITO), deductions, or other income.
+        Always confirm with a tax professional or the <a href="https://www.ato.gov.au/tax-rates-and-codes/tax-rates-australian-residents" target="_blank">ATO</a>.
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p><strong>Centrelink Payment Estimator</strong> &mdash; Free tools for Australian families</p>
+    <p>Not financial advice. Not affiliated with <a href="https://www.servicesaustralia.gov.au" target="_blank">Services Australia</a> or the <a href="https://www.ato.gov.au" target="_blank">ATO</a>.</p>
+  </footer>
+
+  <script>
+    // 2025-26 Tax brackets (resident)
+    const RESIDENT_BRACKETS = [
+      { min: 0, max: 18200, rate: 0 },
+      { min: 18201, max: 45000, rate: 0.16 },
+      { min: 45001, max: 135000, rate: 0.30 },
+      { min: 135001, max: 190000, rate: 0.37 },
+      { min: 190001, max: Infinity, rate: 0.45 },
+    ];
+
+    // Non-resident brackets
+    const NON_RESIDENT_BRACKETS = [
+      { min: 0, max: 135000, rate: 0.30 },
+      { min: 135001, max: 190000, rate: 0.37 },
+      { min: 190001, max: Infinity, rate: 0.45 },
+    ];
+
+    // Working holiday maker brackets
+    const WHM_BRACKETS = [
+      { min: 0, max: 45000, rate: 0.15 },
+      { min: 45001, max: 135000, rate: 0.30 },
+      { min: 135001, max: 190000, rate: 0.37 },
+      { min: 190001, max: Infinity, rate: 0.45 },
+    ];
+
+    // HELP repayment thresholds 2025-26
+    const HELP_THRESHOLDS = [
+      { min: 0, max: 54435, rate: 0 },
+      { min: 54436, max: 62850, rate: 0.01 },
+      { min: 62851, max: 66620, rate: 0.02 },
+      { min: 66621, max: 70618, rate: 0.025 },
+      { min: 70619, max: 74855, rate: 0.03 },
+      { min: 74856, max: 79346, rate: 0.035 },
+      { min: 79347, max: 84107, rate: 0.04 },
+      { min: 84108, max: 89154, rate: 0.045 },
+      { min: 89155, max: 94503, rate: 0.05 },
+      { min: 94504, max: 100174, rate: 0.055 },
+      { min: 100175, max: 106185, rate: 0.06 },
+      { min: 106186, max: 112556, rate: 0.065 },
+      { min: 112557, max: 119309, rate: 0.07 },
+      { min: 119310, max: 126467, rate: 0.075 },
+      { min: 126468, max: 134056, rate: 0.08 },
+      { min: 134057, max: 142100, rate: 0.085 },
+      { min: 142101, max: 150626, rate: 0.09 },
+      { min: 150627, max: 159663, rate: 0.095 },
+      { min: 159664, max: Infinity, rate: 0.10 },
+    ];
+
+    const MEDICARE_RATE = 0.02;
+    const MEDICARE_SURCHARGE_THRESHOLD = 93000; // single, no private health
+
+    function calcTax(income, brackets) {
+      let tax = 0;
+      for (const b of brackets) {
+        if (income <= 0) break;
+        const taxable = Math.min(income, b.max) - b.min + 1;
+        if (taxable > 0) {
+          tax += taxable * b.rate;
+        }
+        if (income <= b.max) break;
+      }
+      return Math.round(tax);
+    }
+
+    function calcHELP(income) {
+      for (const t of HELP_THRESHOLDS) {
+        if (income >= t.min && income <= t.max) {
+          return Math.round(income * t.rate);
+        }
+      }
+      return 0;
+    }
+
+    function fmt(n) {
+      return '$' + Math.round(n).toLocaleString('en-AU');
+    }
+
+    document.getElementById('taxForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      calculate();
+    });
+
+    function calculate() {
+      const income = parseFloat(document.getElementById('income').value) || 0;
+      const residency = document.getElementById('residency').value;
+      const superRate = parseFloat(document.getElementById('superRate').value) / 100 || 0.115;
+      const frequency = document.getElementById('frequency').value;
+      const hasHELP = document.getElementById('hasHELP').checked;
+      const noMedicare = document.getElementById('noMedicare').checked;
+
+      if (income <= 0) return;
+
+      // Tax
+      let brackets;
+      if (residency === 'resident') brackets = RESIDENT_BRACKETS;
+      else if (residency === 'non-resident') brackets = NON_RESIDENT_BRACKETS;
+      else brackets = WHM_BRACKETS;
+
+      const incomeTax = calcTax(income, brackets);
+
+      // Medicare levy (residents only, unless exempt)
+      let medicareLevy = 0;
+      if (residency === 'resident' && !noMedicare) {
+        if (income > 26000) {
+          medicareLevy = Math.round(income * MEDICARE_RATE);
+        } else if (income > 21335) {
+          // Phase-in range
+          medicareLevy = Math.round((income - 21335) * 0.10);
+        }
+      }
+
+      // HELP
+      const helpRepayment = hasHELP ? calcHELP(income) : 0;
+
+      // Totals
+      const totalTax = incomeTax + medicareLevy + helpRepayment;
+      const takeHome = income - totalTax;
+      const superAmount = Math.round(income * superRate);
+      const totalPackage = income + superAmount;
+
+      // Effective rate
+      const effectiveRate = income > 0 ? ((totalTax / income) * 100).toFixed(1) : '0.0';
+
+      // Frequency divisors
+      const div = { annual: 1, monthly: 12, fortnightly: 26, weekly: 52 };
+      const d = div[frequency];
+      const perLabel = frequency === 'annual' ? '/year' : frequency === 'monthly' ? '/month' : frequency === 'fortnightly' ? '/fortnight' : '/week';
+
+      // Bar percentages
+      const taxPct = (incomeTax / income * 100).toFixed(1);
+      const mediPct = (medicareLevy / income * 100).toFixed(1);
+      const helpPct = (helpRepayment / income * 100).toFixed(1);
+      const takePct = (takeHome / income * 100).toFixed(1);
+
+      // Marginal rate
+      let marginalRate = 0;
+      for (const b of brackets) {
+        if (income >= b.min && income <= b.max) { marginalRate = b.rate; break; }
+        if (income > b.max) marginalRate = b.rate;
+      }
+
+      let html = '';
+
+      // Visual bar
+      html += `<div class="tax-bar-wrap">
+        <div class="tax-bar">
+          <div class="bar-tax" style="width:${taxPct}%">${taxPct > 5 ? taxPct + '%' : ''}</div>
+          ${medicareLevy > 0 ? `<div class="bar-medicare" style="width:${mediPct}%">${mediPct > 3 ? mediPct + '%' : ''}</div>` : ''}
+          ${helpRepayment > 0 ? `<div class="bar-help" style="width:${helpPct}%">${helpPct > 3 ? helpPct + '%' : ''}</div>` : ''}
+          <div class="bar-take" style="width:${takePct}%">${takePct > 10 ? takePct + '%' : ''}</div>
+        </div>
+        <div class="tax-bar-legend">
+          <span><span class="legend-dot" style="background:#e53e3e"></span>Income Tax</span>
+          ${medicareLevy > 0 ? `<span><span class="legend-dot" style="background:#dd6b20"></span>Medicare Levy</span>` : ''}
+          ${helpRepayment > 0 ? `<span><span class="legend-dot" style="background:#805ad5"></span>HELP Repayment</span>` : ''}
+          <span><span class="legend-dot" style="background:#38a169"></span>Take Home</span>
+        </div>
+      </div>`;
+
+      // Take home highlight
+      html += `<div class="result-row highlight">
+        <span class="label">Take Home Pay ${perLabel}</span>
+        <span class="value">${fmt(takeHome / d)}</span>
+      </div>`;
+
+      // Income section
+      html += `<div class="result-row section-divider"><span>Income</span></div>`;
+      html += `<div class="result-row"><span class="label">Gross Income</span><span class="value">${fmt(income)} /year</span></div>`;
+      html += `<div class="result-row"><span class="label">Superannuation (${(superRate*100).toFixed(1)}%)</span><span class="value">${fmt(superAmount)} /year</span></div>`;
+      html += `<div class="result-row"><span class="label">Total Package (incl. super)</span><span class="value">${fmt(totalPackage)} /year</span></div>`;
+
+      // Tax section
+      html += `<div class="result-row section-divider"><span>Deductions</span></div>`;
+      html += `<div class="result-row negative"><span class="label">Income Tax</span><span class="value">-${fmt(incomeTax)} /year</span></div>`;
+      if (medicareLevy > 0) {
+        html += `<div class="result-row negative"><span class="label">Medicare Levy (2%)</span><span class="value">-${fmt(medicareLevy)} /year</span></div>`;
+      }
+      if (noMedicare && residency === 'resident') {
+        html += `<div class="result-row"><span class="label">Medicare Levy</span><span class="value" style="color:#38a169">Exempt</span></div>`;
+      }
+      if (residency !== 'resident') {
+        html += `<div class="result-row"><span class="label">Medicare Levy</span><span class="value" style="color:#a0aec0">N/A (non-resident)</span></div>`;
+      }
+      if (helpRepayment > 0) {
+        html += `<div class="result-row negative"><span class="label">HELP/HECS Repayment</span><span class="value">-${fmt(helpRepayment)} /year</span></div>`;
+      }
+      html += `<div class="result-row negative"><span class="label"><strong>Total Deductions</strong></span><span class="value"><strong>-${fmt(totalTax)} /year</strong></span></div>`;
+
+      // Summary section
+      html += `<div class="result-row section-divider"><span>Summary</span></div>`;
+      html += `<div class="result-row"><span class="label">Take Home (Annual)</span><span class="value" style="color:#276749">${fmt(takeHome)}</span></div>`;
+      html += `<div class="result-row"><span class="label">Take Home (Monthly)</span><span class="value" style="color:#276749">${fmt(takeHome / 12)}</span></div>`;
+      html += `<div class="result-row"><span class="label">Take Home (Fortnightly)</span><span class="value" style="color:#276749">${fmt(takeHome / 26)}</span></div>`;
+      html += `<div class="result-row"><span class="label">Take Home (Weekly)</span><span class="value" style="color:#276749">${fmt(takeHome / 52)}</span></div>`;
+
+      // Rates
+      html += `<div class="result-row section-divider"><span>Tax Rates</span></div>`;
+      html += `<div class="result-row"><span class="label">Effective Tax Rate</span><span class="value">${effectiveRate}%</span></div>`;
+      html += `<div class="result-row"><span class="label">Marginal Tax Rate</span><span class="value">${(marginalRate * 100).toFixed(0)}%</span></div>`;
+      html += `<div class="result-row"><span class="label">Tax Residency</span><span class="value">${residency === 'resident' ? 'Resident' : residency === 'whm' ? 'Working Holiday' : 'Non-Resident'}</span></div>`;
+
+      // Info boxes
+      if (residency === 'non-resident') {
+        html += `<div class="info-box orange"><strong>Non-resident:</strong> You have no tax-free threshold and are taxed from the first dollar at 30%. You are also not eligible for the Medicare levy but cannot access Medicare. Check with the <a href="https://www.ato.gov.au/individuals-and-families/coming-to-australia-or-going-overseas/your-tax-residency" target="_blank" style="color:#744210">ATO</a> if you're unsure of your residency status.</div>`;
+      }
+      if (residency === 'whm') {
+        html += `<div class="info-box orange"><strong>Working Holiday Maker:</strong> You are taxed at a flat 15% on the first $45,000, then normal rates above that. Your employer must be registered with the ATO as a WHM employer. Learn more at the <a href="https://www.ato.gov.au/tax-rates-and-codes/tax-rates-working-holiday-makers" target="_blank" style="color:#744210">ATO</a>.</div>`;
+      }
+      if (residency === 'resident' && !noMedicare && income > 0) {
+        html += `<div class="info-box blue"><strong>Medicare Levy:</strong> As a tax resident, you pay 2% Medicare levy. Some temporary visa holders can claim an <a href="https://www.ato.gov.au/individuals-and-families/medicare-and-private-health-insurance/medicare-levy/medicare-levy-exemption" target="_blank" style="color:#2c5282">exemption</a> if they're not eligible for Medicare (e.g. 482, 500 visas without RHCA coverage). Tick the exemption checkbox above if this applies to you.</div>`;
+      }
+
+      document.getElementById('resultContent').innerHTML = html;
+      document.getElementById('results').classList.add('active');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
