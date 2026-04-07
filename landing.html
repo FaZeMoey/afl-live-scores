@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centrelink Payment Estimator — Free Calculator for Australian Families</title>
+  <meta name="description" content="Free Centrelink payment calculator for Australian citizens, permanent residents & visa holders. Estimate FTB, Parental Leave Pay, Newborn Supplement, Child Care Subsidy and more.">
+  <meta name="keywords" content="centrelink calculator, FTB calculator, parental leave pay, newborn supplement, child care subsidy, visa holder payments, australia family payments">
+  <meta property="og:title" content="Centrelink Payment Estimator — Free Calculator">
+  <meta property="og:description" content="Instantly estimate your Centrelink family payments. Covers all visa types, Medicare eligibility, and payment timelines.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1a202c;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(26, 54, 93, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    }
+    .nav-logo {
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: white;
+    }
+    .nav-cta {
+      background: white;
+      color: #1a365d;
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: transform 0.2s;
+    }
+    .nav-cta:hover { transform: translateY(-1px); }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #1a365d 0%, #2c5282 40%, #2b6cb0 100%);
+      padding: 140px 24px 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(99,179,237,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(72,187,120,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+    .hero-content {
+      max-width: 720px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #bee3f8;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 span { color: #68d391; }
+    .hero p {
+      font-size: 1.15rem;
+      color: #bee3f8;
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+    .hero-cta {
+      display: inline-block;
+      background: #48bb78;
+      color: white;
+      padding: 16px 40px;
+      border-radius: 12px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 14px rgba(72,187,120,0.4);
+    }
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(72,187,120,0.5);
+    }
+    .hero-sub {
+      margin-top: 14px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+    }
+
+    /* Stats */
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      padding: 40px 24px;
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
+      flex-wrap: wrap;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #2b6cb0;
+    }
+    .stat-label {
+      font-size: 0.85rem;
+      color: #718096;
+      font-weight: 500;
+    }
+
+    /* Section */
+    section {
+      padding: 80px 24px;
+    }
+    .section-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .section-title {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .section-title h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #1a365d;
+      margin-bottom: 8px;
+    }
+    .section-title p {
+      font-size: 1.05rem;
+      color: #718096;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* Features */
+    .features-section { background: #f7fafc; }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .feature-card {
+      background: white;
+      padding: 28px;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 14px;
+    }
+    .feature-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1a365d;
+      margin-bottom: 6px;
+    }
+    .feature-card p {
+      font-size: 0.88rem;
+      color: #718096;
+      line-height: 1.5;
+    }
+
+    /* How it works */
+    .steps {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+    }
+    .step {
+      flex: 1;
+      text-align: center;
+    }
+    .step-num {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #ebf8ff;
+      color: #2b6cb0;
+      font-size: 1.5rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+    }
+    .step h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1a365d;
+      margin-bottom: 6px;
+    }
+    .step p {
+      font-size: 0.88rem;
+      color: #718096;
+    }
+    .step-arrow {
+      flex-shrink: 0;
+      width: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #cbd5e0;
+      font-size: 1.5rem;
+      margin-top: 24px;
+    }
+
+    /* Visa coverage */
+    .visa-section { background: #f7fafc; }
+    .visa-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .visa-tag {
+      background: white;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #2d3748;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .visa-tag small {
+      display: block;
+      font-weight: 400;
+      color: #a0aec0;
+      font-size: 0.75rem;
+      margin-top: 2px;
+    }
+
+    /* Languages */
+    .lang-section { text-align: center; }
+    .lang-flags {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+    .lang-item {
+      background: #f7fafc;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(135deg, #1a365d, #2c5282);
+      text-align: center;
+      padding: 80px 24px;
+    }
+    .cta-section h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 12px;
+    }
+    .cta-section p {
+      font-size: 1.1rem;
+      color: #bee3f8;
+      max-width: 500px;
+      margin: 0 auto 28px;
+    }
+
+    /* FAQ */
+    .faq-list {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      border-bottom: 1px solid #e2e8f0;
+      padding: 18px 0;
+    }
+    .faq-q {
+      font-weight: 700;
+      color: #1a365d;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1rem;
+    }
+    .faq-q::after {
+      content: '+';
+      font-size: 1.3rem;
+      color: #a0aec0;
+      transition: transform 0.2s;
+    }
+    .faq-item.open .faq-q::after {
+      content: '-';
+    }
+    .faq-a {
+      display: none;
+      padding-top: 10px;
+      font-size: 0.9rem;
+      color: #4a5568;
+      line-height: 1.6;
+    }
+    .faq-item.open .faq-a { display: block; }
+
+    /* Footer */
+    footer {
+      background: #1a202c;
+      color: #a0aec0;
+      padding: 40px 24px;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+    footer a { color: #63b3ed; }
+    footer p { margin-bottom: 8px; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .hero { padding: 120px 20px 70px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .steps { flex-direction: column; gap: 20px; }
+      .step-arrow { display: none; }
+      .visa-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats { gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav id="nav">
+    <span class="nav-logo">Centrelink Estimator</span>
+    <a href="centrelink-calculator.html" class="nav-cta">Open Calculator</a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">100% Free &mdash; No signup required</div>
+      <h1>Know exactly what <span>Centrelink pays you</span> before your baby arrives</h1>
+      <p>Instant estimates for Family Tax Benefit, Parental Leave Pay, Newborn Supplement, Child Care Subsidy, and Medicare eligibility &mdash; for every Australian visa type.</p>
+      <a href="centrelink-calculator.html" class="hero-cta">Calculate My Payments</a>
+      <p class="hero-sub">Based on 2025-26 rates. Takes under 60 seconds.</p>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Visa types covered</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">10+</div>
+      <div class="stat-label">Payment types calculated</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Languages supported</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">$0</div>
+      <div class="stat-label">Cost to use</div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="features-section">
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>Everything you need in one place</h2>
+        <p>No more Googling 20 different Centrelink pages. Get all your answers instantly.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#ebf8ff;color:#2b6cb0">$</div>
+          <h3>FTB Part A & B Calculator</h3>
+          <p>Income-tested estimates for both Family Tax Benefit parts, including per-child calculations and supplement amounts.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#faf5ff;color:#805ad5">+</div>
+          <h3>Parental Leave Pay</h3>
+          <p>20 weeks of government-funded PLP with work test check. Shows exact start and end dates for your situation.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#f0fff4;color:#38a169">&#9825;</div>
+          <h3>Newborn Supplement</h3>
+          <p>Upfront payment plus 13-week supplement. Automatically calculates whether you get PLP or Newborn Supplement.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#fff5f5;color:#e53e3e">&#9733;</div>
+          <h3>Medicare Eligibility</h3>
+          <p>Instant check if your visa qualifies for Medicare, which card to apply for, and step-by-step enrolment instructions.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#fffaf0;color:#dd6b20">%</div>
+          <h3>Child Care Subsidy</h3>
+          <p>CCS percentage based on family income with out-of-pocket cost examples. Know what you'll actually pay for childcare.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#ebf8ff;color:#319795">&#8986;</div>
+          <h3>NARWP Countdown</h3>
+          <p>Shows exactly how many weeks remain on your Newly Arrived Resident's Waiting Period and when each payment unlocks.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#f0fff4;color:#2f855a">&#9776;</div>
+          <h3>Interactive Payment Timeline</h3>
+          <p>Three views: chronological timeline, visual roadmap bars, and an interactive snake path. See exact start and end dates.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#ebf4ff;color:#667eea">&#8596;</div>
+          <h3>"What If" Visa Comparison</h3>
+          <p>Side-by-side comparison of your current payments vs. what you'd get after receiving permanent residency (801 visa).</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#faf5ff;color:#9f7aea">&#9998;</div>
+          <h3>Claim Checklist</h3>
+          <p>Interactive document checklist you can tick off before your Centrelink appointment. Print it out and take it with you.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section>
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>How it works</h2>
+        <p>Three simple steps. Under 60 seconds.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h3>Enter your details</h3>
+          <p>Select your visa type, enter your income, and add your children. Tooltips explain every field.</p>
+        </div>
+        <div class="step-arrow">&rarr;</div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h3>Get your estimate</h3>
+          <p>Instantly see fortnightly payments, lump sums, Medicare status, and your total first-year amount.</p>
+        </div>
+        <div class="step-arrow">&rarr;</div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <h3>Take action</h3>
+          <p>Print your summary, use the checklist for your appointment, and share results with your partner.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Visa coverage -->
+  <section class="visa-section">
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>Every visa type covered</h2>
+        <p>50+ visa subclasses with correct eligibility rules, NARWP calculations, and Medicare status.</p>
+      </div>
+      <div class="visa-grid">
+        <div class="visa-tag">Australian Citizen<small>Full access</small></div>
+        <div class="visa-tag">Permanent Resident<small>NARWP may apply</small></div>
+        <div class="visa-tag">820 / 309 Partner<small>Temp partner visas</small></div>
+        <div class="visa-tag">801 / 100 Partner<small>Permanent partner</small></div>
+        <div class="visa-tag">189 / 190 Skilled<small>Permanent skilled</small></div>
+        <div class="visa-tag">491 / 494 Regional<small>Provisional</small></div>
+        <div class="visa-tag">482 TSS<small>Temp work visa</small></div>
+        <div class="visa-tag">500 Student<small>OSHC info included</small></div>
+        <div class="visa-tag">200-204 Refugee<small>NARWP exempt</small></div>
+        <div class="visa-tag">444 NZ Special<small>No NARWP</small></div>
+        <div class="visa-tag">Parent Visas<small>103, 143, 804, 864</small></div>
+        <div class="visa-tag">Bridging Visas<small>Depends on application</small></div>
+        <div class="visa-tag">417 / 462 WHV<small>Working holiday</small></div>
+        <div class="visa-tag">485 Graduate<small>Temp graduate</small></div>
+        <div class="visa-tag">858 Global Talent<small>Permanent</small></div>
+        <div class="visa-tag">+ 35 more<small>All subclasses</small></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Languages -->
+  <section class="lang-section">
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>Available in 5 languages</h2>
+        <p>Because navigating Centrelink is hard enough in your first language.</p>
+      </div>
+      <div class="lang-flags">
+        <div class="lang-item">English</div>
+        <div class="lang-item">العربية Arabic</div>
+        <div class="lang-item">中文 Chinese</div>
+        <div class="lang-item">Tiếng Việt Vietnamese</div>
+        <div class="lang-item">हिन्दी Hindi</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section>
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is this tool free?</div>
+          <div class="faq-a">Yes, completely free. No signup, no email required, no hidden fees. Just open the calculator and enter your details.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How accurate are the estimates?</div>
+          <div class="faq-a">The estimates use official 2025-26 Centrelink rates and income thresholds. However, actual payments depend on your individual circumstances. Always confirm with Centrelink on 136 150 before making financial decisions.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What is the NARWP waiting period?</div>
+          <div class="faq-a">The Newly Arrived Resident's Waiting Period (NARWP) is a 1-4 year waiting period that applies to most new visa holders before they can access certain Centrelink payments. FTB Part A has a 1-year NARWP, while Parental Leave Pay has a 2-year NARWP. Our calculator automatically works out where you are in the waiting period.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I get Centrelink on a temporary visa?</div>
+          <div class="faq-a">It depends on the visa type. Partner visas (820/309) and regional provisional visas (491/494) can access family payments subject to NARWP. Most other temporary visas (student, visitor, working holiday) are not eligible. Our tool checks eligibility for every visa subclass.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is my data stored?</div>
+          <div class="faq-a">No. All calculations happen in your browser. Nothing is sent to any server. Your information stays on your device.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is this affiliated with Centrelink or Services Australia?</div>
+          <div class="faq-a">No. This is an independent tool built to help families understand their potential entitlements. It is not affiliated with Services Australia, Centrelink, or the Australian Government.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Ready to find out what you're entitled to?</h2>
+    <p>Free, instant, and private. No signup needed.</p>
+    <a href="centrelink-calculator.html" class="hero-cta">Calculate My Payments</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p><strong>Centrelink Payment Estimator</strong> &mdash; Free tool for Australian families</p>
+    <p>Estimates based on 2025-26 rates. Not financial advice. Not affiliated with <a href="https://www.servicesaustralia.gov.au" target="_blank">Services Australia</a>.</p>
+    <p style="margin-top:12px;font-size:0.78rem;color:#4a5568">&copy; 2026. All calculations happen in your browser. No data is stored.</p>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 40);
+    });
+  </script>
+</body>
+</html>
