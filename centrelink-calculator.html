@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centrelink Payment Estimator - Subclass 820 Visa</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    header {
+      background: #1a365d;
+      color: white;
+      padding: 24px;
+      border-radius: 12px 12px 0 0;
+      text-align: center;
+    }
+    header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+    header p { font-size: 0.9rem; opacity: 0.85; }
+    .card {
+      background: white;
+      padding: 28px;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+    label small {
+      font-weight: 400;
+      color: #718096;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #3182ce;
+    }
+    .row {
+      display: flex;
+      gap: 16px;
+    }
+    .row .form-group { flex: 1; }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #2b6cb0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    button:hover { background: #2c5282; }
+
+    .results {
+      display: none;
+      margin-top: 24px;
+    }
+    .results h2 {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      color: #1a365d;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+    .result-section {
+      margin-bottom: 20px;
+    }
+    .result-section h3 {
+      font-size: 1rem;
+      color: #4a5568;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+    .result-row:nth-child(even) { background: #f7fafc; }
+    .result-row .label { color: #4a5568; }
+    .result-row .value { font-weight: 600; }
+    .result-row.eligible .value { color: #276749; }
+    .result-row.not-eligible .value { color: #c53030; }
+    .result-row.waiting .value { color: #c05621; }
+
+    .total-box {
+      background: #ebf8ff;
+      border: 2px solid #3182ce;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .total-box .total-label { font-size: 0.95rem; color: #2c5282; }
+    .total-box .total-amount {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1a365d;
+    }
+    .total-box .total-note {
+      font-size: 0.85rem;
+      color: #718096;
+      margin-top: 4px;
+    }
+
+    .narwp-status {
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 0.95rem;
+    }
+    .narwp-status.served { background: #f0fff4; border-left: 4px solid #38a169; }
+    .narwp-status.almost { background: #fffff0; border-left: 4px solid #d69e2e; }
+    .narwp-status.waiting { background: #fff5f5; border-left: 4px solid #e53e3e; }
+
+    .disclaimer {
+      margin-top: 24px;
+      padding: 14px;
+      background: #fffff0;
+      border-left: 4px solid #d69e2e;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #744210;
+    }
+
+    .fortnightly-box {
+      background: #f0fff4;
+      border: 2px solid #38a169;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      margin-top: 12px;
+    }
+    .fortnightly-box .total-label { font-size: 0.95rem; color: #276749; }
+    .fortnightly-box .total-amount { font-size: 1.8rem; font-weight: 700; color: #22543d; }
+
+    @media (max-width: 500px) {
+      .row { flex-direction: column; gap: 0; }
+      body { padding: 10px; }
+      .card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Centrelink Payment Estimator</h1>
+      <p>For Subclass 820 (Partner Temporary) Visa Holders</p>
+    </header>
+    <div class="card">
+      <form id="calcForm">
+        <div class="form-group">
+          <label>Visa Grant Date (Subclass 820)</label>
+          <input type="date" id="visaDate" required>
+        </div>
+
+        <div class="form-group">
+          <label>Baby's Expected Due Date</label>
+          <input type="date" id="dueDate" required>
+        </div>
+
+        <div class="form-group">
+          <label>Is this your first child? <small>(in your care)</small></label>
+          <select id="firstChild">
+            <option value="yes">Yes - First child</option>
+            <option value="no">No - We have other children</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label>Combined Family Income <small>($/year)</small></label>
+            <input type="number" id="familyIncome" placeholder="e.g. 80000" required min="0">
+          </div>
+          <div class="form-group">
+            <label>Lower Earner's Income <small>($/year)</small></label>
+            <input type="number" id="lowerIncome" placeholder="e.g. 0" required min="0">
+          </div>
+        </div>
+
+        <button type="submit">Calculate My Payments</button>
+      </form>
+
+      <div class="results" id="results"></div>
+
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> This is a rough estimate only, based on 2025-26 rates.
+        Actual payments depend on your full circumstances. Always confirm with
+        <strong>Centrelink on 136 150</strong>. This tool is not affiliated with Services Australia.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const RATES = {
+      ftbA_max_fortnight: 227.36,       // per child 0-12
+      ftbA_base_fortnight: 72.94,        // base rate per child
+      ftbA_supplement_annual: 938.05,
+      ftbA_income_free: 62634,           // no reduction below this
+      ftbA_income_taper1: 0.20,          // 20c per dollar over threshold
+      ftbA_income_cap_base: 117194,      // above this, base rate only
+
+      ftbB_max_fortnight: 193.34,        // youngest under 5
+      ftbB_supplement_annual: 459.90,
+      ftbB_lower_earner_free: 6935,      // lower earner threshold
+      ftbB_lower_earner_taper: 0.20,
+      ftbB_primary_earner_cap: 120007,
+
+      newborn_upfront: 683.00,
+      newborn_supplement_first: 2003.82,  // first child (13 weeks)
+      newborn_supplement_sub: 668.85,     // subsequent children
+
+      energyA_fortnight: 4.76,
+      energyB_fortnight: 2.80,
+
+      narwp_ftbA_weeks: 52,
+      narwp_plp_weeks: 104,
+    };
+
+    document.getElementById('calcForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      calculate();
+    });
+
+    function calculate() {
+      const visaDate = new Date(document.getElementById('visaDate').value);
+      const dueDate = new Date(document.getElementById('dueDate').value);
+      const firstChild = document.getElementById('firstChild').value === 'yes';
+      const familyIncome = parseFloat(document.getElementById('familyIncome').value) || 0;
+      const lowerIncome = parseFloat(document.getElementById('lowerIncome').value) || 0;
+      const today = new Date();
+
+      // NARWP calculations
+      const weeksOnVisa = Math.floor((today - visaDate) / (7 * 24 * 60 * 60 * 1000));
+      const ftbAEligibleDate = new Date(visaDate.getTime() + RATES.narwp_ftbA_weeks * 7 * 24 * 60 * 60 * 1000);
+      const plpEligibleDate = new Date(visaDate.getTime() + RATES.narwp_plp_weeks * 7 * 24 * 60 * 60 * 1000);
+      const ftbAServed = today >= ftbAEligibleDate;
+      const plpServed = today >= plpEligibleDate;
+
+      // Weeks until NARWP served
+      const weeksUntilFtbA = ftbAServed ? 0 : Math.ceil((ftbAEligibleDate - today) / (7 * 24 * 60 * 60 * 1000));
+      const weeksUntilPlp = plpServed ? 0 : Math.ceil((plpEligibleDate - today) / (7 * 24 * 60 * 60 * 1000));
+
+      // FTB Part A rate calculation (income tested)
+      let ftbA_fortnight = RATES.ftbA_max_fortnight;
+      if (familyIncome > RATES.ftbA_income_free) {
+        const reduction = (familyIncome - RATES.ftbA_income_free) * RATES.ftbA_income_taper1 / 26;
+        ftbA_fortnight = Math.max(RATES.ftbA_base_fortnight, RATES.ftbA_max_fortnight - reduction);
+      }
+      if (familyIncome > RATES.ftbA_income_cap_base) {
+        ftbA_fortnight = 0; // over higher income threshold
+      }
+
+      // FTB Part B rate calculation
+      let ftbB_fortnight = RATES.ftbB_max_fortnight;
+      const higherIncome = familyIncome - lowerIncome;
+      if (higherIncome > RATES.ftbB_primary_earner_cap) {
+        ftbB_fortnight = 0; // primary earner over cap
+      } else if (lowerIncome > RATES.ftbB_lower_earner_free) {
+        const reduction = (lowerIncome - RATES.ftbB_lower_earner_free) * RATES.ftbB_lower_earner_taper / 26;
+        ftbB_fortnight = Math.max(0, RATES.ftbB_max_fortnight - reduction);
+      }
+
+      // Newborn payments (only if not getting PLP)
+      const newbornSupplement = firstChild ? RATES.newborn_supplement_first : RATES.newborn_supplement_sub;
+      const newbornTotal = RATES.newborn_upfront + newbornSupplement;
+
+      // Calculate months of FTB Part A in the first year from baby's birth
+      let ftbAMonthsInFirstYear = 12;
+      if (!ftbAServed) {
+        const babyBirth = dueDate > today ? dueDate : today;
+        if (ftbAEligibleDate > babyBirth) {
+          const delayMs = ftbAEligibleDate - babyBirth;
+          const delayMonths = delayMs / (30.44 * 24 * 60 * 60 * 1000);
+          ftbAMonthsInFirstYear = Math.max(0, 12 - delayMonths);
+        }
+      }
+
+      // Annual estimates
+      const ftbA_annual = ftbA_fortnight * 26 * (ftbAMonthsInFirstYear / 12);
+      const ftbB_annual = ftbB_fortnight * 26;
+      const energy_annual = (RATES.energyA_fortnight + RATES.energyB_fortnight) * 26;
+      const supplements = (ftbA_fortnight > 0 ? RATES.ftbA_supplement_annual : 0) + (ftbB_fortnight > 0 ? RATES.ftbB_supplement_annual : 0);
+
+      // Newborn payments only available once FTB Part A eligible
+      const newbornAvailable = ftbA_fortnight > 0;
+
+      const firstYearTotal = ftbA_annual + ftbB_annual + energy_annual + supplements + (newbornAvailable ? newbornTotal : 0);
+      const fortnightlyTotal = ftbA_fortnight + ftbB_fortnight + RATES.energyA_fortnight + RATES.energyB_fortnight;
+
+      // Build results HTML
+      let html = '';
+
+      // NARWP Status
+      if (ftbAServed) {
+        html += `<div class="narwp-status served"><strong>FTB Part A:</strong> 52-week waiting period served! You're eligible now.</div>`;
+      } else {
+        html += `<div class="narwp-status ${weeksUntilFtbA <= 6 ? 'almost' : 'waiting'}">
+          <strong>FTB Part A:</strong> ${weeksUntilFtbA} weeks remaining on your 52-week waiting period.
+          Eligible from <strong>${ftbAEligibleDate.toLocaleDateString('en-AU', {day:'numeric',month:'long',year:'numeric'})}</strong>.
+        </div>`;
+      }
+
+      if (plpServed) {
+        html += `<div class="narwp-status served"><strong>Parental Leave Pay:</strong> 2-year waiting period served!</div>`;
+      } else {
+        html += `<div class="narwp-status waiting">
+          <strong>Parental Leave Pay:</strong> ${weeksUntilPlp} weeks remaining (2-year wait).
+          Eligible from <strong>${plpEligibleDate.toLocaleDateString('en-AU', {day:'numeric',month:'long',year:'numeric'})}</strong>.
+        </div>`;
+      }
+
+      // Fortnightly breakdown
+      html += `<h2>Fortnightly Payments</h2>`;
+      html += `<div class="result-section">`;
+      html += resultRow('FTB Part A', ftbA_fortnight, ftbAServed ? 'eligible' : 'waiting', !ftbAServed ? `(from ${ftbAEligibleDate.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})})` : '');
+      html += resultRow('FTB Part B', ftbB_fortnight, ftbB_fortnight > 0 ? 'eligible' : 'not-eligible', ftbB_fortnight > 0 ? '(no waiting period)' : '');
+      html += resultRow('Energy Supplement', RATES.energyA_fortnight + RATES.energyB_fortnight, 'eligible', '');
+      html += `</div>`;
+
+      html += `<div class="fortnightly-box">
+        <div class="total-label">Estimated Fortnightly Payment (once all eligible)</div>
+        <div class="total-amount">$${fortnightlyTotal.toFixed(2)}</div>
+      </div>`;
+
+      // Lump sum / one-off
+      html += `<h2 style="margin-top:24px">One-Off Payments</h2>`;
+      html += `<div class="result-section">`;
+      html += resultRow('Newborn Upfront Payment', RATES.newborn_upfront, newbornAvailable ? 'eligible' : 'waiting', !newbornAvailable ? '(needs FTB Part A)' : 'lump sum');
+      html += resultRow('Newborn Supplement (' + (firstChild ? '1st child' : 'subsequent') + ')', newbornSupplement, newbornAvailable ? 'eligible' : 'waiting', 'over 13 weeks');
+      html += resultRow('FTB Part A Supplement', RATES.ftbA_supplement_annual, ftbA_fortnight > 0 ? 'eligible' : 'not-eligible', 'end of financial year');
+      html += resultRow('FTB Part B Supplement', RATES.ftbB_supplement_annual, ftbB_fortnight > 0 ? 'eligible' : 'not-eligible', 'end of financial year');
+      html += `</div>`;
+
+      // Total first year
+      html += `<div class="total-box">
+        <div class="total-label">Estimated Total in Baby's First Year</div>
+        <div class="total-amount">~$${Math.round(firstYearTotal).toLocaleString()}</div>
+        <div class="total-note">Based on 2025-26 rates. Actual amount depends on individual circumstances.</div>
+      </div>`;
+
+      const resultsDiv = document.getElementById('results');
+      resultsDiv.innerHTML = html;
+      resultsDiv.style.display = 'block';
+      resultsDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resultRow(label, amount, status, note) {
+      const noteHtml = note ? ` <small style="color:#718096">${note}</small>` : '';
+      return `<div class="result-row ${status}">
+        <span class="label">${label}${noteHtml}</span>
+        <span class="value">$${amount.toFixed(2)}${status === 'waiting' ? ' *' : ''}/fn</span>
+      </div>`;
+    }
+
+    // Pre-fill with example dates
+    document.getElementById('visaDate').value = '2025-04-30';
+    document.getElementById('dueDate').value = '2026-04-14';
+  </script>
+</body>
+</html>
