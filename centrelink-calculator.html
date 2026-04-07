@@ -1333,7 +1333,7 @@
       }
 
       // Timeline
-      html += buildTimelineSection(visa, dueDate, ftbAEligibleDate, plpEligibleDate, ftbAServed, plpServed, hasNewborn);
+      html += buildTimelineSection(visa, dueDate, ftbAEligibleDate, plpEligibleDate, ftbAServed, plpServed, hasNewborn, ftbA_fortnight, ftbB_fortnight, plpTotal, newbornSupplement);
 
       // Medicare
       html += buildMedicareSection(visa, visaType);
@@ -1362,27 +1362,28 @@
     }
 
     // ===== TIMELINE SECTION =====
-    function buildTimelineSection(visa, dueDate, ftbADate, plpDate, ftbAServed, plpServed, hasNewborn) {
+    function buildTimelineSection(visa, dueDate, ftbADate, plpDate, ftbAServed, plpServed, hasNewborn, ftbAFn, ftbBFn, plpTotal, newbornSupp) {
       const events = [];
       const fmt = d => d.toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'});
+      const money = v => `$${v.toFixed(2)}`;
 
       if (visa.ftbB) {
-        events.push({ date: dueDate, label: 'FTB Part B starts', desc: 'No waiting period — begins from birth', color: 'green' });
+        events.push({ date: dueDate, label: 'FTB Part B starts', amount: `${money(ftbBFn)}/fortnight`, desc: 'No waiting period — begins from birth', color: 'green' });
       }
       if (visa.ftbA && !ftbAServed) {
-        events.push({ date: ftbADate, label: 'FTB Part A starts', desc: 'NARWP waiting period ends', color: 'orange' });
+        events.push({ date: ftbADate, label: 'FTB Part A starts', amount: `${money(ftbAFn)}/fortnight`, desc: 'NARWP waiting period ends', color: 'orange' });
       } else if (visa.ftbA) {
-        events.push({ date: dueDate, label: 'FTB Part A starts', desc: 'Waiting period already served — begins from birth', color: 'green' });
+        events.push({ date: dueDate, label: 'FTB Part A starts', amount: `${money(ftbAFn)}/fortnight`, desc: 'Waiting period already served — begins from birth', color: 'green' });
       }
       if (hasNewborn && visa.newborn) {
-        events.push({ date: dueDate, label: 'Newborn Upfront Payment', desc: 'Lump sum paid after birth (requires FTB Part A)', color: 'blue' });
+        events.push({ date: dueDate, label: 'Newborn Upfront Payment', amount: money(RATES.newborn_upfront), desc: 'Lump sum paid after birth (requires FTB Part A)', color: 'blue' });
         const nsEnd = new Date(dueDate.getTime() + 13 * 7 * 24 * 60 * 60 * 1000);
-        events.push({ date: nsEnd, label: 'Newborn Supplement ends', desc: 'Paid over 13 weeks after birth', color: 'blue' });
+        events.push({ date: nsEnd, label: 'Newborn Supplement ends', amount: `${money(newbornSupp)} total over 13 weeks`, desc: 'Paid fortnightly over 13 weeks after birth', color: 'blue' });
       }
       if (visa.plp && !plpServed) {
-        events.push({ date: plpDate, label: 'Parental Leave Pay eligible', desc: '2-year NARWP ends — can claim if work test met', color: 'purple' });
+        events.push({ date: plpDate, label: 'Parental Leave Pay eligible', amount: `${money(plpTotal)} (${RATES.plp_weeks} weeks)`, desc: '2-year NARWP ends — can claim if work test met', color: 'purple' });
       } else if (visa.plp) {
-        events.push({ date: dueDate, label: 'Parental Leave Pay eligible', desc: 'From birth — subject to work test', color: 'green' });
+        events.push({ date: dueDate, label: 'Parental Leave Pay eligible', amount: `${money(plpTotal)} (${RATES.plp_weeks} weeks)`, desc: 'From birth — subject to work test', color: 'green' });
       }
 
       events.sort((a, b) => a.date - b.date);
@@ -1393,7 +1394,7 @@
           <div class="timeline-dot ${e.color}"></div>
           <div class="timeline-content">
             <div class="timeline-date">${fmt(e.date)} — ${e.label}</div>
-            <div class="timeline-desc">${e.desc}</div>
+            <div class="timeline-desc"><strong>${e.amount}</strong> — ${e.desc}</div>
           </div>
         </div>`;
       });
