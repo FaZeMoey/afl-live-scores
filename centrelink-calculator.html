@@ -453,21 +453,26 @@
     }
 
     /* Dark mode */
+    .header-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
     .dark-toggle {
-      position: absolute;
-      top: 50%;
-      right: 16px;
-      transform: translateY(-50%);
       background: rgba(255,255,255,0.15);
       border: 1px solid rgba(255,255,255,0.3);
       color: white;
       border-radius: 20px;
-      padding: 4px 12px;
+      padding: 4px 14px;
       font-size: 0.8rem;
       cursor: pointer;
+      width: auto;
+      margin: 0;
     }
     .dark-toggle:hover { background: rgba(255,255,255,0.25); }
-    header { position: relative; }
 
     body.dark {
       background: #1a202c;
@@ -514,14 +519,6 @@
     body.dark .not-eligible-box h2 { color: #feb2b2; }
     body.dark .not-eligible-box p { color: #fed7d7; }
 
-    /* Language bar */
-    .lang-bar {
-      display: flex;
-      gap: 6px;
-      justify-content: center;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
     .lang-btn {
       background: rgba(255,255,255,0.15);
       border: 1px solid rgba(255,255,255,0.3);
@@ -589,13 +586,13 @@
     <header>
       <h1 data-i18n="title">Centrelink Payment Estimator</h1>
       <p data-i18n="subtitle">For Australian Visa Holders — Family & Newborn Payments</p>
-      <button class="dark-toggle" onclick="toggleDark()" data-i18n="dark">Dark Mode</button>
-      <div class="lang-bar">
+      <div class="header-controls">
         <button class="lang-btn active" onclick="setLang('en')">English</button>
         <button class="lang-btn" onclick="setLang('ar')">العربية</button>
         <button class="lang-btn" onclick="setLang('zh')">中文</button>
         <button class="lang-btn" onclick="setLang('vi')">Tiếng Việt</button>
         <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
+        <button class="dark-toggle" onclick="toggleDark()" data-i18n="dark">Dark Mode</button>
       </div>
     </header>
     <div class="card">
