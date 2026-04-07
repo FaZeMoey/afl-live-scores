@@ -473,6 +473,160 @@
     body.dark .roadmap-bar-dates { color: #a0aec0; }
     body.dark .roadmap-bar-amount { color: #cbd5e0; }
 
+    /* Snake timeline */
+    .snake { padding: 18px; display: none; }
+    .snake.active { display: block; }
+    .snake-track {
+      position: relative;
+      padding: 0 10px;
+    }
+    .snake-row {
+      display: flex;
+      align-items: center;
+      position: relative;
+      min-height: 80px;
+    }
+    .snake-row.reverse { flex-direction: row-reverse; }
+    .snake-connector {
+      position: absolute;
+      width: 4px;
+      background: #b2dfdb;
+      z-index: 0;
+    }
+    body.dark .snake-connector { background: #4a5568; }
+    .snake-node {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      flex-shrink: 0;
+      z-index: 2;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: center;
+      line-height: 1.1;
+      position: relative;
+    }
+    .snake-node:hover {
+      transform: scale(1.15);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    }
+    .snake-node.active {
+      transform: scale(1.15);
+      box-shadow: 0 0 0 4px rgba(49,151,149,0.3);
+    }
+    .snake-node.green { background: linear-gradient(135deg, #38a169, #48bb78); }
+    .snake-node.blue { background: linear-gradient(135deg, #3182ce, #63b3ed); }
+    .snake-node.purple { background: linear-gradient(135deg, #805ad5, #9f7aea); }
+    .snake-node.orange { background: linear-gradient(135deg, #dd6b20, #ed8936); }
+    .snake-node.teal { background: linear-gradient(135deg, #319795, #4fd1c5); }
+    .snake-node.gray { background: linear-gradient(135deg, #718096, #a0aec0); }
+    .snake-path {
+      flex: 1;
+      height: 4px;
+      background: #b2dfdb;
+      position: relative;
+      z-index: 1;
+    }
+    body.dark .snake-path { background: #4a5568; }
+    .snake-bend {
+      width: 40px;
+      height: 80px;
+      position: absolute;
+      z-index: 1;
+    }
+    .snake-bend-left {
+      left: 24px;
+      border-left: 4px solid #b2dfdb;
+      border-bottom: 4px solid #b2dfdb;
+      border-top: 4px solid #b2dfdb;
+      border-radius: 40px 0 0 40px;
+    }
+    .snake-bend-right {
+      right: 24px;
+      border-right: 4px solid #b2dfdb;
+      border-bottom: 4px solid #b2dfdb;
+      border-top: 4px solid #b2dfdb;
+      border-radius: 0 40px 40px 0;
+    }
+    body.dark .snake-bend-left,
+    body.dark .snake-bend-right {
+      border-color: #4a5568;
+    }
+    .snake-detail {
+      display: none;
+      background: #2d3748;
+      color: #f7fafc;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin: -4px 0 12px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      animation: snakeSlide 0.25s ease;
+      position: relative;
+      z-index: 3;
+    }
+    .snake-detail.active { display: block; }
+    .snake-detail-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .snake-detail-amount {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #68d391;
+      margin: 4px 0;
+    }
+    .snake-detail-dates {
+      font-size: 0.82rem;
+      color: #a0aec0;
+    }
+    .snake-detail-desc {
+      font-size: 0.82rem;
+      margin-top: 6px;
+      color: #cbd5e0;
+    }
+    .snake-month-label {
+      font-size: 0.7rem;
+      color: #a0aec0;
+      text-align: center;
+      margin-top: 2px;
+      font-weight: 600;
+    }
+    body.dark .snake-month-label { color: #718096; }
+    @keyframes snakeSlide {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .snake-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #e2e8f0;
+    }
+    body.dark .snake-legend { border-color: #4a5568; }
+    .snake-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: #4a5568;
+    }
+    body.dark .snake-legend-item { color: #a0aec0; }
+    .snake-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
     /* Print button */
     .print-btn {
       background: #718096;
@@ -1986,15 +2140,125 @@
         </div>`;
       });
 
-      // Combine
+      // --- Snake view ---
+      // Build milestone data for the snake
+      const snakeMilestones = [];
+      // Add start node
+      snakeMilestones.push({ date: dueDate, label: 'Birth', shortLabel: 'Birth', amount: '', desc: 'Baby arrives — payments begin', color: 'gray', endDate: null });
+
+      if (visa.ftbB) {
+        snakeMilestones.push({ date: dueDate, label: 'FTB Part B starts', shortLabel: 'FTB B', amount: `${money(ftbBFn)}/fn`, desc: 'No waiting period — ongoing fortnightly payment', color: 'green', endDate: null, ongoing: true });
+      }
+      if (visa.ftbA && ftbAServed) {
+        snakeMilestones.push({ date: dueDate, label: 'FTB Part A starts', shortLabel: 'FTB A', amount: `${money(ftbAFn)}/fn`, desc: 'Waiting period served — ongoing fortnightly payment', color: 'teal', endDate: null, ongoing: true });
+      }
+      if (hasNewborn && visa.newborn) {
+        snakeMilestones.push({ date: dueDate, label: 'Newborn Upfront Payment', shortLabel: '$683', amount: money(RATES.newborn_upfront), desc: 'One-off lump sum paid after claiming', color: 'blue', endDate: dueDate });
+      }
+      if (visa.plp && plpServed) {
+        const plpEnd = addWeeks(dueDate, RATES.plp_weeks);
+        snakeMilestones.push({ date: dueDate, label: 'Parental Leave Pay starts', shortLabel: 'PLP Start', amount: `${money(RATES.plp_weekly)}/week`, desc: `Paid weekly for ${RATES.plp_weeks} weeks`, color: 'purple', endDate: plpEnd });
+      }
+      if (visa.ftbA && !ftbAServed) {
+        snakeMilestones.push({ date: ftbADate, label: 'FTB Part A starts', shortLabel: 'FTB A', amount: `${money(ftbAFn)}/fn`, desc: 'NARWP waiting period ends — ongoing fortnightly payment', color: 'orange', endDate: null, ongoing: true });
+      }
+      if (hasNewborn && visa.newborn) {
+        const nsEnd = addWeeks(dueDate, 13);
+        snakeMilestones.push({ date: nsEnd, label: 'Newborn Supplement ends', shortLabel: 'NS End', amount: `${money(newbornSupp)} total`, desc: '13 weeks of fortnightly supplement payments complete', color: 'blue', endDate: nsEnd });
+      }
+      if (visa.plp && plpServed) {
+        const plpEnd = addWeeks(dueDate, RATES.plp_weeks);
+        snakeMilestones.push({ date: plpEnd, label: 'Parental Leave Pay ends', shortLabel: 'PLP End', amount: money(plpTotal) + ' total received', desc: `Final week of Parental Leave Pay — ${fmt(plpEnd)}`, color: 'purple', endDate: plpEnd });
+      }
+      if (visa.plp && !plpServed) {
+        snakeMilestones.push({ date: plpDate, label: 'PLP eligible', shortLabel: 'PLP Start', amount: `${money(RATES.plp_weekly)}/week`, desc: `NARWP ends — paid for ${RATES.plp_weeks} weeks until ${fmt(addWeeks(plpDate, RATES.plp_weeks))}`, color: 'purple', endDate: addWeeks(plpDate, RATES.plp_weeks) });
+        snakeMilestones.push({ date: addWeeks(plpDate, RATES.plp_weeks), label: 'PLP ends', shortLabel: 'PLP End', amount: money(plpTotal) + ' total', desc: 'Final Parental Leave Pay week', color: 'purple', endDate: addWeeks(plpDate, RATES.plp_weeks) });
+      }
+      // Add 1st birthday
+      snakeMilestones.push({ date: baby1stBday, label: "Baby's 1st Birthday", shortLabel: '1 Year', amount: '', desc: 'FTB Part B rate may change after age 1. FTB Part A continues.', color: 'gray', endDate: null });
+
+      snakeMilestones.sort((a, b) => a.date - b.date);
+      // Deduplicate by label
+      const seen = new Set();
+      const uniqueMilestones = snakeMilestones.filter(m => {
+        if (seen.has(m.label)) return false;
+        seen.add(m.label);
+        return true;
+      });
+
+      // Build snake HTML
+      let snakeHtml = '<div class="snake-track">';
+      const perRow = 3;
+      for (let i = 0; i < uniqueMilestones.length; i++) {
+        const m = uniqueMilestones[i];
+        const rowIdx = Math.floor(i / perRow);
+        const isReverse = rowIdx % 2 === 1;
+        const posInRow = i % perRow;
+
+        // Start new row
+        if (posInRow === 0) {
+          snakeHtml += `<div class="snake-row${isReverse ? ' reverse' : ''}">`;
+        }
+
+        // Path connector (not before first node in row)
+        if (posInRow > 0) {
+          snakeHtml += `<div class="snake-path"></div>`;
+        }
+
+        // Node
+        const dateStr = fmt(m.date);
+        const monthLabel = m.date.toLocaleDateString('en-AU', { month: 'short' });
+        snakeHtml += `<div style="text-align:center;flex-shrink:0">
+          <div class="snake-node ${m.color}" onclick="toggleSnakeDetail(this)" data-idx="${i}">
+            ${m.shortLabel}
+          </div>
+          <div class="snake-month-label">${dateStr}</div>
+        </div>`;
+
+        // End row and add bend
+        if (posInRow === perRow - 1 || i === uniqueMilestones.length - 1) {
+          snakeHtml += `</div>`;
+          // Detail panel for each node in this row
+          const rowStart = rowIdx * perRow;
+          const rowEnd = Math.min(rowStart + perRow, uniqueMilestones.length);
+          for (let j = rowStart; j < rowEnd; j++) {
+            const rm = uniqueMilestones[j];
+            const endInfo = rm.ongoing ? 'Ongoing' : (rm.endDate ? fmt(rm.endDate) : '');
+            snakeHtml += `<div class="snake-detail" data-detail="${j}">
+              <div class="snake-detail-title">${rm.label}</div>
+              ${rm.amount ? `<div class="snake-detail-amount">${rm.amount}</div>` : ''}
+              <div class="snake-detail-dates">${fmt(rm.date)}${endInfo && endInfo !== fmt(rm.date) ? ` → ${endInfo}` : ''}</div>
+              <div class="snake-detail-desc">${rm.desc}</div>
+            </div>`;
+          }
+          // Bend connector between rows
+          if (i < uniqueMilestones.length - 1 && posInRow === perRow - 1) {
+            const bendSide = isReverse ? 'snake-bend-left' : 'snake-bend-right';
+            snakeHtml += `<div style="position:relative;height:40px"><div class="snake-bend ${bendSide}" style="position:absolute;top:-20px;height:80px;width:40px"></div></div>`;
+          }
+        }
+      }
+      // Legend
+      snakeHtml += `<div class="snake-legend">
+        <div class="snake-legend-item"><div class="snake-legend-dot" style="background:#48bb78"></div>FTB Part B</div>
+        <div class="snake-legend-item"><div class="snake-legend-dot" style="background:#4fd1c5"></div>FTB Part A</div>
+        <div class="snake-legend-item"><div class="snake-legend-dot" style="background:#63b3ed"></div>Newborn</div>
+        <div class="snake-legend-item"><div class="snake-legend-dot" style="background:#9f7aea"></div>Parental Leave</div>
+        <div class="snake-legend-item"><div class="snake-legend-dot" style="background:#a0aec0"></div>Milestone</div>
+      </div>`;
+      snakeHtml += '</div>';
+
+      // Combine all views
       let html = `<div class="timeline-box">
         <h2>Payment Timeline</h2>
         <div class="timeline-toggle">
           <button class="active" onclick="toggleTimelineView(this, 'timeline')">Timeline</button>
           <button onclick="toggleTimelineView(this, 'roadmap')">Roadmap</button>
+          <button onclick="toggleTimelineView(this, 'snake')">Snake</button>
         </div>
         <div class="timeline-body active" id="timelineView">${timelineHtml}</div>
         <div class="roadmap" id="roadmapView">${roadmapHtml}</div>
+        <div class="snake" id="snakeView">${snakeHtml}</div>
       </div>`;
       return html;
     }
@@ -2004,14 +2268,26 @@
       btns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const box = btn.closest('.timeline-box');
-      const tv = box.querySelector('.timeline-body');
-      const rv = box.querySelector('.roadmap');
-      if (view === 'timeline') {
-        tv.classList.add('active');
-        rv.classList.remove('active');
-      } else {
-        tv.classList.remove('active');
-        rv.classList.add('active');
+      box.querySelector('.timeline-body').classList.toggle('active', view === 'timeline');
+      box.querySelector('.roadmap').classList.toggle('active', view === 'roadmap');
+      box.querySelector('.snake').classList.toggle('active', view === 'snake');
+    }
+
+    function toggleSnakeDetail(node) {
+      const idx = node.dataset.idx;
+      const box = node.closest('.snake-track');
+      // Close all other details
+      box.querySelectorAll('.snake-detail.active').forEach(d => {
+        if (d.dataset.detail !== idx) d.classList.remove('active');
+      });
+      box.querySelectorAll('.snake-node.active').forEach(n => {
+        if (n.dataset.idx !== idx) n.classList.remove('active');
+      });
+      // Toggle this one
+      const detail = box.querySelector(`.snake-detail[data-detail="${idx}"]`);
+      if (detail) {
+        detail.classList.toggle('active');
+        node.classList.toggle('active');
       }
     }
 
