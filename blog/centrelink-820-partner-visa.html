@@ -286,6 +286,124 @@
     .related-card p { font-size: 0.82rem; color: #718096; margin: 0; }
     .related-card .coming { font-size: 0.75rem; color: #a0aec0; font-style: italic; }
 
+    /* Mock AdSense */
+    .mock-ad {
+      background: #f0f0f0;
+      border: 1px dashed #ccc;
+      border-radius: 8px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    .mock-ad-label {
+      position: absolute;
+      top: 6px;
+      left: 8px;
+      font-size: 0.65rem;
+      color: #999;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    /* Leaderboard (728x90) */
+    .ad-leaderboard {
+      max-width: 728px;
+      height: 90px;
+      margin: 0 auto 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* In-article (responsive) */
+    .ad-in-article {
+      width: 100%;
+      min-height: 120px;
+      margin: 28px 0;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Sidebar ad */
+    .ad-sidebar {
+      width: 100%;
+      min-height: 260px;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+    }
+    /* Bottom banner */
+    .ad-bottom {
+      max-width: 1080px;
+      margin: 0 auto;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .mock-ad-inner {
+      text-align: center;
+    }
+    .mock-ad-headline {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #1a0dab;
+      margin-bottom: 2px;
+    }
+    .mock-ad-url {
+      font-size: 0.72rem;
+      color: #006621;
+      margin-bottom: 3px;
+    }
+    .mock-ad-desc {
+      font-size: 0.78rem;
+      color: #4d5156;
+      max-width: 400px;
+    }
+    .mock-ad-img {
+      width: 80px;
+      height: 80px;
+      background: #e2e8f0;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #a0aec0;
+    }
+    .mock-ad-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-align: left;
+    }
+    .mock-ad-sidebar-inner {
+      padding: 16px;
+      text-align: center;
+    }
+    .mock-ad-sidebar-inner .mock-ad-headline { font-size: 0.85rem; }
+    .mock-ad-sidebar-inner .mock-ad-desc { font-size: 0.75rem; max-width: 200px; margin: 0 auto; }
+    .mock-ad-sidebar-img {
+      width: 200px;
+      height: 120px;
+      background: #e2e8f0;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: #a0aec0;
+      margin: 0 auto 10px;
+    }
+    @media (max-width: 860px) {
+      .ad-sidebar { display: none; }
+      .ad-leaderboard { max-width: 100%; height: 70px; }
+    }
+
     /* Footer */
     footer {
       background: #1a202c;
@@ -322,6 +440,18 @@
     </div>
   </nav>
 
+  <!-- Ad: Leaderboard -->
+  <div style="background:#fafafa;padding:12px 24px 0;border-bottom:1px solid #eee">
+    <div class="mock-ad ad-leaderboard">
+      <span class="mock-ad-label">Ad</span>
+      <div class="mock-ad-inner">
+        <div class="mock-ad-headline">Compare Health Insurance for Visa Holders</div>
+        <div class="mock-ad-url">ad &middot; www.comparecover.com.au</div>
+        <div class="mock-ad-desc">Get instant quotes from Medibank, Bupa & nib. Covers pregnancy & birth.</div>
+      </div>
+    </div>
+  </div>
+
   <div class="breadcrumb">
     <a href="../landing.html">Home</a> &rsaquo; <a href="../landing.html#blog">Blog</a> &rsaquo; 820 Partner Visa Centrelink Guide
   </div>
@@ -344,6 +474,16 @@
           <li><a href="#how-to-claim">How to claim</a></li>
           <li><a href="#calculator">Calculate your payments</a></li>
         </ol>
+      </div>
+      <!-- Ad: Sidebar -->
+      <div class="mock-ad ad-sidebar">
+        <span class="mock-ad-label">Ad</span>
+        <div class="mock-ad-sidebar-inner">
+          <div class="mock-ad-sidebar-img">300x250</div>
+          <div class="mock-ad-headline">Send Money Home?</div>
+          <div class="mock-ad-url">ad &middot; wise.com</div>
+          <div class="mock-ad-desc">Send money overseas with the real exchange rate. No hidden fees. Trusted by 16M people.</div>
+        </div>
       </div>
     </aside>
 
@@ -407,6 +547,19 @@
 
     <p>This means if your 820 was granted on 1 May 2025, you can access FTB Part A from 1 May 2026, and Parental Leave Pay from 1 May 2027.</p>
 
+    <!-- Ad: In-article 1 -->
+    <div class="mock-ad ad-in-article">
+      <span class="mock-ad-label">Ad</span>
+      <div class="mock-ad-row">
+        <div class="mock-ad-img">Image</div>
+        <div>
+          <div class="mock-ad-headline">Need a Migration Agent?</div>
+          <div class="mock-ad-url">ad &middot; www.registeredmigrationagent.com.au</div>
+          <div class="mock-ad-desc">MARA registered agents specialising in partner visas. Free initial consultation. 98% success rate.</div>
+        </div>
+      </div>
+    </div>
+
     <h2 id="ftb">Family Tax Benefit on an 820 Visa</h2>
 
     <h3>FTB Part A (per child)</h3>
@@ -459,6 +612,19 @@
       <li>Covers GP visits, hospital, and most medical costs</li>
     </ul>
     <p>To enrol, visit a <a href="https://www.servicesaustralia.gov.au/enrolling-medicare" target="_blank">Medicare Service Centre</a> with your passport, visa grant letter, and proof of address.</p>
+
+    <!-- Ad: In-article 2 -->
+    <div class="mock-ad ad-in-article">
+      <span class="mock-ad-label">Ad</span>
+      <div class="mock-ad-row">
+        <div class="mock-ad-img">Image</div>
+        <div>
+          <div class="mock-ad-headline">Open an Aussie Bank Account</div>
+          <div class="mock-ad-url">ad &middot; www.commbank.com.au/migrants</div>
+          <div class="mock-ad-desc">New to Australia? Open a CommBank account online before you arrive. No minimum deposit. Apply in minutes.</div>
+        </div>
+      </div>
+    </div>
 
     <h2 id="not-eligible">What you can NOT get on an 820 visa</h2>
     <p>Despite having good access to family payments, 820 visa holders are <strong>not eligible</strong> for:</p>
@@ -546,6 +712,18 @@
     </div>
     </article>
   </div><!-- /page-wrap -->
+
+  <!-- Ad: Bottom banner -->
+  <div style="background:#fafafa;padding:16px 24px;border-top:1px solid #eee">
+    <div class="mock-ad ad-bottom">
+      <span class="mock-ad-label">Ad</span>
+      <div class="mock-ad-inner">
+        <div class="mock-ad-headline">OSHC from $45/month &mdash; Covers Pregnancy</div>
+        <div class="mock-ad-url">ad &middot; www.oshcaustralia.com.au</div>
+        <div class="mock-ad-desc">Overseas Student Health Cover with maternity. Compare Medibank, Bupa, Allianz & nib instantly.</div>
+      </div>
+    </div>
+  </div>
 
   <footer>
     <p><strong>Centrelink Payment Estimator</strong> &mdash; Free tool for Australian families</p>
