@@ -58,9 +58,19 @@
     }
     .nav-cta:hover { text-decoration: none; }
 
+    /* Layout */
+    .page-wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      display: flex;
+      gap: 32px;
+      padding: 20px 24px 60px;
+      align-items: flex-start;
+    }
+
     /* Breadcrumb */
     .breadcrumb {
-      max-width: 740px;
+      max-width: 1080px;
       margin: 20px auto 0;
       padding: 0 24px;
       font-size: 0.82rem;
@@ -68,11 +78,64 @@
     }
     .breadcrumb a { font-weight: 500; }
 
+    /* Sidebar TOC */
+    .toc-sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      position: sticky;
+      top: 80px;
+      max-height: calc(100vh - 100px);
+      overflow-y: auto;
+    }
+    .toc-sidebar .toc {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px 16px;
+      margin: 0;
+    }
+    .toc-sidebar .toc h4 {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #1a365d;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .toc-sidebar .toc ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .toc-sidebar .toc li {
+      margin-bottom: 2px;
+    }
+    .toc-sidebar .toc a {
+      display: block;
+      padding: 5px 10px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #4a5568;
+      border-radius: 6px;
+      border-left: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .toc-sidebar .toc a:hover {
+      background: #f7fafc;
+      color: #1a365d;
+      text-decoration: none;
+    }
+    .toc-sidebar .toc a.active {
+      background: #ebf8ff;
+      color: #2b6cb0;
+      font-weight: 700;
+      border-left-color: #2b6cb0;
+    }
+
     /* Article */
     article {
-      max-width: 740px;
-      margin: 20px auto 60px;
-      padding: 0 24px;
+      flex: 1;
+      min-width: 0;
     }
     .article-header {
       margin-bottom: 32px;
@@ -174,26 +237,27 @@
     }
     .cta-btn:hover { text-decoration: none; background: #38a169; }
 
-    /* TOC */
-    .toc {
+    /* TOC inline fallback (mobile) */
+    .toc-inline {
+      display: none;
       background: white;
       border: 1px solid #e2e8f0;
       border-radius: 10px;
-      padding: 20px 24px;
-      margin: 24px 0;
+      padding: 18px 20px;
+      margin: 20px 0;
     }
-    .toc h4 {
-      font-size: 0.9rem;
+    .toc-inline h4 {
+      font-size: 0.85rem;
       font-weight: 700;
       color: #1a365d;
       margin-bottom: 10px;
     }
-    .toc ol {
+    .toc-inline ol {
       margin: 0 0 0 20px;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
     }
-    .toc li { margin-bottom: 4px; }
-    .toc a { font-weight: 500; }
+    .toc-inline li { margin-bottom: 4px; }
+    .toc-inline a { font-weight: 500; }
 
     /* Related posts */
     .related {
@@ -233,6 +297,11 @@
     footer a { color: #63b3ed; }
     footer p { margin-bottom: 8px; }
 
+    @media (max-width: 860px) {
+      .page-wrap { flex-direction: column; }
+      .toc-sidebar { display: none; }
+      .toc-inline { display: block; }
+    }
     @media (max-width: 640px) {
       h1 { font-size: 1.6rem; }
       .related-grid { grid-template-columns: 1fr; }
@@ -254,37 +323,59 @@
   </nav>
 
   <div class="breadcrumb">
-    <a href="../landing.html">Home</a> &rsaquo; <a href="../landing.html#resources">Blog</a> &rsaquo; 820 Partner Visa Centrelink Guide
+    <a href="../landing.html">Home</a> &rsaquo; <a href="../landing.html#blog">Blog</a> &rsaquo; 820 Partner Visa Centrelink Guide
   </div>
 
-  <article>
-    <div class="article-header">
-      <div class="article-meta">
-        <span>Published 8 April 2026</span>
-        <span>10 min read</span>
+  <div class="page-wrap">
+    <!-- Sticky sidebar TOC -->
+    <aside class="toc-sidebar">
+      <div class="toc" id="tocNav">
+        <h4>Contents</h4>
+        <ol>
+          <li><a href="#what-is-820">What is a Subclass 820 visa?</a></li>
+          <li><a href="#payments">Payments you can get</a></li>
+          <li><a href="#narwp">NARWP waiting period</a></li>
+          <li><a href="#ftb">Family Tax Benefit (FTB)</a></li>
+          <li><a href="#plp">Parental Leave Pay</a></li>
+          <li><a href="#newborn">Newborn Supplement</a></li>
+          <li><a href="#medicare">Medicare eligibility</a></li>
+          <li><a href="#not-eligible">What you can't get</a></li>
+          <li><a href="#after-801">After getting your 801</a></li>
+          <li><a href="#how-to-claim">How to claim</a></li>
+          <li><a href="#calculator">Calculate your payments</a></li>
+        </ol>
       </div>
-      <h1>Can I Get Centrelink on an 820 Partner Visa? Everything You Need to Know (2025-26)</h1>
-      <p class="article-intro"><strong>Short answer: Yes.</strong> Subclass 820 Partner (Temporary) visa holders are eligible for several Centrelink payments including Family Tax Benefit, Parental Leave Pay, and Newborn Supplement. But there are waiting periods and income tests you need to understand first.</p>
-    </div>
+    </aside>
 
-    <div class="toc">
-      <h4>In this article</h4>
-      <ol>
-        <li><a href="#what-is-820">What is a Subclass 820 visa?</a></li>
-        <li><a href="#payments">What Centrelink payments can you get?</a></li>
-        <li><a href="#narwp">NARWP waiting period explained</a></li>
-        <li><a href="#ftb">Family Tax Benefit (FTB) on an 820 visa</a></li>
-        <li><a href="#plp">Parental Leave Pay on an 820 visa</a></li>
-        <li><a href="#newborn">Newborn Supplement & Upfront Payment</a></li>
-        <li><a href="#medicare">Medicare on an 820 visa</a></li>
-        <li><a href="#not-eligible">What you can NOT get on an 820 visa</a></li>
-        <li><a href="#after-801">What changes when you get your 801?</a></li>
-        <li><a href="#how-to-claim">How to claim</a></li>
-        <li><a href="#calculator">Calculate your exact payments</a></li>
-      </ol>
-    </div>
+    <article>
+      <div class="article-header">
+        <div class="article-meta">
+          <span>Published 8 April 2026</span>
+          <span>10 min read</span>
+        </div>
+        <h1>Can I Get Centrelink on an 820 Partner Visa? Everything You Need to Know (2025-26)</h1>
+        <p class="article-intro"><strong>Short answer: Yes.</strong> Subclass 820 Partner (Temporary) visa holders are eligible for several Centrelink payments including Family Tax Benefit, Parental Leave Pay, and Newborn Supplement. But there are waiting periods and income tests you need to understand first.</p>
+      </div>
 
-    <h2 id="what-is-820">What is a Subclass 820 visa?</h2>
+      <!-- Mobile-only inline TOC -->
+      <div class="toc-inline">
+        <h4>In this article</h4>
+        <ol>
+          <li><a href="#what-is-820">What is a Subclass 820 visa?</a></li>
+          <li><a href="#payments">Payments you can get</a></li>
+          <li><a href="#narwp">NARWP waiting period</a></li>
+          <li><a href="#ftb">Family Tax Benefit (FTB)</a></li>
+          <li><a href="#plp">Parental Leave Pay</a></li>
+          <li><a href="#newborn">Newborn Supplement</a></li>
+          <li><a href="#medicare">Medicare eligibility</a></li>
+          <li><a href="#not-eligible">What you can't get</a></li>
+          <li><a href="#after-801">After getting your 801</a></li>
+          <li><a href="#how-to-claim">How to claim</a></li>
+          <li><a href="#calculator">Calculate your payments</a></li>
+        </ol>
+      </div>
+
+      <h2 id="what-is-820">What is a Subclass 820 visa?</h2>
     <p>The <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/partner-onshore/temporary-820" target="_blank">Subclass 820 Partner (Temporary)</a> visa is the first stage of the onshore partner visa pathway. It allows you to live and work in Australia while your permanent partner visa (Subclass 801) is being processed, which typically takes 2-3 years.</p>
     <p>Despite being a "temporary" visa, the 820 gives you access to more Centrelink payments than most other temporary visas. This is because the government recognises that partner visa holders have a clear pathway to permanent residency.</p>
 
@@ -453,13 +544,52 @@
         </div>
       </div>
     </div>
-  </article>
+    </article>
+  </div><!-- /page-wrap -->
 
   <footer>
     <p><strong>Centrelink Payment Estimator</strong> &mdash; Free tool for Australian families</p>
     <p>Estimates based on 2025-26 rates. Not financial advice. Not affiliated with <a href="https://www.servicesaustralia.gov.au" target="_blank">Services Australia</a>.</p>
     <p style="margin-top:12px;font-size:0.78rem;color:#4a5568">&copy; 2026. All calculations happen in your browser. No data is stored.</p>
   </footer>
+
+  <script>
+    // Scroll-spy: highlight active TOC link
+    const tocLinks = document.querySelectorAll('#tocNav a');
+    const sections = Array.from(tocLinks).map(a => {
+      const id = a.getAttribute('href').slice(1);
+      return document.getElementById(id);
+    }).filter(Boolean);
+
+    function updateActiveToc() {
+      let current = '';
+      const offset = 120;
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= offset) {
+          current = section.id;
+        }
+      }
+      tocLinks.forEach(a => {
+        const href = a.getAttribute('href').slice(1);
+        a.classList.toggle('active', href === current);
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveToc, { passive: true });
+    updateActiveToc();
+
+    // Smooth scroll for TOC links
+    tocLinks.forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.getElementById(a.getAttribute('href').slice(1));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          history.replaceState(null, '', a.getAttribute('href'));
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
