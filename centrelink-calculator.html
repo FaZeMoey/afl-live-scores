@@ -1365,7 +1365,7 @@
     function buildTimelineSection(visa, dueDate, ftbADate, plpDate, ftbAServed, plpServed, hasNewborn, ftbAFn, ftbBFn, plpTotal, newbornSupp) {
       const events = [];
       const fmt = d => d.toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'});
-      const money = v => `$${v.toFixed(2)}`;
+      const money = v => `$${v.toLocaleString('en-AU', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
 
       if (visa.ftbB) {
         events.push({ date: dueDate, label: 'FTB Part B starts', amount: `${money(ftbBFn)}/fortnight`, desc: 'No waiting period — begins from birth', color: 'green' });
