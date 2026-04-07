@@ -57,6 +57,57 @@
       outline: none;
       border-color: #3182ce;
     }
+    /* Tooltips */
+    .tooltip-wrap {
+      position: relative;
+      display: inline;
+    }
+    .tooltip-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #cbd5e0;
+      color: #2d3748;
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: help;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    body.dark .tooltip-icon { background: #4a5568; color: #e2e8f0; }
+    .tooltip-text {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2d3748;
+      color: #f7fafc;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 400;
+      line-height: 1.4;
+      white-space: normal;
+      width: 260px;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .tooltip-text::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #2d3748;
+    }
+    .tooltip-wrap:hover .tooltip-text,
+    .tooltip-icon:focus + .tooltip-text { display: block; }
+
     .row {
       display: flex;
       gap: 16px;
@@ -599,7 +650,7 @@
     <div class="card">
       <form id="calcForm">
         <div class="form-group">
-          <label data-i18n="visaLabel">What is your residency status?</label>
+          <label data-i18n="visaLabel">What is your residency status? <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">Select your current visa subclass or residency status. This determines which Centrelink payments you can access and any waiting periods that apply.</span></span></label>
           <select id="visaType" onchange="updateVisaInfo()">
             <optgroup label="Australian Citizen / Permanent Resident">
               <option value="citizen">Australian Citizen</option>
@@ -695,17 +746,17 @@
         </div>
 
         <div class="form-group" id="visaDateGroup">
-          <label data-i18n="visaDateLabel">Visa Grant Date</label>
+          <label data-i18n="visaDateLabel">Visa Grant Date <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">The date your current visa was granted. You can find this on your visa grant notification letter or in your ImmiAccount. This is used to calculate your NARWP (Newly Arrived Resident's Waiting Period).</span></span></label>
           <input type="date" id="visaDate">
         </div>
 
         <div class="form-group">
-          <label data-i18n="dueDateLabel">Baby's Expected Due Date</label>
+          <label data-i18n="dueDateLabel">Baby's Expected Due Date <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">Your baby's due date or actual date of birth. This is used to calculate when payments start and to build your payment timeline.</span></span></label>
           <input type="date" id="dueDate" required>
         </div>
 
         <div class="form-group">
-          <label data-i18n="childrenLabel">Children <small>(add all children in your care)</small></label>
+          <label data-i18n="childrenLabel">Children <small>(add all children in your care)</small> <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">Add all children in your care, including the expected baby. FTB Part A is paid per child, while FTB Part B is per family. If this is your first child, you'll get a higher Newborn Supplement.</span></span></label>
           <div id="childrenList">
             <div class="child-entry">
               <select>
@@ -726,17 +777,17 @@
 
         <div class="row">
           <div class="form-group">
-            <label data-i18n="incomeLabel">Combined Family Income <small>($/year)</small></label>
+            <label data-i18n="incomeLabel">Combined Family Income <small>($/year)</small> <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">Your total household taxable income per year (both partners combined). This includes wages, salary, business income, and investment income before tax. FTB Part A reduces once family income exceeds $62,634/year and cuts off at $117,194.</span></span></label>
             <input type="number" id="familyIncome" placeholder="e.g. 80000" required min="0">
           </div>
           <div class="form-group">
-            <label data-i18n="lowerIncomeLabel">Lower Earner's Income <small>($/year)</small></label>
+            <label data-i18n="lowerIncomeLabel">Lower Earner's Income <small>($/year)</small> <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">The annual income of the partner who earns less (or $0 if not working). FTB Part B is reduced when the lower earner makes over $6,935/year. If you're a single parent, enter $0.</span></span></label>
             <input type="number" id="lowerIncome" placeholder="e.g. 0" required min="0">
           </div>
         </div>
 
         <div class="form-group">
-          <label data-i18n="workLabel">Have you worked in the last 10 of 13 months? <small>(for <a href="https://www.servicesaustralia.gov.au/parental-leave-pay" target="_blank">Parental Leave Pay</a>)</small></label>
+          <label data-i18n="workLabel">Have you worked in the last 10 of 13 months? <small>(for <a href="https://www.servicesaustralia.gov.au/parental-leave-pay" target="_blank">Parental Leave Pay</a>)</small> <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">To qualify for Parental Leave Pay, you must have worked at least 330 hours (about 1 day/week) in 10 of the 13 months before the birth or expected due date. This can include part-time, casual, or self-employed work.</span></span></label>
           <select id="workStatus">
             <option value="yes">Yes — I've worked at least 330 hours in 10 of the last 13 months</option>
             <option value="no">No — I haven't met the work test</option>
