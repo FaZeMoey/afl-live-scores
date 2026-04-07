@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Centrelink Payment Estimator - Australian Visa Holders</title>
+  <title>Centrelink Payment Estimator - Family & Newborn Payments</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -585,7 +585,7 @@
   <div class="container">
     <header>
       <h1 data-i18n="title">Centrelink Payment Estimator</h1>
-      <p data-i18n="subtitle">For Australian Visa Holders — Family & Newborn Payments</p>
+      <p data-i18n="subtitle">Family & Newborn Payments — Citizens, PR & Visa Holders</p>
       <div class="header-controls">
         <button class="lang-btn active" onclick="setLang('en')">English</button>
         <button class="lang-btn" onclick="setLang('ar')">العربية</button>
@@ -598,8 +598,12 @@
     <div class="card">
       <form id="calcForm">
         <div class="form-group">
-          <label data-i18n="visaLabel">What visa do you hold?</label>
+          <label data-i18n="visaLabel">What is your residency status?</label>
           <select id="visaType" onchange="updateVisaInfo()">
+            <optgroup label="Australian Citizen / Permanent Resident">
+              <option value="citizen">Australian Citizen</option>
+              <option value="pr">Permanent Resident (any visa)</option>
+            </optgroup>
             <optgroup label="Partner Visas (Temporary/Provisional)">
               <option value="820">Subclass 820 — Partner (Temporary)</option>
               <option value="309">Subclass 309 — Partner (Provisional)</option>
@@ -628,9 +632,9 @@
           <div class="visa-info" id="visaInfo"></div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" id="visaDateGroup">
           <label data-i18n="visaDateLabel">Visa Grant Date</label>
-          <input type="date" id="visaDate" required>
+          <input type="date" id="visaDate">
         </div>
 
         <div class="form-group">
@@ -687,10 +691,10 @@
     const TRANSLATIONS = {
       en: {
         title: 'Centrelink Payment Estimator',
-        subtitle: 'For Australian Visa Holders — Family & Newborn Payments',
+        subtitle: 'Family & Newborn Payments — Citizens, PR & Visa Holders',
         dark: 'Dark Mode',
         light: 'Light Mode',
-        visaLabel: 'What visa do you hold?',
+        visaLabel: 'What is your residency status?',
         visaDateLabel: 'Visa Grant Date',
         dueDateLabel: "Baby's Expected Due Date",
         childrenLabel: 'Children <small>(add all children in your care)</small>',
@@ -702,10 +706,10 @@
       },
       ar: {
         title: 'حاسبة مدفوعات سنترلينك',
-        subtitle: 'لحاملي التأشيرات الأسترالية — مدفوعات الأسرة والمواليد',
+        subtitle: 'مدفوعات الأسرة والمواليد — المواطنون والمقيمون وحاملو التأشيرات',
         dark: 'الوضع الداكن',
         light: 'الوضع الفاتح',
-        visaLabel: 'ما هي التأشيرة التي تحملها؟',
+        visaLabel: 'ما هي حالة إقامتك؟',
         visaDateLabel: 'تاريخ منح التأشيرة',
         dueDateLabel: 'تاريخ الولادة المتوقع',
         childrenLabel: 'الأطفال <small>(أضف جميع الأطفال في رعايتك)</small>',
@@ -717,10 +721,10 @@
       },
       zh: {
         title: 'Centrelink 付款估算器',
-        subtitle: '适用于澳大利亚签证持有人 — 家庭和新生儿补贴',
+        subtitle: '家庭和新生儿补贴 — 公民、永久居民和签证持有人',
         dark: '深色模式',
         light: '浅色模式',
-        visaLabel: '您持有什么签证？',
+        visaLabel: '您的居留身份是什么？',
         visaDateLabel: '签证批准日期',
         dueDateLabel: '预产期',
         childrenLabel: '子女 <small>（添加您照顾的所有子女）</small>',
@@ -732,10 +736,10 @@
       },
       vi: {
         title: 'Công Cụ Ước Tính Thanh Toán Centrelink',
-        subtitle: 'Dành cho Người Có Thị Thực Úc — Thanh Toán Gia Đình & Trẻ Sơ Sinh',
+        subtitle: 'Thanh Toán Gia Đình & Trẻ Sơ Sinh — Công Dân, PR & Thị Thực',
         dark: 'Chế độ tối',
         light: 'Chế độ sáng',
-        visaLabel: 'Bạn đang giữ loại thị thực nào?',
+        visaLabel: 'Tình trạng cư trú của bạn là gì?',
         visaDateLabel: 'Ngày cấp thị thực',
         dueDateLabel: 'Ngày dự sinh',
         childrenLabel: 'Trẻ em <small>(thêm tất cả trẻ em bạn đang chăm sóc)</small>',
@@ -747,10 +751,10 @@
       },
       hi: {
         title: 'सेंटरलिंक भुगतान अनुमानक',
-        subtitle: 'ऑस्ट्रेलियाई वीज़ा धारकों के लिए — परिवार और नवजात भुगतान',
+        subtitle: 'परिवार और नवजात भुगतान — नागरिक, PR और वीज़ा धारक',
         dark: 'डार्क मोड',
         light: 'लाइट मोड',
-        visaLabel: 'आपके पास कौन सा वीज़ा है?',
+        visaLabel: 'आपकी निवास स्थिति क्या है?',
         visaDateLabel: 'वीज़ा प्राप्ति तिथि',
         dueDateLabel: 'बच्चे की अपेक्षित तिथि',
         childrenLabel: 'बच्चे <small>(अपनी देखभाल में सभी बच्चों को जोड़ें)</small>',
@@ -818,6 +822,38 @@
 
     // ===== VISA DATA =====
     const VISA_DATA = {
+      'citizen': {
+        category: 'citizen',
+        name: 'Australian Citizen',
+        info: 'As an Australian citizen, you have full access to all Centrelink family and newborn payments with no waiting periods.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: true, jobseeker: true,
+        medicare: 'yes',
+        medicareCard: 'Green Medicare Card',
+        medicareNote: 'Australian citizens have full Medicare eligibility. Your baby will be automatically eligible from birth.',
+        medicareSteps: [
+          'If not yet enrolled, visit a Medicare Service Centre with proof of Australian citizenship',
+          'After baby is born, add the baby to your Medicare card at a Service Centre or via myGov',
+          'You can also register the birth and add to Medicare through your state\'s birth registration'
+        ]
+      },
+      'pr': {
+        category: 'permanent',
+        name: 'Permanent Resident',
+        info: 'As a permanent resident, you are eligible for most Centrelink payments. A Newly Arrived Resident\'s Waiting Period (NARWP) of 1-2 years may apply from your visa grant date.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        medicare: 'yes',
+        medicareCard: 'Green Medicare Card',
+        medicareNote: 'Permanent residents have full Medicare eligibility. Your baby will be covered from birth.',
+        medicareSteps: [
+          'Visit a Medicare Service Centre with passport and visa grant letter',
+          'Complete a Medicare Enrolment Application form',
+          'After baby is born, add the baby to your card at a Service Centre or via myGov'
+        ]
+      },
       '820': {
         category: 'partner_temp',
         name: 'Partner (Temporary)',
@@ -1110,10 +1146,13 @@
       const visaType = document.getElementById('visaType').value;
       const visa = VISA_DATA[visaType];
       const infoDiv = document.getElementById('visaInfo');
+      const visaDateGroup = document.getElementById('visaDateGroup');
       if (visa) {
         infoDiv.textContent = visa.info;
         infoDiv.style.display = 'block';
         infoDiv.className = 'visa-info' + (visa.category === 'temporary' ? ' not-eligible' : '');
+        // Hide visa date for citizens (no visa grant date)
+        visaDateGroup.style.display = visa.category === 'citizen' ? 'none' : 'block';
       } else {
         infoDiv.style.display = 'none';
       }
@@ -1127,7 +1166,8 @@
     function calculate() {
       const visaType = document.getElementById('visaType').value;
       const visa = VISA_DATA[visaType];
-      const visaDate = new Date(document.getElementById('visaDate').value);
+      const visaDateVal = document.getElementById('visaDate').value;
+      const visaDate = visaDateVal ? new Date(visaDateVal) : new Date('2000-01-01'); // citizens: far past = all NARWP served
       const dueDate = new Date(document.getElementById('dueDate').value);
       const children = getChildren();
       const hasNewborn = children.includes('newborn');
@@ -1227,7 +1267,8 @@
       let html = '';
 
       // Visa badge
-      html += `<div class="narwp-status info"><strong>Visa:</strong> Subclass ${visaType} — ${visa.name}${numChildren > 1 ? ` | ${numChildren} children` : ''}</div>`;
+      const visaLabel = (visaType === 'citizen' || visaType === 'pr') ? visa.name : `Subclass ${visaType} — ${visa.name}`;
+      html += `<div class="narwp-status info"><strong>Status:</strong> ${visaLabel}${numChildren > 1 ? ` | ${numChildren} children` : ''}</div>`;
 
       // NARWP Status
       if (visa.ftbA && ftbANarwpWeeks > 0) {
@@ -1342,7 +1383,7 @@
       html += buildCCSSection(familyIncome, visa);
 
       // What-if comparison (only for temp/provisional visas)
-      if (visa.category !== 'permanent' && visa.ftbA) {
+      if (visa.category !== 'permanent' && visa.category !== 'citizen' && visa.ftbA) {
         html += buildWhatIfSection(visa, visaType, familyIncome, lowerIncome, numChildren, ftbA_per_child, ftbB_fortnight, fortnightlyTotal, firstYearTotal);
       }
 
