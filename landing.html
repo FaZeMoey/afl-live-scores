@@ -93,9 +93,6 @@
       transition: transform 0.2s;
     }
     .nav-cta:hover { transform: translateY(-1px); }
-    @media (max-width: 768px) {
-      .nav-link { display: none; }
-    }
 
     /* Hero */
     .hero {
@@ -234,6 +231,7 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
     .feature-card {
       background: white;
       padding: 28px;
@@ -420,15 +418,57 @@
     footer a { color: #63b3ed; }
     footer p { margin-bottom: 8px; }
 
-    /* Responsive */
+    /* Responsive — tablet */
+    @media (max-width: 960px) {
+      .features-grid, .grid-3 { grid-template-columns: repeat(2, 1fr) !important; }
+      .visa-grid { grid-template-columns: repeat(3, 1fr); }
+      section { padding: 60px 20px; }
+      .cta-section { padding: 60px 20px; }
+    }
+
+    /* Responsive — mobile */
     @media (max-width: 768px) {
-      .hero h1 { font-size: 2rem; }
-      .hero { padding: 120px 20px 70px; }
-      .features-grid { grid-template-columns: 1fr; }
-      .steps { flex-direction: column; gap: 20px; }
+      .hero h1 { font-size: 1.7rem; }
+      .hero p { font-size: 1rem; }
+      .hero { padding: 100px 16px 56px; }
+      .hero-badge { font-size: 0.75rem; }
+      .hero-cta { padding: 14px 28px; font-size: 1rem; }
+      .nav-link { display: none; }
+      section { padding: 48px 16px; }
+      .cta-section { padding: 48px 16px; }
+      .cta-section h2 { font-size: 1.5rem; }
+      .cta-section p { font-size: 0.95rem; }
+      .section-title h2 { font-size: 1.5rem; }
+      .section-title p { font-size: 0.92rem; }
+      .features-grid, .grid-3 { grid-template-columns: 1fr !important; }
+      .feature-card { padding: 20px; }
+      .steps { flex-direction: column; gap: 16px; }
       .step-arrow { display: none; }
-      .visa-grid { grid-template-columns: repeat(2, 1fr); }
-      .stats { gap: 24px; }
+      .visa-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .visa-tag { padding: 10px 10px; font-size: 0.78rem; }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        padding: 28px 16px;
+      }
+      .stat-num { font-size: 1.5rem; }
+      .stat-label { font-size: 0.78rem; }
+      .lang-flags { gap: 10px; }
+      .lang-item { padding: 10px 16px; font-size: 0.85rem; }
+      .faq-q { font-size: 0.92rem; }
+      .faq-a { font-size: 0.85rem; }
+      nav { padding: 12px 16px; }
+      .nav-logo { font-size: 0.95rem; }
+      .nav-cta { padding: 7px 14px; font-size: 0.82rem; }
+    }
+
+    /* Responsive — small phones */
+    @media (max-width: 400px) {
+      .hero h1 { font-size: 1.45rem; }
+      .visa-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .lang-flags { flex-direction: column; align-items: center; }
     }
   </style>
 </head>
@@ -659,7 +699,7 @@
         <h2>Guides & articles</h2>
         <p>In-depth guides for specific visa types and Centrelink payments.</p>
       </div>
-      <div class="features-grid" style="grid-template-columns: repeat(3, 1fr)">
+      <div class="features-grid grid-3">
         <a href="blog/centrelink-820-partner-visa.html" class="feature-card" style="text-decoration:none">
           <div style="font-size:0.75rem;color:#805ad5;font-weight:700;margin-bottom:8px">VISA GUIDE</div>
           <h3 style="font-size:1rem">Can I Get Centrelink on an 820 Partner Visa?</h3>
@@ -687,7 +727,7 @@
         <h2>Official government resources</h2>
         <p>Direct links to Services Australia and Department of Home Affairs for further reading.</p>
       </div>
-      <div class="features-grid" style="grid-template-columns: repeat(3, 1fr)">
+      <div class="features-grid grid-3">
         <a href="https://www.servicesaustralia.gov.au/family-tax-benefit" target="_blank" class="feature-card" style="text-decoration:none">
           <h3 style="color:#2b6cb0">Family Tax Benefit</h3>
           <p>Official FTB rates, eligibility criteria, and how to claim on Services Australia.</p>
