@@ -735,6 +735,15 @@
           </div>
         </div>
 
+        <div class="form-group">
+          <label data-i18n="workLabel">Have you worked in the last 10 of 13 months? <small>(for <a href="https://www.servicesaustralia.gov.au/parental-leave-pay" target="_blank">Parental Leave Pay</a>)</small></label>
+          <select id="workStatus">
+            <option value="yes">Yes — I've worked at least 330 hours in 10 of the last 13 months</option>
+            <option value="no">No — I haven't met the work test</option>
+            <option value="unsure">Not sure</option>
+          </select>
+        </div>
+
         <button type="submit" data-i18n="calculateBtn">Calculate My Payments</button>
       </form>
 
@@ -763,6 +772,7 @@
         addChild: '+ Add Another Child',
         incomeLabel: 'Combined Family Income <small>($/year)</small>',
         lowerIncomeLabel: "Lower Earner's Income <small>($/year)</small>",
+        workLabel: 'Have you worked in the last 10 of 13 months? <small>(for <a href="https://www.servicesaustralia.gov.au/parental-leave-pay" target="_blank">Parental Leave Pay</a>)</small>',
         calculateBtn: 'Calculate My Payments',
         disclaimer: '<strong>Disclaimer:</strong> This is a rough estimate only, based on 2025-26 rates. Actual payments depend on your full circumstances. Always confirm with <strong>Centrelink on 136 150</strong>. This tool is not affiliated with Services Australia.',
       },
@@ -778,6 +788,7 @@
         addChild: '+ إضافة طفل آخر',
         incomeLabel: 'الدخل العائلي المشترك <small>($/سنة)</small>',
         lowerIncomeLabel: 'دخل صاحب الدخل الأقل <small>($/سنة)</small>',
+        workLabel: 'هل عملت في 10 من آخر 13 شهرًا؟ <small>(لإجازة الأبوة المدفوعة)</small>',
         calculateBtn: 'احسب مدفوعاتي',
         disclaimer: '<strong>إخلاء مسؤولية:</strong> هذا تقدير تقريبي فقط. تعتمد المدفوعات الفعلية على ظروفك. تأكد دائمًا مع <strong>سنترلينك على 136 150</strong>.',
       },
@@ -793,6 +804,7 @@
         addChild: '+ 添加另一个孩子',
         incomeLabel: '家庭合计收入 <small>($/年)</small>',
         lowerIncomeLabel: '较低收入方 <small>($/年)</small>',
+        workLabel: '您在过去13个月中是否工作了至少10个月？ <small>（用于带薪育儿假）</small>',
         calculateBtn: '计算我的补贴',
         disclaimer: '<strong>免责声明：</strong>这只是一个粗略的估计。实际付款取决于您的具体情况。请务必致电 <strong>Centrelink 136 150</strong> 确认。',
       },
@@ -808,6 +820,7 @@
         addChild: '+ Thêm trẻ khác',
         incomeLabel: 'Thu nhập gia đình <small>($/năm)</small>',
         lowerIncomeLabel: 'Thu nhập người có thu nhập thấp hơn <small>($/năm)</small>',
+        workLabel: 'Bạn đã làm việc 10 trong 13 tháng qua chưa? <small>(cho Nghỉ phép có lương)</small>',
         calculateBtn: 'Tính Khoản Thanh Toán',
         disclaimer: '<strong>Tuyên bố miễn trừ:</strong> Đây chỉ là ước tính sơ bộ. Khoản thanh toán thực tế phụ thuộc vào hoàn cảnh của bạn. Luôn xác nhận với <strong>Centrelink qua 136 150</strong>.',
       },
@@ -823,6 +836,7 @@
         addChild: '+ एक और बच्चा जोड़ें',
         incomeLabel: 'संयुक्त पारिवारिक आय <small>($/वर्ष)</small>',
         lowerIncomeLabel: 'कम कमाने वाले की आय <small>($/वर्ष)</small>',
+        workLabel: 'क्या आपने पिछले 13 में से 10 महीने काम किया है? <small>(पेड पैरेंटल लीव के लिए)</small>',
         calculateBtn: 'मेरे भुगतान की गणना करें',
         disclaimer: '<strong>अस्वीकरण:</strong> यह केवल एक अनुमान है। वास्तविक भुगतान आपकी परिस्थितियों पर निर्भर करता है। हमेशा <strong>सेंटरलिंक 136 150</strong> से पुष्टि करें।',
       }
@@ -1586,7 +1600,10 @@
       const energy_annual = ((visa.ftbA ? RATES.energyA_fortnight : 0) + (visa.ftbB ? RATES.energyB_fortnight : 0)) * 26;
       const supplements = (ftbA_per_child > 0 ? RATES.ftbA_supplement_annual * numChildren : 0) + (ftbB_fortnight > 0 ? RATES.ftbB_supplement_annual : 0);
       const newbornAvailable = visa.newborn && ftbA_per_child > 0 && hasNewborn;
-      const plpAvailable = visa.plp && plpServed;
+      const workStatus = document.getElementById('workStatus').value;
+      const meetsWorkTest = workStatus === 'yes';
+      const workUnsure = workStatus === 'unsure';
+      const plpAvailable = visa.plp && plpServed && meetsWorkTest;
 
       const newbornInTotal = (newbornAvailable && !plpAvailable) ? newbornTotal : (newbornAvailable ? RATES.newborn_upfront : 0);
 
@@ -1661,9 +1678,21 @@
       html += `<div class="result-section">`;
 
       if (visa.plp) {
-        html += resultRow(`Parental Leave Pay (${RATES.plp_weeks} weeks)`, plpTotal,
-          plpAvailable ? 'eligible' : 'waiting',
-          plpAvailable ? 'if work test met' : `(from ${plpEligibleDate.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})})`);
+        let plpStatus, plpNote;
+        if (!plpServed) {
+          plpStatus = 'waiting';
+          plpNote = `(NARWP: from ${plpEligibleDate.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})})`;
+        } else if (!meetsWorkTest && !workUnsure) {
+          plpStatus = 'not-eligible';
+          plpNote = 'work test not met';
+        } else if (workUnsure) {
+          plpStatus = 'waiting';
+          plpNote = 'check if you meet the work test';
+        } else {
+          plpStatus = 'eligible';
+          plpNote = 'work test met';
+        }
+        html += resultRow(`Parental Leave Pay (${RATES.plp_weeks} weeks)`, plpTotal, plpStatus, plpNote);
       } else {
         html += resultRow('Parental Leave Pay', 0, 'na', 'not available on this visa');
       }
@@ -1672,10 +1701,11 @@
         html += resultRow('Newborn Upfront Payment', RATES.newborn_upfront,
           newbornAvailable ? 'eligible' : 'waiting',
           newbornAvailable ? 'lump sum' : '(needs FTB Part A)');
+        const nsNote = plpAvailable ? 'N/A — receiving PLP instead' : (!meetsWorkTest && plpServed && visa.plp ? 'you get this instead of PLP' : 'over 13 weeks');
         html += resultRow('Newborn Supplement (' + (firstChild ? '1st child' : 'subsequent') + ')',
           newbornSupplement,
           newbornAvailable ? 'eligible' : 'waiting',
-          plpAvailable ? 'N/A if receiving PLP' : 'over 13 weeks');
+          nsNote);
       } else if (visa.newborn) {
         html += resultRow('Newborn Payments', 0, 'na', 'no newborn selected');
       } else {
@@ -1692,7 +1722,7 @@
       html += `<div class="total-box">
         <div class="total-label">Estimated Total in Baby's First Year</div>
         <div class="total-amount">~$${Math.round(firstYearTotal).toLocaleString()}</div>
-        <div class="total-note">Based on 2025-26 rates. ${plpAvailable ? 'Includes Parental Leave Pay (subject to work test).' : ''} Actual amount depends on individual circumstances.</div>
+        <div class="total-note">Based on 2025-26 rates. ${plpAvailable ? 'Includes Parental Leave Pay.' : (visa.plp && plpServed && !meetsWorkTest ? 'Excludes Parental Leave Pay (work test not met).' : '')} Actual amount depends on individual circumstances.</div>
       </div>`;
 
       // Extra info for permanent visa holders
@@ -1926,6 +1956,7 @@
       params.set('li', document.getElementById('lowerIncome').value);
       const children = getChildren();
       params.set('ch', children.join(','));
+      params.set('w', document.getElementById('workStatus').value);
       const url = window.location.origin + window.location.pathname + '?' + params.toString();
       const shareInput = document.getElementById('shareUrl');
       if (shareInput) shareInput.value = url;
@@ -1966,6 +1997,8 @@
           selects[selects.length - 1].value = children[i];
         }
       }
+
+      if (params.has('w')) document.getElementById('workStatus').value = params.get('w');
 
       updateVisaInfo();
       return true;
