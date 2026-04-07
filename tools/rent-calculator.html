@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rent Affordability Calculator Australia 2025 — How Much Rent Can I Afford?</title>
+  <meta name="description" content="Calculate how much rent you can afford in Australia based on your income and Centrelink payments. See affordable suburbs and budget breakdown.">
+  <link rel="canonical" href="https://centrelinkestimator.com.au/tools/rent-calculator">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{overflow-x:hidden}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f0f4f8;color:#1a202c;line-height:1.6}
+    a{color:#2b6cb0;text-decoration:none;font-weight:600}a:hover{text-decoration:underline}
+    h1,h2,h3,p{overflow-wrap:break-word}
+    nav{background:#1a365d;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+    .nav-logo{font-weight:800;font-size:1.05rem;color:white;text-decoration:none}.nav-logo:hover{text-decoration:none}
+    .nav-links{display:flex;align-items:center;gap:16px}
+    .nav-link{color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:500}.nav-link:hover{color:white;text-decoration:none}
+    .nav-cta{background:#48bb78;color:white;padding:7px 16px;border-radius:8px;font-weight:600;font-size:0.82rem}.nav-cta:hover{text-decoration:none;background:#38a169}
+    @media(max-width:640px){.nav-link{display:none}}
+    .container{max-width:760px;margin:0 auto;padding:24px 16px 60px}
+    .page-header{text-align:center;margin-bottom:28px}
+    .page-header h1{font-size:1.8rem;font-weight:900;color:#1a365d;margin-bottom:6px}
+    .page-header p{color:#718096;font-size:0.95rem}
+    .card{background:white;border-radius:14px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:20px}
+    .form-group{margin-bottom:16px}
+    label{display:block;font-weight:600;font-size:0.9rem;margin-bottom:5px;color:#2d3748}label small{font-weight:400;color:#718096}
+    input,select{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;font-family:inherit}
+    input:focus,select:focus{outline:none;border-color:#3182ce}
+    .row{display:flex;gap:14px}.row .form-group{flex:1}
+    button[type="submit"]{width:100%;padding:14px;background:#2b6cb0;color:white;border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
+    button[type="submit"]:hover{background:#2c5282}
+    .results{display:none}.results.active{display:block}
+    .results h2{font-size:1.3rem;font-weight:800;color:#1a365d;margin-bottom:16px}
+    .result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f4f8;font-size:0.9rem}
+    .result-row:last-child{border-bottom:none}
+    .result-row .label{color:#4a5568}.result-row .value{font-weight:700;color:#1a365d}
+    .result-row.highlight{background:#f0fff4;margin:0 -28px;padding:14px 28px;border-radius:8px;border-bottom:none}
+    .result-row.highlight .label{font-weight:700;color:#276749}.result-row.highlight .value{font-size:1.3rem;color:#276749}
+    .result-row.warning{background:#fffff0;margin:0 -28px;padding:14px 28px;border-radius:8px;border-bottom:none}
+    .result-row.warning .label{font-weight:700;color:#c05621}.result-row.warning .value{font-size:1.3rem;color:#c05621}
+    .divider{font-size:0.78rem;font-weight:700;color:#a0aec0;text-transform:uppercase;letter-spacing:0.05em;padding:14px 0 6px}
+    .gauge-wrap{text-align:center;margin:20px 0}
+    .gauge-bar{height:20px;border-radius:10px;background:linear-gradient(90deg,#38a169 0%,#38a169 30%,#d69e2e 30%,#d69e2e 40%,#e53e3e 40%,#e53e3e 100%);position:relative;max-width:400px;margin:0 auto}
+    .gauge-marker{position:absolute;top:-6px;width:4px;height:32px;background:#1a202c;border-radius:2px;transform:translateX(-50%)}
+    .gauge-labels{display:flex;justify-content:space-between;max-width:400px;margin:6px auto 0;font-size:0.7rem;color:#718096}
+    .stress-badge{display:inline-block;padding:6px 16px;border-radius:20px;font-weight:700;font-size:0.85rem;margin-top:10px}
+    .stress-low{background:#f0fff4;color:#276749;border:1px solid #c6f6d5}
+    .stress-mid{background:#fffff0;color:#c05621;border:1px solid #feebc8}
+    .stress-high{background:#fff5f5;color:#c53030;border:1px solid #fed7d7}
+    .city-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:16px}
+    .city-card{background:#f7fafc;border-radius:10px;padding:14px;text-align:center}
+    .city-card .name{font-weight:700;font-size:0.88rem;color:#1a365d;margin-bottom:2px}
+    .city-card .rent{font-size:1.1rem;font-weight:800;color:#2b6cb0}
+    .city-card .verdict{font-size:0.72rem;font-weight:600;margin-top:2px}
+    .affordable{color:#276749}.tight{color:#c05621}.over{color:#c53030}
+    .info-box{padding:14px 16px;border-radius:8px;font-size:0.88rem;margin:16px 0}
+    .info-box.blue{background:#ebf8ff;border-left:4px solid #3182ce;color:#2c5282}
+    .cta-box{background:linear-gradient(135deg,#1a365d,#2c5282);color:white;padding:28px;border-radius:14px;text-align:center;margin:24px 0}
+    .cta-box h3{color:white;font-size:1.1rem;margin-bottom:6px}.cta-box p{color:#bee3f8;font-size:0.9rem;margin-bottom:14px}
+    .cta-btn{display:inline-block;background:#48bb78;color:white;padding:10px 28px;border-radius:10px;font-weight:700;font-size:0.95rem}.cta-btn:hover{text-decoration:none;background:#38a169}
+    .disclaimer{margin-top:20px;padding:14px;background:#fffff0;border-left:4px solid #d69e2e;border-radius:4px;font-size:0.82rem;color:#744210}
+    footer{background:#1a202c;color:#a0aec0;padding:32px 16px;text-align:center;font-size:0.82rem}footer a{color:#63b3ed}footer p{margin-bottom:6px}
+    @media(max-width:640px){.row{flex-direction:column;gap:0}.card{padding:20px}.page-header h1{font-size:1.4rem}.result-row.highlight,.result-row.warning{margin:0 -20px;padding:14px 20px}.city-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../landing.html" class="nav-logo">Centrelink Estimator</a>
+    <div class="nav-links">
+      <a href="../landing.html" class="nav-link">Home</a>
+      <a href="../centrelink-calculator.html" class="nav-link">Payments</a>
+      <a href="tax-calculator.html" class="nav-link">Tax</a>
+      <a href="../centrelink-calculator.html" class="nav-cta">Payment Calculator</a>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="page-header">
+      <h1>Rent Affordability Calculator</h1>
+      <p>How much rent can you afford? Based on your income + Centrelink payments.</p>
+    </div>
+    <div class="card">
+      <form id="rentForm">
+        <div class="row">
+          <div class="form-group">
+            <label>Your take-home pay <small>($/week after tax)</small></label>
+            <input type="number" id="weeklyPay" placeholder="e.g. 1100" required min="0">
+          </div>
+          <div class="form-group">
+            <label>Partner's take-home pay <small>($/week, or 0)</small></label>
+            <input type="number" id="partnerPay" value="0" min="0">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label>Centrelink payments <small>($/fortnight total)</small></label>
+            <input type="number" id="centrelinkPay" placeholder="e.g. 420" value="0" min="0">
+          </div>
+          <div class="form-group">
+            <label>Other income <small>($/week)</small></label>
+            <input type="number" id="otherIncome" value="0" min="0">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Where do you want to live?</label>
+          <select id="city">
+            <option value="sydney">Sydney</option>
+            <option value="melbourne">Melbourne</option>
+            <option value="brisbane">Brisbane</option>
+            <option value="perth">Perth</option>
+            <option value="adelaide">Adelaide</option>
+            <option value="canberra">Canberra</option>
+            <option value="hobart">Hobart</option>
+            <option value="darwin">Darwin</option>
+            <option value="regional">Regional / Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Property type</label>
+          <select id="propertyType">
+            <option value="unit_1br">1-bed unit / apartment</option>
+            <option value="unit_2br" selected>2-bed unit / apartment</option>
+            <option value="house_3br">3-bed house</option>
+            <option value="house_4br">4-bed house</option>
+          </select>
+        </div>
+        <button type="submit">Calculate Affordability</button>
+      </form>
+    </div>
+    <div class="results" id="results">
+      <div class="card"><h2>Your Rent Budget</h2><div id="resultContent"></div></div>
+      <div class="cta-box">
+        <h3>Calculate your exact Centrelink payments</h3>
+        <p>Get your FTB, PLP, and other payment amounts to add to your income.</p>
+        <a href="../centrelink-calculator.html" class="cta-btn">Centrelink Calculator</a>
+      </div>
+      <div class="disclaimer"><strong>Disclaimer:</strong> Median rents are approximate based on 2025 market data. Actual rents vary significantly by suburb. The 30% rule is a general guideline — your ideal ratio depends on your full financial situation.</div>
+    </div>
+  </div>
+  <footer>
+    <p><strong>Centrelink Payment Estimator</strong> — Free tools for Australian families</p>
+    <p>Not financial advice. Not affiliated with <a href="https://www.servicesaustralia.gov.au" target="_blank">Services Australia</a>.</p>
+  </footer>
+  <script>
+    // Approximate median weekly rents 2025
+    const RENTS = {
+      sydney:    { unit_1br: 550, unit_2br: 680, house_3br: 750, house_4br: 900 },
+      melbourne: { unit_1br: 430, unit_2br: 520, house_3br: 560, house_4br: 650 },
+      brisbane:  { unit_1br: 430, unit_2br: 550, house_3br: 580, house_4br: 680 },
+      perth:     { unit_1br: 420, unit_2br: 530, house_3br: 560, house_4br: 650 },
+      adelaide:  { unit_1br: 350, unit_2br: 440, house_3br: 480, house_4br: 560 },
+      canberra:  { unit_1br: 480, unit_2br: 580, house_3br: 650, house_4br: 750 },
+      hobart:    { unit_1br: 380, unit_2br: 460, house_3br: 500, house_4br: 580 },
+      darwin:    { unit_1br: 400, unit_2br: 480, house_3br: 550, house_4br: 630 },
+      regional:  { unit_1br: 300, unit_2br: 380, house_3br: 420, house_4br: 500 },
+    };
+    const CITY_NAMES = { sydney:'Sydney', melbourne:'Melbourne', brisbane:'Brisbane', perth:'Perth', adelaide:'Adelaide', canberra:'Canberra', hobart:'Hobart', darwin:'Darwin', regional:'Regional' };
+
+    function fmt(n) { return '$' + Math.round(n).toLocaleString('en-AU'); }
+
+    document.getElementById('rentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const weeklyPay = parseFloat(document.getElementById('weeklyPay').value) || 0;
+      const partnerPay = parseFloat(document.getElementById('partnerPay').value) || 0;
+      const centrelinkFn = parseFloat(document.getElementById('centrelinkPay').value) || 0;
+      const otherIncome = parseFloat(document.getElementById('otherIncome').value) || 0;
+      const city = document.getElementById('city').value;
+      const propertyType = document.getElementById('propertyType').value;
+
+      const centrelinkWeekly = centrelinkFn / 2;
+      const totalWeekly = weeklyPay + partnerPay + centrelinkWeekly + otherIncome;
+      const maxRent30 = totalWeekly * 0.30;
+      const maxRent35 = totalWeekly * 0.35;
+      const medianRent = RENTS[city][propertyType];
+      const rentPct = totalWeekly > 0 ? (medianRent / totalWeekly * 100) : 100;
+      const afterRent = totalWeekly - medianRent;
+
+      // Stress level
+      let stressClass, stressText;
+      if (rentPct <= 30) { stressClass = 'stress-low'; stressText = 'Comfortable'; }
+      else if (rentPct <= 40) { stressClass = 'stress-mid'; stressText = 'Moderate stress'; }
+      else { stressClass = 'stress-high'; stressText = 'Housing stress'; }
+
+      let html = '';
+
+      // Affordable rent
+      html += `<div class="result-row highlight">
+        <span class="label">You can afford up to (30% rule)</span>
+        <span class="value">${fmt(maxRent30)}/week</span>
+      </div>`;
+
+      // Gauge
+      const markerPos = Math.min(100, Math.max(0, rentPct));
+      html += `<div class="gauge-wrap">
+        <div class="gauge-bar"><div class="gauge-marker" style="left:${markerPos}%"></div></div>
+        <div class="gauge-labels"><span>0%</span><span>30% safe</span><span>40%</span><span>50%+</span></div>
+        <div class="stress-badge ${stressClass}">${stressText} — ${rentPct.toFixed(0)}% of income on rent</div>
+      </div>`;
+
+      // Income breakdown
+      html += `<div class="divider">Your Weekly Income</div>`;
+      html += `<div class="result-row"><span class="label">Your take-home pay</span><span class="value">${fmt(weeklyPay)}/week</span></div>`;
+      if (partnerPay > 0) html += `<div class="result-row"><span class="label">Partner's take-home pay</span><span class="value">${fmt(partnerPay)}/week</span></div>`;
+      if (centrelinkWeekly > 0) html += `<div class="result-row"><span class="label">Centrelink payments</span><span class="value">${fmt(centrelinkWeekly)}/week</span></div>`;
+      if (otherIncome > 0) html += `<div class="result-row"><span class="label">Other income</span><span class="value">${fmt(otherIncome)}/week</span></div>`;
+      html += `<div class="result-row"><span class="label"><strong>Total weekly income</strong></span><span class="value"><strong>${fmt(totalWeekly)}/week</strong></span></div>`;
+
+      // Rent thresholds
+      html += `<div class="divider">Rent Thresholds</div>`;
+      html += `<div class="result-row"><span class="label">30% of income (comfortable)</span><span class="value">${fmt(maxRent30)}/week</span></div>`;
+      html += `<div class="result-row"><span class="label">35% of income (stretch)</span><span class="value">${fmt(maxRent35)}/week</span></div>`;
+      html += `<div class="result-row"><span class="label">Median rent in ${CITY_NAMES[city]}</span><span class="value">${fmt(medianRent)}/week</span></div>`;
+      html += `<div class="result-row"><span class="label">Left after rent</span><span class="value" style="color:${afterRent >= 0 ? '#276749' : '#c53030'}">${fmt(afterRent)}/week</span></div>`;
+
+      // City comparison
+      html += `<div class="divider">Compare Cities (${propertyType.replace('_',' ')})</div>`;
+      html += `<div class="city-grid">`;
+      for (const [key, name] of Object.entries(CITY_NAMES)) {
+        const r = RENTS[key][propertyType];
+        const pct = totalWeekly > 0 ? (r / totalWeekly * 100) : 100;
+        let verdictClass, verdictText;
+        if (pct <= 30) { verdictClass = 'affordable'; verdictText = 'Affordable'; }
+        else if (pct <= 40) { verdictClass = 'tight'; verdictText = 'Tight'; }
+        else { verdictClass = 'over'; verdictText = 'Over budget'; }
+        html += `<div class="city-card${key === city ? ' style="border:2px solid #3182ce"' : ''}">
+          <div class="name">${name}</div>
+          <div class="rent">${fmt(r)}/wk</div>
+          <div class="verdict ${verdictClass}">${verdictText} (${pct.toFixed(0)}%)</div>
+        </div>`;
+      }
+      html += `</div>`;
+
+      if (centrelinkWeekly === 0) {
+        html += `<div class="info-box blue"><strong>Tip:</strong> You haven't included any Centrelink payments. If you have children, you may be eligible for <a href="../centrelink-calculator.html" style="color:#2c5282">Family Tax Benefit</a> which would increase your affordable rent range.</div>`;
+      }
+
+      document.getElementById('resultContent').innerHTML = html;
+      document.getElementById('results').classList.add('active');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

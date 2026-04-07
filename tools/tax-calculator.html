@@ -310,10 +310,42 @@
         </div>
 
         <div class="form-group">
-          <label>Annual gross income <small>(before tax, $/year)</small>
-            <span class="tooltip-wrap"><span class="tooltip-icon">?</span><span class="tooltip-text">Your total salary/wages before any deductions. Include overtime, bonuses, and allowances. If you're paid hourly, multiply your hourly rate x hours per week x 52.</span></span>
-          </label>
-          <input type="number" id="income" placeholder="e.g. 75000" required min="0">
+          <label>How are you paid?</label>
+          <select id="incomeType" onchange="toggleIncomeInput()">
+            <option value="annual">Annual salary</option>
+            <option value="hourly">Hourly / casual</option>
+          </select>
+        </div>
+
+        <div id="annualInput">
+          <div class="form-group">
+            <label>Annual gross income <small>(before tax, $/year)</small>
+              <span class="tooltip-wrap"><span class="tooltip-icon">?</span><span class="tooltip-text">Your total salary/wages before any deductions. Include overtime, bonuses, and allowances.</span></span>
+            </label>
+            <input type="number" id="income" placeholder="e.g. 75000" min="0">
+          </div>
+        </div>
+
+        <div id="hourlyInput" style="display:none">
+          <div class="row">
+            <div class="form-group">
+              <label>Hourly rate <small>($/hr before tax)</small>
+                <span class="tooltip-wrap"><span class="tooltip-icon">?</span><span class="tooltip-text">Your base hourly rate before tax. Casual loading (typically 25%) is usually included in your hourly rate already. Check your payslip.</span></span>
+              </label>
+              <input type="number" id="hourlyRate" placeholder="e.g. 32" min="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label>Hours per week</label>
+              <input type="number" id="hoursPerWeek" placeholder="e.g. 25" min="0" max="80" value="25">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Weeks worked per year <small>(52 = full year, 48 = typical casual)</small></label>
+            <input type="number" id="weeksPerYear" value="48" min="1" max="52">
+          </div>
+          <div id="hourlyCalc" style="padding:10px 14px;background:#ebf8ff;border-radius:8px;font-size:0.88rem;color:#2c5282;margin-bottom:16px;display:none">
+            Estimated annual income: <strong id="hourlyAnnual">$0</strong>
+          </div>
         </div>
 
         <div class="row">
@@ -448,13 +480,45 @@
       return '$' + Math.round(n).toLocaleString('en-AU');
     }
 
+    function toggleIncomeInput() {
+      const type = document.getElementById('incomeType').value;
+      document.getElementById('annualInput').style.display = type === 'annual' ? 'block' : 'none';
+      document.getElementById('hourlyInput').style.display = type === 'hourly' ? 'block' : 'none';
+    }
+
+    // Live hourly calculation
+    ['hourlyRate','hoursPerWeek','weeksPerYear'].forEach(id => {
+      document.getElementById(id).addEventListener('input', updateHourlyCalc);
+    });
+    function updateHourlyCalc() {
+      const rate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+      const hours = parseFloat(document.getElementById('hoursPerWeek').value) || 0;
+      const weeks = parseFloat(document.getElementById('weeksPerYear').value) || 0;
+      const annual = rate * hours * weeks;
+      const el = document.getElementById('hourlyCalc');
+      if (rate > 0 && hours > 0) {
+        document.getElementById('hourlyAnnual').textContent = '$' + Math.round(annual).toLocaleString('en-AU');
+        el.style.display = 'block';
+      } else {
+        el.style.display = 'none';
+      }
+    }
+
     document.getElementById('taxForm').addEventListener('submit', function(e) {
       e.preventDefault();
       calculate();
     });
 
     function calculate() {
-      const income = parseFloat(document.getElementById('income').value) || 0;
+      let income;
+      if (document.getElementById('incomeType').value === 'hourly') {
+        const rate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+        const hours = parseFloat(document.getElementById('hoursPerWeek').value) || 0;
+        const weeks = parseFloat(document.getElementById('weeksPerYear').value) || 0;
+        income = rate * hours * weeks;
+      } else {
+        income = parseFloat(document.getElementById('income').value) || 0;
+      }
       const residency = document.getElementById('residency').value;
       const superRate = parseFloat(document.getElementById('superRate').value) / 100 || 0.115;
       const frequency = document.getElementById('frequency').value;
