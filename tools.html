@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Free Tools — SettleAU</title>
+  <meta name="description" content="11 free calculators, finders, and planners for life in Australia. Tax, Centrelink, visas, health, family — all free, no signup required.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: hidden; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1a202c; line-height: 1.6; overflow-x: hidden; -webkit-text-size-adjust: 100%;
+    }
+    a { text-decoration: none; color: inherit; }
+    h1, h2, h3, p { overflow-wrap: break-word; word-wrap: break-word; }
+
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(26, 54, 93, 0.95); backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    }
+    .nav-logo { font-weight: 800; font-size: 1.1rem; color: white; }
+    .nav-links { display: flex; align-items: center; gap: 20px; }
+    .nav-link { color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+    .nav-link:hover { color: white; }
+    .nav-cta {
+      background: white; color: #1a365d; padding: 8px 20px; border-radius: 8px;
+      font-weight: 600; font-size: 0.9rem; transition: transform 0.2s;
+    }
+    .nav-cta:hover { transform: translateY(-1px); }
+
+    .hero {
+      background: linear-gradient(135deg, #1a365d 0%, #2c5282 40%, #2b6cb0 100%);
+      padding: 140px 24px 80px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -50%; right: -20%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(99,179,237,0.15) 0%, transparent 70%); border-radius: 50%;
+    }
+    .hero-content { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-block; background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2); color: #bee3f8;
+      padding: 6px 16px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: 2.5rem; font-weight: 900; color: white; line-height: 1.1; margin-bottom: 16px; letter-spacing: -0.02em; }
+    .hero p { font-size: 1.15rem; color: #bee3f8; max-width: 560px; margin: 0 auto; }
+
+    section { padding: 80px 24px; }
+    .section-inner { max-width: 1000px; margin: 0 auto; overflow: hidden; }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .filter-btn {
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      background: white;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #4a5568;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .filter-btn:hover { border-color: #2b6cb0; color: #2b6cb0; }
+    .filter-btn.active {
+      background: #1a365d;
+      color: white;
+      border-color: #1a365d;
+    }
+
+    /* Tools grid */
+    .tools-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .tool-card {
+      background: white; padding: 24px; border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: block; border: 1px solid #e2e8f0;
+    }
+    .tool-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+    .tool-card h3 { font-size: 1rem; font-weight: 700; color: #1a365d; margin-bottom: 6px; }
+    .tool-card p { font-size: 0.85rem; color: #718096; line-height: 1.5; }
+    .tool-tag {
+      display: inline-block; padding: 3px 10px; border-radius: 6px;
+      font-size: 0.72rem; font-weight: 600; margin-bottom: 10px;
+    }
+    .tag-money { background: #ebf8ff; color: #2b6cb0; }
+    .tag-visas { background: #faf5ff; color: #805ad5; }
+    .tag-health { background: #f0fff4; color: #38a169; }
+    .tag-family { background: #fffbeb; color: #d69e2e; }
+
+    .tool-card.hidden { display: none; }
+
+    footer {
+      background: #1a202c; color: #a0aec0; padding: 60px 24px 40px;
+      font-size: 0.85rem; overflow-wrap: break-word;
+    }
+    .footer-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+    .footer-col h4 { color: white; font-size: 0.9rem; font-weight: 700; margin-bottom: 14px; }
+    .footer-col a { display: block; color: #a0aec0; font-size: 0.83rem; margin-bottom: 8px; transition: color 0.2s; }
+    .footer-col a:hover { color: #63b3ed; }
+    .footer-bottom { max-width: 1000px; margin: 32px auto 0; padding-top: 24px; border-top: 1px solid #2d3748; text-align: center; font-size: 0.8rem; color: #718096; }
+
+    @media (max-width: 960px) {
+      .tools-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-inner { grid-template-columns: repeat(2, 1fr); }
+      section { padding: 60px 20px; }
+    }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 1.7rem; }
+      .hero p { font-size: 1rem; }
+      .hero { padding: 100px 16px 56px; }
+      .nav-link { display: none; }
+      section { padding: 48px 16px; }
+      .tools-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+      nav { padding: 12px 16px; }
+      .nav-logo { font-size: 0.95rem; }
+      .nav-cta { padding: 7px 14px; font-size: 0.82rem; }
+      .filters { gap: 8px; }
+      .filter-btn { padding: 6px 14px; font-size: 0.8rem; }
+    }
+    @media (max-width: 400px) {
+      .hero h1 { font-size: 1.45rem; }
+      .footer-inner { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">SettleAU</a>
+    <div class="nav-links">
+      <a href="money-tax/index.html" class="nav-link">Money & Tax</a>
+      <a href="visas/index.html" class="nav-link">Visas</a>
+      <a href="health/index.html" class="nav-link">Health</a>
+      <a href="family/index.html" class="nav-link">Family</a>
+      <a href="settling-in/index.html" class="nav-link">Settling In</a>
+      <a href="blog/centrelink-820-partner-visa.html" class="nav-link">Blog</a>
+      <a href="tools.html" class="nav-cta">All Tools</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Home &rsaquo; All Tools</div>
+      <h1>All Free Tools</h1>
+      <p>11 calculators, finders, and planners — all free, no signup</p>
+    </div>
+  </section>
+
+  <section style="background:#f0f4f8;">
+    <div class="section-inner">
+
+      <!-- Filters -->
+      <div class="filters">
+        <button class="filter-btn active" onclick="filterTools('all')">All</button>
+        <button class="filter-btn" onclick="filterTools('money')">Money & Tax</button>
+        <button class="filter-btn" onclick="filterTools('visas')">Visas</button>
+        <button class="filter-btn" onclick="filterTools('health')">Health</button>
+        <button class="filter-btn" onclick="filterTools('family')">Family</button>
+      </div>
+
+      <!-- Tools grid -->
+      <div class="tools-grid" id="toolsGrid">
+
+        <!-- Money & Tax -->
+        <a href="money-tax/centrelink-calculator.html" class="tool-card" data-pillar="money">
+          <span class="tool-tag tag-money">Money & Tax</span>
+          <h3>Centrelink Calculator</h3>
+          <p>Estimate FTB, Parental Leave Pay, Newborn Supplement, and more for every visa type.</p>
+        </a>
+        <a href="money-tax/tax-calculator.html" class="tool-card" data-pillar="money">
+          <span class="tool-tag tag-money">Money & Tax</span>
+          <h3>Tax Calculator</h3>
+          <p>Calculate your Australian income tax, Medicare levy, and take-home pay.</p>
+        </a>
+        <a href="money-tax/rent-calculator.html" class="tool-card" data-pillar="money">
+          <span class="tool-tag tag-money">Money & Tax</span>
+          <h3>Rent Calculator</h3>
+          <p>Work out how much rent you can afford based on your income and expenses.</p>
+        </a>
+        <a href="money-tax/payment-calendar.html" class="tool-card" data-pillar="money">
+          <span class="tool-tag tag-money">Money & Tax</span>
+          <h3>Payment Calendar</h3>
+          <p>See when your Centrelink payments arrive with a visual payment calendar.</p>
+        </a>
+
+        <!-- Visas -->
+        <a href="visas/visa-pathway.html" class="tool-card" data-pillar="visas">
+          <span class="tool-tag tag-visas">Visas</span>
+          <h3>Visa Pathway Comparison</h3>
+          <p>Compare visa options side-by-side and understand which pathway suits your situation.</p>
+        </a>
+        <a href="visas/narwp-countdown.html" class="tool-card" data-pillar="visas">
+          <span class="tool-tag tag-visas">Visas</span>
+          <h3>NARWP Countdown</h3>
+          <p>Track your Newly Arrived Resident's Waiting Period and see when payments unlock.</p>
+        </a>
+
+        <!-- Health -->
+        <a href="health/medicare-comparison.html" class="tool-card" data-pillar="health">
+          <span class="tool-tag tag-health">Health</span>
+          <h3>Medicare vs Private Health</h3>
+          <p>Compare Medicare and private health insurance to find the right cover.</p>
+        </a>
+        <a href="health/bulk-billing-finder.html" class="tool-card" data-pillar="health">
+          <span class="tool-tag tag-health">Health</span>
+          <h3>Bulk Billing GP Finder</h3>
+          <p>Find bulk billing doctors near you so you can see a GP at no out-of-pocket cost.</p>
+        </a>
+
+        <!-- Family -->
+        <a href="family/baby-cost-calculator.html" class="tool-card" data-pillar="family">
+          <span class="tool-tag tag-family">Family</span>
+          <h3>Baby Cost Calculator</h3>
+          <p>Plan the real cost of having a baby in Australia, from hospital to first year.</p>
+        </a>
+        <a href="family/childcare-calculator.html" class="tool-card" data-pillar="family">
+          <span class="tool-tag tag-family">Family</span>
+          <h3>Childcare Calculator</h3>
+          <p>Estimate your Child Care Subsidy and out-of-pocket childcare costs.</p>
+        </a>
+        <a href="family/school-finder.html" class="tool-card" data-pillar="family">
+          <span class="tool-tag tag-family">Family</span>
+          <h3>School Finder</h3>
+          <p>Find and compare schools near you across all Australian states.</p>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>Pillars</h4>
+        <a href="money-tax/index.html">Money & Tax</a>
+        <a href="visas/index.html">Visas & Immigration</a>
+        <a href="health/index.html">Health & Medicare</a>
+        <a href="family/index.html">Family & Kids</a>
+        <a href="settling-in/index.html">Settling In</a>
+      </div>
+      <div class="footer-col">
+        <h4>Popular Tools</h4>
+        <a href="money-tax/centrelink-calculator.html">Centrelink Calculator</a>
+        <a href="money-tax/tax-calculator.html">Tax Calculator</a>
+        <a href="family/baby-cost-calculator.html">Baby Cost Calculator</a>
+        <a href="visas/visa-pathway.html">Visa Pathway Comparison</a>
+      </div>
+      <div class="footer-col">
+        <h4>Guides</h4>
+        <a href="blog/centrelink-820-partner-visa.html">820 Partner Visa Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="about.html">About SettleAU</a>
+        <a href="tools.html">All Tools</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>SettleAU is not affiliated with the Australian Government. Not financial, medical, or migration advice.</p>
+    </div>
+  </footer>
+
+  <script>
+    function filterTools(pillar) {
+      var cards = document.querySelectorAll('.tool-card');
+      var btns = document.querySelectorAll('.filter-btn');
+      btns.forEach(function(btn) { btn.classList.remove('active'); });
+      event.target.classList.add('active');
+      cards.forEach(function(card) {
+        if (pillar === 'all' || card.getAttribute('data-pillar') === pillar) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

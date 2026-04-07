@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cost of Having a Baby in Australia 2025-26 — Free Calculator</title>
+  <meta name="description" content="Calculate the total cost of having a baby in Australia. Hospital, gear, lost income, childcare — minus your Centrelink payments. For citizens and visa holders.">
+  <link rel="canonical" href="https://centrelinkestimator.com.au/tools/baby-cost-calculator">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"Cost of Having a Baby Calculator","description":"Calculate the total first-year cost of having a baby in Australia.","applicationCategory":"FinanceApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"AUD"}}
+  </script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{overflow-x:hidden}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f0f4f8;color:#1a202c;line-height:1.6;-webkit-text-size-adjust:100%}
+    a{color:#2b6cb0;text-decoration:none;font-weight:600}a:hover{text-decoration:underline}
+    h1,h2,h3,p{overflow-wrap:break-word}
+    nav{background:#1a365d;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+    .nav-logo{font-weight:800;font-size:1.05rem;color:white;text-decoration:none}.nav-logo:hover{text-decoration:none}
+    .nav-links{display:flex;align-items:center;gap:16px}
+    .nav-link{color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:500}.nav-link:hover{color:white;text-decoration:none}
+    .nav-cta{background:#48bb78;color:white;padding:7px 16px;border-radius:8px;font-weight:600;font-size:0.82rem}.nav-cta:hover{text-decoration:none;background:#38a169}
+    @media(max-width:640px){.nav-link{display:none}}
+    .container{max-width:760px;margin:0 auto;padding:24px 16px 60px}
+    .page-header{text-align:center;margin-bottom:28px}
+    .page-header h1{font-size:1.8rem;font-weight:900;color:#1a365d;margin-bottom:6px}
+    .page-header p{color:#718096;font-size:0.95rem}
+    .card{background:white;border-radius:14px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:20px}
+    .form-group{margin-bottom:16px}
+    label{display:block;font-weight:600;font-size:0.9rem;margin-bottom:5px;color:#2d3748}
+    label small{font-weight:400;color:#718096}
+    input,select{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;font-family:inherit;transition:border-color 0.2s}
+    input:focus,select:focus{outline:none;border-color:#3182ce}
+    .row{display:flex;gap:14px}.row .form-group{flex:1}
+    .section-label{font-size:0.82rem;font-weight:700;color:#805ad5;text-transform:uppercase;letter-spacing:0.04em;margin:20px 0 10px;padding-top:12px;border-top:1px solid #f0f4f8}
+    .section-label:first-child{border-top:none;margin-top:0}
+    button[type="submit"]{width:100%;padding:14px;background:#2b6cb0;color:white;border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
+    button[type="submit"]:hover{background:#2c5282}
+    .results{display:none}.results.active{display:block}
+    .results h2{font-size:1.3rem;font-weight:800;color:#1a365d;margin-bottom:16px}
+    .result-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f4f8;font-size:0.9rem}
+    .result-row:last-child{border-bottom:none}
+    .result-row .label{color:#4a5568}.result-row .value{font-weight:700;color:#1a365d}
+    .result-row.negative .value{color:#c53030}
+    .result-row.positive .value{color:#276749}
+    .result-row.highlight{background:#f0fff4;margin:0 -28px;padding:14px 28px;border-radius:8px;border-bottom:none}
+    .result-row.highlight .label{font-weight:700;color:#276749}.result-row.highlight .value{font-size:1.3rem;color:#276749}
+    .result-row.total{background:#fff5f5;margin:0 -28px;padding:14px 28px;border-radius:8px;border-bottom:none}
+    .result-row.total .label{font-weight:700;color:#c53030}.result-row.total .value{font-size:1.3rem;color:#c53030}
+    .divider{font-size:0.78rem;font-weight:700;color:#a0aec0;text-transform:uppercase;letter-spacing:0.05em;padding:14px 0 6px}
+    .bar-wrap{margin:16px 0}
+    .cost-bar{height:28px;border-radius:14px;display:flex;overflow:hidden;background:#e2e8f0}
+    .cost-bar div{display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:700;color:white;min-width:2px}
+    .bar-legend{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;font-size:0.75rem;color:#4a5568}
+    .legend-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:4px;vertical-align:middle}
+    .info-box{padding:14px 16px;border-radius:8px;font-size:0.88rem;margin:16px 0}
+    .info-box.green{background:#f0fff4;border-left:4px solid #38a169;color:#276749}
+    .info-box.blue{background:#ebf8ff;border-left:4px solid #3182ce;color:#2c5282}
+    .cta-box{background:linear-gradient(135deg,#1a365d,#2c5282);color:white;padding:28px;border-radius:14px;text-align:center;margin:24px 0}
+    .cta-box h3{color:white;font-size:1.1rem;margin-bottom:6px}.cta-box p{color:#bee3f8;font-size:0.9rem;margin-bottom:14px}
+    .cta-btn{display:inline-block;background:#48bb78;color:white;padding:10px 28px;border-radius:10px;font-weight:700;font-size:0.95rem}.cta-btn:hover{text-decoration:none;background:#38a169}
+    .disclaimer{margin-top:20px;padding:14px;background:#fffff0;border-left:4px solid #d69e2e;border-radius:4px;font-size:0.82rem;color:#744210}
+    footer{background:#1a202c;color:#a0aec0;padding:32px 16px;text-align:center;font-size:0.82rem}
+    footer a{color:#63b3ed}footer p{margin-bottom:6px}
+    @media(max-width:640px){.row{flex-direction:column;gap:0}.card{padding:20px}.page-header h1{font-size:1.4rem}.result-row.highlight,.result-row.total{margin:0 -20px;padding:14px 20px}}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../index.html" class="nav-logo">SettleAU</a>
+    <div class="nav-links">
+      <a href="../money-tax/" class="nav-link">Money & Tax</a>
+      <a href="../visas/" class="nav-link">Visas</a>
+      <a href="../health/" class="nav-link">Health</a>
+      <a href="../family/" class="nav-link">Family</a>
+      <a href="../settling-in/" class="nav-link">Settling In</a>
+      <a href="../tools.html" class="nav-cta">All Tools</a>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="page-header">
+      <h1>Cost of Having a Baby in Australia</h1>
+      <p>Estimate your total first-year costs — then subtract your Centrelink payments</p>
+    </div>
+    <div class="card">
+      <form id="babyForm">
+        <div class="section-label">Birth & Hospital</div>
+        <div class="form-group">
+          <label>How will you give birth?</label>
+          <select id="birthType">
+            <option value="public_medicare">Public hospital with Medicare (free)</option>
+            <option value="public_no_medicare">Public hospital without Medicare (visa holder)</option>
+            <option value="private">Private hospital with private health insurance</option>
+            <option value="private_no_insurance">Private hospital without insurance</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Expected birth type</label>
+          <select id="deliveryType">
+            <option value="vaginal">Vaginal delivery</option>
+            <option value="caesarean">Caesarean section</option>
+          </select>
+        </div>
+
+        <div class="section-label">Lost Income</div>
+        <div class="row">
+          <div class="form-group">
+            <label>Your weekly income <small>(before tax)</small></label>
+            <input type="number" id="weeklyIncome" placeholder="e.g. 1200" value="0" min="0">
+          </div>
+          <div class="form-group">
+            <label>Weeks off work</label>
+            <input type="number" id="weeksOff" value="20" min="0" max="52">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Employer paid parental leave? <small>(weeks)</small></label>
+          <input type="number" id="employerPPL" value="0" min="0" max="52">
+        </div>
+
+        <div class="section-label">Baby Gear & Essentials</div>
+        <div class="row">
+          <div class="form-group">
+            <label>Nursery setup <small>(cot, pram, car seat)</small></label>
+            <select id="gearLevel">
+              <option value="budget">Budget ($1,000 - $2,000)</option>
+              <option value="mid" selected>Mid-range ($2,500 - $4,000)</option>
+              <option value="premium">Premium ($5,000 - $8,000)</option>
+              <option value="secondhand">Mostly second-hand ($500 - $1,000)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="section-label">Ongoing Monthly Costs</div>
+        <div class="row">
+          <div class="form-group">
+            <label>Nappies & wipes <small>($/month)</small></label>
+            <input type="number" id="nappies" value="120" min="0">
+          </div>
+          <div class="form-group">
+            <label>Formula <small>($/month, $0 if breastfeeding)</small></label>
+            <input type="number" id="formula" value="0" min="0">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label>Baby clothes & misc <small>($/month)</small></label>
+            <input type="number" id="clothes" value="80" min="0">
+          </div>
+          <div class="form-group">
+            <label>Health/medical <small>($/month)</small></label>
+            <input type="number" id="medical" value="50" min="0">
+          </div>
+        </div>
+
+        <div class="section-label">Centrelink Payments You'll Receive</div>
+        <div class="row">
+          <div class="form-group">
+            <label>FTB Part A <small>($/fortnight)</small></label>
+            <input type="number" id="ftbA" value="227" min="0">
+          </div>
+          <div class="form-group">
+            <label>FTB Part B <small>($/fortnight)</small></label>
+            <input type="number" id="ftbB" value="193" min="0">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <label>Getting Parental Leave Pay?</label>
+            <select id="gettingPLP">
+              <option value="yes">Yes — 20 weeks PLP</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>First child?</label>
+            <select id="firstChild">
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit">Calculate Total Cost</button>
+      </form>
+    </div>
+
+    <div class="results" id="results">
+      <div class="card">
+        <h2>Your First-Year Baby Budget</h2>
+        <div id="resultContent"></div>
+      </div>
+      <div class="cta-box">
+        <h3>Not sure about your Centrelink amounts?</h3>
+        <p>Use our payment calculator to get your exact FTB, PLP, and Newborn Supplement figures.</p>
+        <a href="../money-tax/centrelink-calculator.html" class="cta-btn">Calculate Centrelink Payments</a>
+      </div>
+      <div class="disclaimer">
+        <strong>Disclaimer:</strong> These are rough estimates based on average Australian costs in 2025-26. Your actual costs will vary based on location, choices, and circumstances. Hospital costs are estimates only — contact your hospital for actual fees.
+      </div>
+    </div>
+  </div>
+  <footer>
+    <p><strong>SettleAU</strong> — Free tools for Australian families</p>
+    <p>Not financial advice. Not affiliated with <a href="https://www.servicesaustralia.gov.au" target="_blank">Services Australia</a>.</p>
+  </footer>
+  <script>
+    const HOSPITAL_COSTS = {
+      public_medicare: { vaginal: 0, caesarean: 0 },
+      public_no_medicare: { vaginal: 8000, caesarean: 15000 },
+      private: { vaginal: 3000, caesarean: 5500 },
+      private_no_insurance: { vaginal: 12000, caesarean: 20000 },
+    };
+    const GEAR_COSTS = { secondhand: 750, budget: 1500, mid: 3200, premium: 6500 };
+    const PLP_WEEKLY = 882.75, PLP_WEEKS = 20;
+    const NEWBORN_UPFRONT = 683;
+    const NEWBORN_SUPP_FIRST = 2003.82, NEWBORN_SUPP_SUB = 668.85;
+
+    function fmt(n) { return '$' + Math.round(Math.abs(n)).toLocaleString('en-AU'); }
+
+    document.getElementById('babyForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const birthType = document.getElementById('birthType').value;
+      const deliveryType = document.getElementById('deliveryType').value;
+      const weeklyIncome = parseFloat(document.getElementById('weeklyIncome').value) || 0;
+      const weeksOff = parseInt(document.getElementById('weeksOff').value) || 0;
+      const employerPPL = parseInt(document.getElementById('employerPPL').value) || 0;
+      const gearLevel = document.getElementById('gearLevel').value;
+      const nappies = parseFloat(document.getElementById('nappies').value) || 0;
+      const formula = parseFloat(document.getElementById('formula').value) || 0;
+      const clothes = parseFloat(document.getElementById('clothes').value) || 0;
+      const medical = parseFloat(document.getElementById('medical').value) || 0;
+      const ftbA = parseFloat(document.getElementById('ftbA').value) || 0;
+      const ftbB = parseFloat(document.getElementById('ftbB').value) || 0;
+      const gettingPLP = document.getElementById('gettingPLP').value === 'yes';
+      const firstChild = document.getElementById('firstChild').value === 'yes';
+
+      // Costs
+      const hospitalCost = HOSPITAL_COSTS[birthType][deliveryType];
+      const gearCost = GEAR_COSTS[gearLevel];
+      const monthlyOngoing = nappies + formula + clothes + medical;
+      const yearlyOngoing = monthlyOngoing * 12;
+      const unpaidWeeks = Math.max(0, weeksOff - employerPPL - (gettingPLP ? PLP_WEEKS : 0));
+      const lostIncome = unpaidWeeks * weeklyIncome;
+      const prenatalCosts = 500; // scans, vitamins, maternity clothes estimate
+
+      const totalCosts = hospitalCost + gearCost + yearlyOngoing + lostIncome + prenatalCosts;
+
+      // Centrelink income
+      const ftbAnnual = (ftbA + ftbB) * 26;
+      const plpTotal = gettingPLP ? PLP_WEEKLY * PLP_WEEKS : 0;
+      const newbornUpfront = NEWBORN_UPFRONT;
+      const newbornSupp = gettingPLP ? 0 : (firstChild ? NEWBORN_SUPP_FIRST : NEWBORN_SUPP_SUB);
+      const employerPPLTotal = employerPPL * weeklyIncome;
+      const totalSupport = ftbAnnual + plpTotal + newbornUpfront + newbornSupp + employerPPLTotal;
+
+      const netCost = totalCosts - totalSupport;
+
+      // Bar
+      const total = totalCosts > 0 ? totalCosts : 1;
+      const pcts = {
+        hospital: (hospitalCost / total * 100).toFixed(1),
+        gear: (gearCost / total * 100).toFixed(1),
+        ongoing: (yearlyOngoing / total * 100).toFixed(1),
+        lost: (lostIncome / total * 100).toFixed(1),
+        other: (prenatalCosts / total * 100).toFixed(1),
+      };
+
+      let html = '';
+      html += `<div class="bar-wrap"><div class="cost-bar">
+        <div style="width:${pcts.hospital}%;background:#e53e3e">${pcts.hospital > 6 ? 'Hospital' : ''}</div>
+        <div style="width:${pcts.gear}%;background:#dd6b20">${pcts.gear > 6 ? 'Gear' : ''}</div>
+        <div style="width:${pcts.ongoing}%;background:#3182ce">${pcts.ongoing > 6 ? 'Monthly' : ''}</div>
+        <div style="width:${pcts.lost}%;background:#805ad5">${pcts.lost > 6 ? 'Lost income' : ''}</div>
+        <div style="width:${pcts.other}%;background:#718096"></div>
+      </div><div class="bar-legend">
+        <span><span class="legend-dot" style="background:#e53e3e"></span>Hospital</span>
+        <span><span class="legend-dot" style="background:#dd6b20"></span>Gear</span>
+        <span><span class="legend-dot" style="background:#3182ce"></span>Monthly costs</span>
+        <span><span class="legend-dot" style="background:#805ad5"></span>Lost income</span>
+      </div></div>`;
+
+      // Net cost
+      html += `<div class="result-row ${netCost > 0 ? 'total' : 'highlight'}">
+        <span class="label">Net Cost (First Year)</span>
+        <span class="value">${netCost > 0 ? '' : '-'}${fmt(netCost)}</span>
+      </div>`;
+
+      // Costs breakdown
+      html += `<div class="divider">Costs</div>`;
+      html += `<div class="result-row negative"><span class="label">Hospital & birth</span><span class="value">${fmt(hospitalCost)}</span></div>`;
+      html += `<div class="result-row negative"><span class="label">Prenatal (scans, vitamins, maternity wear)</span><span class="value">${fmt(prenatalCosts)}</span></div>`;
+      html += `<div class="result-row negative"><span class="label">Baby gear & nursery setup</span><span class="value">${fmt(gearCost)}</span></div>`;
+      html += `<div class="result-row negative"><span class="label">Nappies & wipes (12 months)</span><span class="value">${fmt(nappies * 12)}</span></div>`;
+      if (formula > 0) html += `<div class="result-row negative"><span class="label">Formula (12 months)</span><span class="value">${fmt(formula * 12)}</span></div>`;
+      html += `<div class="result-row negative"><span class="label">Clothes & misc (12 months)</span><span class="value">${fmt(clothes * 12)}</span></div>`;
+      html += `<div class="result-row negative"><span class="label">Health & medical (12 months)</span><span class="value">${fmt(medical * 12)}</span></div>`;
+      if (lostIncome > 0) html += `<div class="result-row negative"><span class="label">Lost income (${unpaidWeeks} unpaid weeks)</span><span class="value">${fmt(lostIncome)}</span></div>`;
+      html += `<div class="result-row"><span class="label"><strong>Total Costs</strong></span><span class="value" style="color:#c53030"><strong>${fmt(totalCosts)}</strong></span></div>`;
+
+      // Support breakdown
+      html += `<div class="divider">Government & Employer Support</div>`;
+      html += `<div class="result-row positive"><span class="label">FTB Part A + B (12 months)</span><span class="value">+${fmt(ftbAnnual)}</span></div>`;
+      if (plpTotal > 0) html += `<div class="result-row positive"><span class="label">Parental Leave Pay (${PLP_WEEKS} weeks)</span><span class="value">+${fmt(plpTotal)}</span></div>`;
+      html += `<div class="result-row positive"><span class="label">Newborn Upfront Payment</span><span class="value">+${fmt(newbornUpfront)}</span></div>`;
+      if (newbornSupp > 0) html += `<div class="result-row positive"><span class="label">Newborn Supplement (${firstChild ? '1st child' : 'subsequent'})</span><span class="value">+${fmt(newbornSupp)}</span></div>`;
+      if (employerPPLTotal > 0) html += `<div class="result-row positive"><span class="label">Employer parental leave (${employerPPL} weeks)</span><span class="value">+${fmt(employerPPLTotal)}</span></div>`;
+      html += `<div class="result-row"><span class="label"><strong>Total Support</strong></span><span class="value" style="color:#276749"><strong>+${fmt(totalSupport)}</strong></span></div>`;
+
+      // Tips
+      if (birthType === 'public_no_medicare') {
+        html += `<div class="info-box blue"><strong>Tip:</strong> Check if your visa qualifies for <a href="https://www.servicesaustralia.gov.au/enrolling-medicare" target="_blank" style="color:#2c5282">Medicare</a>. Partner visas (820/309), regional visas (491/494), and many others are eligible — which would make the hospital birth free.</div>`;
+      }
+      if (!gettingPLP) {
+        html += `<div class="info-box green"><strong>Tip:</strong> If you've worked 330 hours in 10 of the last 13 months, you may qualify for <a href="https://www.servicesaustralia.gov.au/parental-leave-pay" target="_blank" style="color:#276749">Parental Leave Pay</a> ($17,655 over 20 weeks). Use our <a href="../money-tax/centrelink-calculator.html" style="color:#276749">calculator</a> to check.</div>`;
+      }
+
+      document.getElementById('resultContent').innerHTML = html;
+      document.getElementById('results').classList.add('active');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

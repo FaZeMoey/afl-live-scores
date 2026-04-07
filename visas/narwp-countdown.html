@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NARWP Countdown Timer — When Can I Access Centrelink Payments?</title>
+  <meta name="description" content="Live countdown showing exactly when your NARWP waiting period ends and you can access Centrelink payments. For Australian visa holders.">
+  <link rel="canonical" href="https://centrelinkestimator.com.au/tools/narwp-countdown">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{overflow-x:hidden}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f0f4f8;color:#1a202c;line-height:1.6}
+    a{color:#2b6cb0;text-decoration:none;font-weight:600}a:hover{text-decoration:underline}
+    h1,h2,h3,p{overflow-wrap:break-word}
+    nav{background:#1a365d;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+    .nav-logo{font-weight:800;font-size:1.05rem;color:white;text-decoration:none}.nav-logo:hover{text-decoration:none}
+    .nav-links{display:flex;align-items:center;gap:16px}
+    .nav-link{color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:500}.nav-link:hover{color:white;text-decoration:none}
+    .nav-cta{background:#48bb78;color:white;padding:7px 16px;border-radius:8px;font-weight:600;font-size:0.82rem}.nav-cta:hover{text-decoration:none;background:#38a169}
+    @media(max-width:640px){.nav-link{display:none}}
+    .container{max-width:760px;margin:0 auto;padding:24px 16px 60px}
+    .page-header{text-align:center;margin-bottom:28px}
+    .page-header h1{font-size:1.8rem;font-weight:900;color:#1a365d;margin-bottom:6px}
+    .page-header p{color:#718096;font-size:0.95rem}
+    .card{background:white;border-radius:14px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:20px}
+    .form-group{margin-bottom:16px}
+    label{display:block;font-weight:600;font-size:0.9rem;margin-bottom:5px;color:#2d3748}
+    input,select{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;font-family:inherit}
+    input:focus,select:focus{outline:none;border-color:#3182ce}
+    button[type="submit"]{width:100%;padding:14px;background:#2b6cb0;color:white;border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
+    button[type="submit"]:hover{background:#2c5282}
+    .results{display:none}.results.active{display:block}
+    .countdown-card{background:white;border-radius:14px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:16px;border-left:5px solid #3182ce}
+    .countdown-card.served{border-left-color:#38a169}
+    .countdown-card h3{font-size:1rem;font-weight:700;color:#1a365d;margin-bottom:4px}
+    .countdown-card .eligible-date{font-size:0.85rem;color:#718096;margin-bottom:12px}
+    .countdown-nums{display:flex;gap:12px;justify-content:center;margin:16px 0}
+    .countdown-unit{text-align:center;background:#f7fafc;border-radius:10px;padding:12px 16px;min-width:70px}
+    .countdown-unit .num{font-size:1.8rem;font-weight:900;color:#2b6cb0}
+    .countdown-unit .lbl{font-size:0.68rem;color:#718096;font-weight:600;text-transform:uppercase}
+    .countdown-card.served .countdown-unit .num{color:#38a169}
+    .progress-bar{height:10px;border-radius:5px;background:#e2e8f0;overflow:hidden;margin:12px 0}
+    .progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#3182ce,#63b3ed);transition:width 0.5s}
+    .countdown-card.served .progress-fill{background:linear-gradient(90deg,#38a169,#68d391)}
+    .progress-label{display:flex;justify-content:space-between;font-size:0.75rem;color:#718096}
+    .served-badge{display:inline-block;background:#f0fff4;color:#276749;border:1px solid #c6f6d5;padding:6px 16px;border-radius:20px;font-weight:700;font-size:0.85rem}
+    .waiting-badge{display:inline-block;background:#fff5f5;color:#c53030;border:1px solid #fed7d7;padding:6px 16px;border-radius:20px;font-weight:700;font-size:0.85rem}
+    .info-box{padding:14px 16px;border-radius:8px;font-size:0.88rem;margin:16px 0}
+    .info-box.green{background:#f0fff4;border-left:4px solid #38a169;color:#276749}
+    .info-box.blue{background:#ebf8ff;border-left:4px solid #3182ce;color:#2c5282}
+    .cta-box{background:linear-gradient(135deg,#1a365d,#2c5282);color:white;padding:28px;border-radius:14px;text-align:center;margin:24px 0}
+    .cta-box h3{color:white;font-size:1.1rem;margin-bottom:6px}.cta-box p{color:#bee3f8;font-size:0.9rem;margin-bottom:14px}
+    .cta-btn{display:inline-block;background:#48bb78;color:white;padding:10px 28px;border-radius:10px;font-weight:700;font-size:0.95rem}.cta-btn:hover{text-decoration:none;background:#38a169}
+    .disclaimer{margin-top:20px;padding:14px;background:#fffff0;border-left:4px solid #d69e2e;border-radius:4px;font-size:0.82rem;color:#744210}
+    footer{background:#1a202c;color:#a0aec0;padding:32px 16px;text-align:center;font-size:0.82rem}footer a{color:#63b3ed}footer p{margin-bottom:6px}
+    @media(max-width:640px){.card{padding:20px}.page-header h1{font-size:1.4rem}.countdown-nums{gap:8px}.countdown-unit{min-width:55px;padding:10px 8px}.countdown-unit .num{font-size:1.4rem}}
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="../index.html" class="nav-logo">SettleAU</a>
+    <div class="nav-links">
+      <a href="../money-tax/" class="nav-link">Money & Tax</a>
+      <a href="../visas/" class="nav-link">Visas</a>
+      <a href="../health/" class="nav-link">Health</a>
+      <a href="../family/" class="nav-link">Family</a>
+      <a href="../settling-in/" class="nav-link">Settling In</a>
+      <a href="../tools.html" class="nav-cta">All Tools</a>
+    </div>
+  </nav>
+  <div class="container">
+    <div class="page-header">
+      <h1>NARWP Countdown Timer</h1>
+      <p>See exactly when your waiting period ends and each payment unlocks</p>
+    </div>
+    <div class="card">
+      <form id="narwpForm">
+        <div class="form-group">
+          <label>Your visa grant date</label>
+          <input type="date" id="visaDate" required>
+        </div>
+        <div class="form-group">
+          <label>Are you on a humanitarian visa? <small>(200-204, 866, 851)</small></label>
+          <select id="humanitarian">
+            <option value="no">No</option>
+            <option value="yes">Yes — NARWP exempt</option>
+          </select>
+        </div>
+        <button type="submit">Start Countdown</button>
+      </form>
+    </div>
+    <div class="results" id="results"><div id="resultContent"></div>
+      <div class="cta-box">
+        <h3>Calculate your payment amounts</h3>
+        <p>See exactly how much FTB, PLP, and Newborn Supplement you'll get once eligible.</p>
+        <a href="../money-tax/centrelink-calculator.html" class="cta-btn">Centrelink Calculator</a>
+      </div>
+      <div class="disclaimer"><strong>Disclaimer:</strong> NARWP dates are calculated from your visa grant date. If you held a previous qualifying visa, time on that visa may count toward NARWP. Contact <a href="https://www.servicesaustralia.gov.au" target="_blank">Services Australia</a> on 136 150 to confirm.</div>
+    </div>
+  </div>
+  <footer>
+    <p><strong>SettleAU</strong> — Free tools for Australian families</p>
+    <p>Not financial advice. Not affiliated with <a href="https://www.servicesaustralia.gov.au" target="_blank">Services Australia</a>.</p>
+  </footer>
+  <script>
+    const PAYMENTS = [
+      { name: 'FTB Part B', weeks: 0, link: 'https://www.servicesaustralia.gov.au/family-tax-benefit', desc: 'No NARWP — eligible from visa grant date' },
+      { name: 'Low Income Health Care Card', weeks: 0, link: 'https://www.servicesaustralia.gov.au/low-income-health-care-card', desc: 'No NARWP' },
+      { name: 'Special Benefit', weeks: 0, link: 'https://www.servicesaustralia.gov.au/special-benefit', desc: 'No NARWP — for severe financial hardship' },
+      { name: 'FTB Part A', weeks: 52, link: 'https://www.servicesaustralia.gov.au/family-tax-benefit', desc: '1-year waiting period' },
+      { name: 'Newborn Supplement', weeks: 52, link: 'https://www.servicesaustralia.gov.au/newborn-upfront-payment-and-newborn-supplement', desc: 'Requires FTB Part A eligibility' },
+      { name: 'Parental Leave Pay', weeks: 104, link: 'https://www.servicesaustralia.gov.au/parental-leave-pay', desc: '2-year waiting period + work test' },
+      { name: 'Parenting Payment', weeks: 208, link: 'https://www.servicesaustralia.gov.au/parenting-payment', desc: '4-year waiting period (permanent visa required)' },
+      { name: 'JobSeeker Payment', weeks: 208, link: 'https://www.servicesaustralia.gov.au/jobseeker-payment', desc: '4-year waiting period (permanent visa required)' },
+    ];
+
+    const fmt = d => d.toLocaleDateString('en-AU', {day:'numeric', month:'long', year:'numeric'});
+    let timerInterval;
+
+    document.getElementById('narwpForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (timerInterval) clearInterval(timerInterval);
+      calculate();
+      timerInterval = setInterval(calculate, 1000);
+    });
+
+    function calculate() {
+      const visaDate = new Date(document.getElementById('visaDate').value);
+      const humanitarian = document.getElementById('humanitarian').value === 'yes';
+      const now = new Date();
+
+      let html = '';
+      if (humanitarian) {
+        html += `<div class="info-box green"><strong>NARWP Exempt:</strong> Humanitarian visa holders are exempt from all NARWP waiting periods. You have immediate access to all Centrelink payments.</div>`;
+        PAYMENTS.forEach(p => {
+          html += `<div class="countdown-card served">
+            <h3><a href="${p.link}" target="_blank" style="color:#1a365d">${p.name}</a></h3>
+            <div style="text-align:center;margin:10px 0"><span class="served-badge">Eligible Now</span></div>
+          </div>`;
+        });
+      } else {
+        PAYMENTS.forEach(p => {
+          const eligibleDate = new Date(visaDate.getTime() + p.weeks * 7 * 24 * 60 * 60 * 1000);
+          const served = now >= eligibleDate;
+          const totalMs = p.weeks * 7 * 24 * 60 * 60 * 1000;
+          const elapsedMs = now - visaDate;
+          const progressPct = totalMs > 0 ? Math.min(100, (elapsedMs / totalMs) * 100) : 100;
+
+          html += `<div class="countdown-card${served ? ' served' : ''}">
+            <h3><a href="${p.link}" target="_blank" style="color:#1a365d">${p.name}</a></h3>
+            <div class="eligible-date">${p.desc} — Eligible from: <strong>${p.weeks === 0 ? 'Immediately' : fmt(eligibleDate)}</strong></div>`;
+
+          if (served) {
+            html += `<div style="text-align:center;margin:10px 0"><span class="served-badge">Eligible Now</span></div>`;
+          } else {
+            const diff = eligibleDate - now;
+            const days = Math.floor(diff / (24*60*60*1000));
+            const hours = Math.floor((diff % (24*60*60*1000)) / (60*60*1000));
+            const mins = Math.floor((diff % (60*60*1000)) / (60*1000));
+            const secs = Math.floor((diff % (60*1000)) / 1000);
+            html += `<div class="countdown-nums">
+              <div class="countdown-unit"><div class="num">${days}</div><div class="lbl">Days</div></div>
+              <div class="countdown-unit"><div class="num">${hours}</div><div class="lbl">Hours</div></div>
+              <div class="countdown-unit"><div class="num">${mins}</div><div class="lbl">Mins</div></div>
+              <div class="countdown-unit"><div class="num">${secs}</div><div class="lbl">Secs</div></div>
+            </div>`;
+          }
+
+          if (p.weeks > 0) {
+            html += `<div class="progress-bar"><div class="progress-fill" style="width:${progressPct}%"></div></div>
+              <div class="progress-label"><span>${fmt(visaDate)}</span><span>${progressPct.toFixed(0)}%</span><span>${fmt(eligibleDate)}</span></div>`;
+          }
+          html += `</div>`;
+        });
+      }
+
+      document.getElementById('resultContent').innerHTML = html;
+      document.getElementById('results').classList.add('active');
+    }
+  </script>
+</body>
+</html>

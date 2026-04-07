@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medicare vs Private Health Insurance — Comparison for Visa Holders</title>
+  <meta name="description" content="Compare Medicare and private health insurance in Australia. See what's covered, costs, and which option suits your visa type and family situation.">
+  <link rel="canonical" href="https://centrelinkestimator.com.au/tools/medicare-comparison">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{overflow-x:hidden}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f0f4f8;color:#1a202c;line-height:1.6}
+    a{color:#2b6cb0;text-decoration:none;font-weight:600}a:hover{text-decoration:underline}h1,h2,h3,p{overflow-wrap:break-word}
+    nav{background:#1a365d;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+    .nav-logo{font-weight:800;font-size:1.05rem;color:white;text-decoration:none}.nav-logo:hover{text-decoration:none}
+    .nav-links{display:flex;align-items:center;gap:16px}.nav-link{color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:500}.nav-link:hover{color:white;text-decoration:none}
+    .nav-cta{background:#48bb78;color:white;padding:7px 16px;border-radius:8px;font-weight:600;font-size:0.82rem}.nav-cta:hover{text-decoration:none;background:#38a169}
+    @media(max-width:640px){.nav-link{display:none}}
+    .container{max-width:800px;margin:0 auto;padding:24px 16px 60px}
+    .page-header{text-align:center;margin-bottom:28px}.page-header h1{font-size:1.8rem;font-weight:900;color:#1a365d;margin-bottom:6px}.page-header p{color:#718096;font-size:0.95rem}
+    .card{background:white;border-radius:14px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:20px}
+    .form-group{margin-bottom:16px}label{display:block;font-weight:600;font-size:0.9rem;margin-bottom:5px;color:#2d3748}
+    select,input{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;font-family:inherit}select:focus,input:focus{outline:none;border-color:#3182ce}
+    .row{display:flex;gap:14px}.row .form-group{flex:1}
+    button[type="submit"]{width:100%;padding:14px;background:#2b6cb0;color:white;border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}button[type="submit"]:hover{background:#2c5282}
+    .results{display:none}.results.active{display:block}
+    .compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+    .compare-card{border-radius:14px;padding:24px;text-align:center}
+    .compare-card.medicare-card{background:#ebf8ff;border:2px solid #3182ce}
+    .compare-card.private-card{background:#faf5ff;border:2px solid #805ad5}
+    .compare-card h3{font-size:1.1rem;font-weight:800;margin-bottom:4px}
+    .compare-card .price{font-size:1.6rem;font-weight:900;margin:8px 0}
+    .compare-card .price small{font-size:0.8rem;font-weight:500}
+    .compare-table{width:100%;border-collapse:collapse;font-size:0.85rem;margin:16px 0}
+    .compare-table th{background:#f7fafc;padding:10px 14px;text-align:left;font-weight:700;color:#1a365d;font-size:0.8rem}
+    .compare-table td{padding:10px 14px;border-bottom:1px solid #e2e8f0;vertical-align:top}
+    .compare-table .yes{color:#276749;font-weight:600}.compare-table .no{color:#c53030;font-weight:600}.compare-table .partial{color:#c05621;font-weight:600}
+    .recommend-box{border-radius:14px;padding:24px;margin:20px 0;text-align:center}
+    .recommend-box.rec-medicare{background:#ebf8ff;border:2px solid #3182ce}
+    .recommend-box.rec-private{background:#faf5ff;border:2px solid #805ad5}
+    .recommend-box.rec-both{background:#f0fff4;border:2px solid #38a169}
+    .recommend-box h3{font-size:1.1rem;font-weight:800;margin-bottom:6px}
+    .recommend-box p{font-size:0.9rem;color:#4a5568}
+    .info-box{padding:14px 16px;border-radius:8px;font-size:0.88rem;margin:16px 0}
+    .info-box.blue{background:#ebf8ff;border-left:4px solid #3182ce;color:#2c5282}
+    .info-box.orange{background:#fffaf0;border-left:4px solid #dd6b20;color:#744210}
+    .cta-box{background:linear-gradient(135deg,#1a365d,#2c5282);color:white;padding:28px;border-radius:14px;text-align:center;margin:24px 0}
+    .cta-box h3{color:white;font-size:1.1rem;margin-bottom:6px}.cta-box p{color:#bee3f8;font-size:0.9rem;margin-bottom:14px}
+    .cta-btn{display:inline-block;background:#48bb78;color:white;padding:10px 28px;border-radius:10px;font-weight:700;font-size:0.95rem}.cta-btn:hover{text-decoration:none;background:#38a169}
+    .disclaimer{margin-top:20px;padding:14px;background:#fffff0;border-left:4px solid #d69e2e;border-radius:4px;font-size:0.82rem;color:#744210}
+    footer{background:#1a202c;color:#a0aec0;padding:32px 16px;text-align:center;font-size:0.82rem}footer a{color:#63b3ed}footer p{margin-bottom:6px}
+    @media(max-width:640px){.compare-grid{grid-template-columns:1fr}.row{flex-direction:column;gap:0}.card{padding:20px}.page-header h1{font-size:1.4rem}}
+  </style>
+</head>
+<body>
+  <nav><a href="../index.html" class="nav-logo">SettleAU</a><div class="nav-links"><a href="../money-tax/" class="nav-link">Money & Tax</a><a href="../visas/" class="nav-link">Visas</a><a href="../health/" class="nav-link">Health</a><a href="../family/" class="nav-link">Family</a><a href="../settling-in/" class="nav-link">Settling In</a><a href="../tools.html" class="nav-cta">All Tools</a></div></nav>
+  <div class="container">
+    <div class="page-header"><h1>Medicare vs Private Health Insurance</h1><p>Compare coverage, costs, and find the best option for your visa and family</p></div>
+    <div class="card">
+      <form id="compareForm">
+        <div class="form-group"><label>Your visa/residency status</label>
+          <select id="visaStatus">
+            <option value="citizen">Australian Citizen</option>
+            <option value="pr">Permanent Resident</option>
+            <option value="partner_temp">Partner Visa (820/309)</option>
+            <option value="regional">Regional Visa (491/494)</option>
+            <option value="skilled_temp">Skilled Temp (482)</option>
+            <option value="student">Student (500)</option>
+            <option value="whm">Working Holiday (417/462)</option>
+            <option value="visitor">Visitor (600)</option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="form-group"><label>Family size</label>
+            <select id="familySize">
+              <option value="single">Single</option>
+              <option value="couple">Couple</option>
+              <option value="family" selected>Family (couple + children)</option>
+              <option value="single_parent">Single parent + children</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Combined income <small>($/year)</small></label>
+            <input type="number" id="income" value="80000" min="0">
+          </div>
+        </div>
+        <div class="form-group"><label>Planning pregnancy/birth?</label>
+          <select id="pregnancy"><option value="yes">Yes</option><option value="no">No</option></select>
+        </div>
+        <button type="submit">Compare Options</button>
+      </form>
+    </div>
+    <div class="results" id="results"><div id="resultContent"></div>
+      <div class="cta-box"><h3>Check your Centrelink payment eligibility</h3><p>See what family payments you can access on your visa.</p><a href="../money-tax/centrelink-calculator.html" class="cta-btn">Centrelink Calculator</a></div>
+      <div class="disclaimer"><strong>Disclaimer:</strong> Insurance costs are approximate averages. Compare actual policies on <a href="https://www.privatehealth.gov.au" target="_blank">privatehealth.gov.au</a>. Medicare coverage details from <a href="https://www.servicesaustralia.gov.au/enrolling-medicare" target="_blank">Services Australia</a>.</div>
+    </div>
+  </div>
+  <footer><p><strong>SettleAU</strong> — Free tools for Australian families</p><p>Not financial or health advice. Not affiliated with <a href="https://www.servicesaustralia.gov.au" target="_blank">Services Australia</a>.</p></footer>
+  <script>
+    const VISA_MEDICARE = {
+      citizen: { eligible: true, type: 'Full Medicare', card: 'Green card' },
+      pr: { eligible: true, type: 'Full Medicare', card: 'Green card' },
+      partner_temp: { eligible: true, type: 'Full Medicare', card: 'Blue interim card' },
+      regional: { eligible: true, type: 'Full Medicare', card: 'Blue interim card' },
+      skilled_temp: { eligible: false, type: 'RHCA only (if applicable)', card: 'None or RHCA' },
+      student: { eligible: false, type: 'Not eligible — OSHC required', card: 'None' },
+      whm: { eligible: false, type: 'RHCA only (if applicable)', card: 'None or RHCA' },
+      visitor: { eligible: false, type: 'RHCA only (if applicable)', card: 'None or RHCA' },
+    };
+    const PHI_COSTS = { single: { hospital: 120, extras: 30 }, couple: { hospital: 240, extras: 55 }, family: { hospital: 260, extras: 65 }, single_parent: { hospital: 140, extras: 35 } };
+    const MLS_THRESHOLDS = { single: 93000, family: 186000 };
+    const MLS_RATES = [ { min: 93000, max: 108000, rate: 0.01 }, { min: 108001, max: 144000, rate: 0.0125 }, { min: 144001, max: Infinity, rate: 0.015 } ];
+
+    function fmt(n) { return '$' + Math.round(n).toLocaleString('en-AU'); }
+
+    document.getElementById('compareForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const visa = document.getElementById('visaStatus').value;
+      const familySize = document.getElementById('familySize').value;
+      const income = parseFloat(document.getElementById('income').value) || 0;
+      const pregnancy = document.getElementById('pregnancy').value === 'yes';
+      const mc = VISA_MEDICARE[visa];
+      const phi = PHI_COSTS[familySize];
+      const isSingle = familySize === 'single' || familySize === 'single_parent';
+      const mlsThreshold = isSingle ? MLS_THRESHOLDS.single : MLS_THRESHOLDS.family;
+
+      // Medicare levy
+      const medicareLevy = mc.eligible ? Math.round(income * 0.02) : 0;
+      // MLS (if no private hospital cover and income over threshold)
+      let mls = 0;
+      if (mc.eligible && income > mlsThreshold) {
+        for (const t of MLS_RATES) {
+          const adj = isSingle ? t.min : t.min * 2;
+          const adjMax = isSingle ? t.max : (t.max === Infinity ? Infinity : t.max * 2);
+          if (income >= adj && income <= adjMax) { mls = Math.round(income * t.rate); break; }
+        }
+      }
+
+      const phiAnnual = (phi.hospital + phi.extras) * 12;
+      const medicareCostAnnual = medicareLevy; // already paying via tax
+      const totalWithPHI = phiAnnual; // PHI is extra on top of Medicare levy
+      const savingFromPHI = mls > 0 ? mls : 0; // avoid MLS by having PHI
+      const netPHICost = phiAnnual - savingFromPHI;
+
+      let html = '';
+
+      // Comparison cards
+      html += `<div class="compare-grid">
+        <div class="compare-card medicare-card">
+          <h3>Medicare Only</h3>
+          <div class="price" style="color:#2b6cb0">${mc.eligible ? fmt(medicareLevy + mls) : 'N/A'}<small>/year</small></div>
+          <div style="font-size:0.82rem;color:#4a5568">${mc.eligible ? `${fmt(medicareLevy)} levy${mls > 0 ? ` + ${fmt(mls)} MLS surcharge` : ''}` : mc.type}</div>
+        </div>
+        <div class="compare-card private-card">
+          <h3>Private Health</h3>
+          <div class="price" style="color:#805ad5">${fmt(phiAnnual)}<small>/year</small></div>
+          <div style="font-size:0.82rem;color:#4a5568">${fmt(phi.hospital)}/mo hospital + ${fmt(phi.extras)}/mo extras</div>
+        </div>
+      </div>`;
+
+      // Coverage table
+      html += `<table class="compare-table">
+        <tr><th>Coverage</th><th>Medicare</th><th>Private Health</th></tr>
+        <tr><td>GP visits</td><td class="${mc.eligible?'yes':'no'}">${mc.eligible?'Free (bulk-billed)':'Not covered'}</td><td class="partial">Gap may apply</td></tr>
+        <tr><td>Public hospital</td><td class="${mc.eligible?'yes':'no'}">${mc.eligible?'Free':'Not covered'}</td><td class="yes">Covered</td></tr>
+        <tr><td>Private hospital</td><td class="no">Not covered</td><td class="yes">Covered (gap may apply)</td></tr>
+        <tr><td>Choose your doctor</td><td class="no">No</td><td class="yes">Yes</td></tr>
+        <tr><td>Shorter wait for surgery</td><td class="no">Public waitlist</td><td class="yes">Priority access</td></tr>
+        <tr><td>Private room</td><td class="no">Shared ward</td><td class="yes">Private room</td></tr>
+        <tr><td>Dental, optical, physio</td><td class="no">Not covered</td><td class="yes">With extras cover</td></tr>
+        <tr><td>Pregnancy & birth</td><td class="${mc.eligible?'yes':'no'}">${mc.eligible?'Free (public)':'Not covered'}</td><td class="${pregnancy?'partial':'yes'}">${pregnancy?'12-month wait usually applies':'Covered (check wait period)'}</td></tr>
+        <tr><td>Ambulance</td><td class="partial">Depends on state</td><td class="yes">Usually covered</td></tr>
+      </table>`;
+
+      // Recommendation
+      let recClass, recTitle, recText;
+      if (!mc.eligible) {
+        recClass = 'rec-private';
+        recTitle = 'Private Health Insurance Required';
+        recText = `Your visa (${visa}) does not qualify for Medicare. You need private health insurance${visa === 'student' ? ' (OSHC is mandatory for student visas)' : ''}. ${pregnancy ? 'Make sure your policy covers pregnancy — there is usually a 12-month waiting period.' : ''}`;
+      } else if (mls > 0) {
+        recClass = 'rec-both';
+        recTitle = 'Consider Private Hospital Cover';
+        recText = `Your income (${fmt(income)}) is above the Medicare Levy Surcharge threshold. You're paying an extra ${fmt(mls)}/year in MLS. Getting hospital cover (from ~${fmt(phi.hospital * 12)}/year) would avoid the surcharge and give you private hospital benefits.`;
+      } else if (pregnancy && mc.eligible) {
+        recClass = 'rec-medicare';
+        recTitle = 'Medicare is Sufficient for Birth';
+        recText = `You're eligible for Medicare, which covers pregnancy and birth in a public hospital at no cost. Private hospital for birth requires 12-month waiting period on most policies. If you're already pregnant, stick with public/Medicare.`;
+      } else {
+        recClass = 'rec-medicare';
+        recTitle = 'Medicare Covers You Well';
+        recText = `At your income level, Medicare covers your essential health needs. Private health is optional but gives you shorter waits, private rooms, and extras (dental, optical). Consider it if those matter to you.`;
+      }
+      html += `<div class="recommend-box ${recClass}"><h3>${recTitle}</h3><p>${recText}</p></div>`;
+
+      if (mc.eligible) {
+        html += `<div class="info-box blue"><strong>Your Medicare status:</strong> ${mc.type} — ${mc.card}. <a href="https://www.servicesaustralia.gov.au/enrolling-medicare" target="_blank" style="color:#2c5282">Enrol here</a>.</div>`;
+      } else {
+        html += `<div class="info-box orange"><strong>Not eligible for Medicare.</strong> Compare private health policies on <a href="https://www.privatehealth.gov.au" target="_blank" style="color:#744210">privatehealth.gov.au</a> (government comparison site).</div>`;
+      }
+
+      document.getElementById('resultContent').innerHTML = html;
+      document.getElementById('results').classList.add('active');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

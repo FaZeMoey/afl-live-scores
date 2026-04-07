@@ -1,0 +1,2524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SettleAU - Family & Newborn Payments</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f8;
+      color: #1a202c;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    header {
+      background: #1a365d;
+      color: white;
+      padding: 24px;
+      border-radius: 12px 12px 0 0;
+      text-align: center;
+    }
+    header h1 { font-size: 1.5rem; margin-bottom: 4px; }
+    header p { font-size: 0.9rem; opacity: 0.85; }
+    .card {
+      background: white;
+      padding: 28px;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.95rem;
+    }
+    label small {
+      font-weight: 400;
+      color: #718096;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #3182ce;
+    }
+    /* Tooltips */
+    .tooltip-wrap {
+      position: relative;
+      display: inline;
+    }
+    .tooltip-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #cbd5e0;
+      color: #2d3748;
+      font-size: 0.7rem;
+      font-weight: 700;
+      cursor: help;
+      margin-left: 4px;
+      vertical-align: middle;
+    }
+    body.dark .tooltip-icon { background: #4a5568; color: #e2e8f0; }
+    .tooltip-text {
+      display: none;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #2d3748;
+      color: #f7fafc;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 400;
+      line-height: 1.4;
+      white-space: normal;
+      width: 260px;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .tooltip-text::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #2d3748;
+    }
+    .tooltip-wrap:hover .tooltip-text,
+    .tooltip-icon:focus + .tooltip-text { display: block; }
+
+    .row {
+      display: flex;
+      gap: 16px;
+    }
+    .row .form-group { flex: 1; }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #2b6cb0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    button:hover { background: #2c5282; }
+
+    .visa-info {
+      margin-top: 8px;
+      padding: 12px;
+      background: #ebf8ff;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      color: #2c5282;
+      display: none;
+    }
+    .visa-info a { color: inherit; font-weight: 600; text-decoration: underline; }
+    .visa-info.not-eligible {
+      background: #fff5f5;
+      color: #c53030;
+    }
+
+    .results {
+      display: none;
+      margin-top: 24px;
+    }
+    .results h2 {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      color: #1a365d;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+    .result-section {
+      margin-bottom: 20px;
+    }
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+    .result-row:nth-child(even) { background: #f7fafc; }
+    .result-row .label { color: #4a5568; }
+    .result-row .value { font-weight: 600; }
+    .result-row.eligible .value { color: #276749; }
+    .result-row.not-eligible .value { color: #c53030; }
+    .result-row.waiting .value { color: #c05621; }
+    .result-row.na .value { color: #a0aec0; }
+
+    .total-box {
+      background: #ebf8ff;
+      border: 2px solid #3182ce;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .total-box .total-label { font-size: 0.95rem; color: #2c5282; }
+    .total-box .total-amount {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #1a365d;
+    }
+    .total-box .total-note {
+      font-size: 0.85rem;
+      color: #718096;
+      margin-top: 4px;
+    }
+
+    .narwp-status {
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+    .narwp-status.served { background: #f0fff4; border-left: 4px solid #38a169; }
+    .narwp-status.almost { background: #fffff0; border-left: 4px solid #d69e2e; }
+    .narwp-status.waiting { background: #fff5f5; border-left: 4px solid #e53e3e; }
+    .narwp-status.info { background: #ebf8ff; border-left: 4px solid #3182ce; }
+
+    .disclaimer {
+      margin-top: 24px;
+      padding: 14px;
+      background: #fffff0;
+      border-left: 4px solid #d69e2e;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: #744210;
+    }
+
+    .fortnightly-box {
+      background: #f0fff4;
+      border: 2px solid #38a169;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      margin-top: 12px;
+    }
+    .fortnightly-box .total-label { font-size: 0.95rem; color: #276749; }
+    .fortnightly-box .total-amount { font-size: 1.8rem; font-weight: 700; color: #22543d; }
+
+    .not-eligible-box {
+      background: #fff5f5;
+      border: 2px solid #fc8181;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 16px;
+    }
+    .not-eligible-box h2 { color: #c53030; border: none; }
+    .not-eligible-box p { color: #742a2a; margin-top: 8px; }
+
+    .medicare-box {
+      margin-top: 24px;
+      border: 2px solid #805ad5;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .medicare-box h2 {
+      background: #805ad5;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .medicare-body {
+      padding: 18px;
+    }
+    .medicare-status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .medicare-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .medicare-badge.yes { background: #f0fff4; color: #276749; border: 1px solid #38a169; }
+    .medicare-badge.limited { background: #fffff0; color: #744210; border: 1px solid #d69e2e; }
+    .medicare-badge.no { background: #fff5f5; color: #c53030; border: 1px solid #fc8181; }
+    .medicare-badge.rhca { background: #ebf8ff; color: #2c5282; border: 1px solid #3182ce; }
+    .medicare-detail { font-size: 0.92rem; color: #4a5568; }
+    .medicare-card-type {
+      background: #faf5ff;
+      border: 1px solid #d6bcfa;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    .medicare-card-type strong { color: #553c9a; }
+    .medicare-steps {
+      margin-top: 12px;
+      padding-left: 0;
+      list-style: none;
+    }
+    .medicare-steps li {
+      padding: 6px 0 6px 28px;
+      position: relative;
+      font-size: 0.9rem;
+      color: #4a5568;
+    }
+    .medicare-steps li::before {
+      content: attr(data-step);
+      position: absolute;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      background: #805ad5;
+      color: white;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 7px;
+    }
+
+    /* CCS Section */
+    .ccs-box {
+      margin-top: 24px;
+      border: 2px solid #dd6b20;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .ccs-box h2 {
+      background: #dd6b20;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .ccs-body { padding: 18px; }
+    .ccs-rate {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #c05621;
+      text-align: center;
+      margin: 8px 0;
+    }
+    .ccs-detail { font-size: 0.9rem; color: #4a5568; margin-top: 8px; }
+    .ccs-example {
+      background: #fffaf0;
+      border: 1px solid #fbd38d;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-size: 0.88rem;
+    }
+
+    /* Timeline */
+    .timeline-box {
+      margin-top: 24px;
+      border: 2px solid #319795;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .timeline-box h2 {
+      background: #319795;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .timeline-body { padding: 18px 18px 8px; display: none; }
+    .timeline-body.active { display: block; }
+    .timeline-item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: -16px;
+      width: 2px;
+      background: #b2dfdb;
+    }
+    .timeline-item:last-child::before { display: none; }
+    .timeline-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+    .timeline-dot.green { background: #38a169; }
+    .timeline-dot.orange { background: #dd6b20; }
+    .timeline-dot.blue { background: #3182ce; }
+    .timeline-dot.purple { background: #805ad5; }
+    .timeline-content { flex: 1; }
+    .timeline-date { font-weight: 600; font-size: 0.88rem; color: #2d3748; }
+    .timeline-desc { font-size: 0.85rem; color: #4a5568; margin-top: 2px; }
+    .timeline-toggle {
+      display: flex;
+      gap: 8px;
+      padding: 12px 18px 0;
+    }
+    .timeline-toggle button {
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      border-radius: 16px;
+      width: auto;
+      margin: 0;
+      background: #e2e8f0;
+      color: #2d3748;
+      font-weight: 600;
+    }
+    .timeline-toggle button:hover { background: #cbd5e0; }
+    .timeline-toggle button.active { background: #319795; color: white; }
+    body.dark .timeline-toggle button { background: #4a5568; color: #e2e8f0; }
+    body.dark .timeline-toggle button.active { background: #319795; color: white; }
+
+    /* Roadmap view */
+    .roadmap { padding: 18px; display: none; }
+    .roadmap.active { display: block; }
+    .roadmap-bar-wrap {
+      margin-bottom: 18px;
+    }
+    .roadmap-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 4px;
+    }
+    .roadmap-bar-dates {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #718096;
+      margin-bottom: 4px;
+    }
+    .roadmap-bar {
+      height: 28px;
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+      background: #e2e8f0;
+    }
+    .roadmap-fill {
+      height: 100%;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: white;
+      min-width: 40px;
+      transition: width 0.6s ease;
+    }
+    .roadmap-fill.green { background: linear-gradient(90deg, #38a169, #48bb78); }
+    .roadmap-fill.blue { background: linear-gradient(90deg, #3182ce, #63b3ed); }
+    .roadmap-fill.purple { background: linear-gradient(90deg, #805ad5, #9f7aea); }
+    .roadmap-fill.orange { background: linear-gradient(90deg, #dd6b20, #ed8936); }
+    .roadmap-fill.teal { background: linear-gradient(90deg, #319795, #4fd1c5); }
+    .roadmap-bar-amount {
+      font-size: 0.82rem;
+      color: #4a5568;
+      margin-top: 3px;
+    }
+    .roadmap-ongoing {
+      font-size: 0.75rem;
+      color: #718096;
+      font-style: italic;
+    }
+    body.dark .roadmap-bar { background: #4a5568; }
+    body.dark .roadmap-bar-label { color: #e2e8f0; }
+    body.dark .roadmap-bar-dates { color: #a0aec0; }
+    body.dark .roadmap-bar-amount { color: #cbd5e0; }
+
+    /* Snake timeline */
+    .snake { padding: 18px; display: none; }
+    .snake.active { display: block; }
+    .snake-track {
+      position: relative;
+      padding: 0 10px;
+    }
+    .snake-row {
+      display: flex;
+      align-items: center;
+      position: relative;
+      min-height: 80px;
+    }
+    .snake-row.reverse { flex-direction: row-reverse; }
+    .snake-connector {
+      position: absolute;
+      width: 4px;
+      background: #b2dfdb;
+      z-index: 0;
+    }
+    body.dark .snake-connector { background: #4a5568; }
+    .snake-node {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
+      flex-shrink: 0;
+      z-index: 2;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: center;
+      line-height: 1.1;
+      position: relative;
+    }
+    .snake-node:hover {
+      transform: scale(1.15);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+    }
+    .snake-node.active {
+      transform: scale(1.15);
+      box-shadow: 0 0 0 4px rgba(49,151,149,0.3);
+    }
+    .snake-node.green { background: linear-gradient(135deg, #38a169, #48bb78); }
+    .snake-node.blue { background: linear-gradient(135deg, #3182ce, #63b3ed); }
+    .snake-node.purple { background: linear-gradient(135deg, #805ad5, #9f7aea); }
+    .snake-node.orange { background: linear-gradient(135deg, #dd6b20, #ed8936); }
+    .snake-node.teal { background: linear-gradient(135deg, #319795, #4fd1c5); }
+    .snake-node.gray { background: linear-gradient(135deg, #718096, #a0aec0); }
+    .snake-path {
+      flex: 1;
+      height: 4px;
+      background: #b2dfdb;
+      position: relative;
+      z-index: 1;
+    }
+    body.dark .snake-path { background: #4a5568; }
+    .snake-bend {
+      width: 40px;
+      height: 80px;
+      position: absolute;
+      z-index: 1;
+    }
+    .snake-bend-left {
+      left: 24px;
+      border-left: 4px solid #b2dfdb;
+      border-bottom: 4px solid #b2dfdb;
+      border-top: 4px solid #b2dfdb;
+      border-radius: 40px 0 0 40px;
+    }
+    .snake-bend-right {
+      right: 24px;
+      border-right: 4px solid #b2dfdb;
+      border-bottom: 4px solid #b2dfdb;
+      border-top: 4px solid #b2dfdb;
+      border-radius: 0 40px 40px 0;
+    }
+    body.dark .snake-bend-left,
+    body.dark .snake-bend-right {
+      border-color: #4a5568;
+    }
+    .snake-detail {
+      display: none;
+      background: #2d3748;
+      color: #f7fafc;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin: -4px 0 12px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      animation: snakeSlide 0.25s ease;
+      position: relative;
+      z-index: 3;
+    }
+    .snake-detail.active { display: block; }
+    .snake-detail-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+    .snake-detail-amount {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #68d391;
+      margin: 4px 0;
+    }
+    .snake-detail-dates {
+      font-size: 0.82rem;
+      color: #a0aec0;
+    }
+    .snake-detail-desc {
+      font-size: 0.82rem;
+      margin-top: 6px;
+      color: #cbd5e0;
+    }
+    .snake-month-label {
+      font-size: 0.7rem;
+      color: #a0aec0;
+      text-align: center;
+      margin-top: 2px;
+      font-weight: 600;
+    }
+    body.dark .snake-month-label { color: #718096; }
+    @keyframes snakeSlide {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .snake-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #e2e8f0;
+    }
+    body.dark .snake-legend { border-color: #4a5568; }
+    .snake-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      color: #4a5568;
+    }
+    body.dark .snake-legend-item { color: #a0aec0; }
+    .snake-legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    /* Print button */
+    .print-btn {
+      background: #718096;
+      margin-top: 16px;
+    }
+    .print-btn:hover { background: #4a5568; }
+
+    /* Checklist */
+    .checklist-box {
+      margin-top: 24px;
+      border: 2px solid #38a169;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .checklist-box h2 {
+      background: #38a169;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .checklist-body { padding: 18px; }
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 0.9rem;
+      color: #2d3748;
+      border-bottom: 1px solid #f0f4f8;
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item input[type="checkbox"] {
+      width: auto;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    /* What-if comparison */
+    .whatif-box {
+      margin-top: 24px;
+      border: 2px solid #667eea;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .whatif-box h2 {
+      background: #667eea;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .whatif-body { padding: 18px; }
+    .whatif-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .whatif-table th {
+      background: #ebf4ff;
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #2c5282;
+    }
+    .whatif-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .whatif-table tr:last-child td { border-bottom: none; }
+    .whatif-better { color: #276749; font-weight: 600; }
+
+    /* Share box */
+    .share-box {
+      margin-top: 24px;
+      border: 2px solid #a0aec0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .share-box h2 {
+      background: #718096;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .share-body { padding: 18px; }
+    .share-url {
+      display: flex;
+      gap: 8px;
+    }
+    .share-url input {
+      flex: 1;
+      font-size: 0.85rem;
+    }
+    .share-url button {
+      width: auto;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      margin-top: 0;
+    }
+    .copy-success {
+      color: #38a169;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      display: none;
+    }
+
+    /* Dark mode */
+    .header-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .dark-toggle {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      width: auto;
+      margin: 0;
+    }
+    .dark-toggle:hover { background: rgba(255,255,255,0.25); }
+
+    body.dark {
+      background: #1a202c;
+      color: #e2e8f0;
+    }
+    body.dark .card {
+      background: #2d3748;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    body.dark input, body.dark select {
+      background: #4a5568;
+      color: #e2e8f0;
+      border-color: #4a5568;
+    }
+    body.dark .result-row:nth-child(even) { background: #374151; }
+    body.dark .disclaimer { background: #44403c; color: #fbbf24; }
+    body.dark .visa-info { background: #2c5282; color: #bee3f8; }
+    body.dark .visa-info.not-eligible { background: #742a2a; color: #feb2b2; }
+    body.dark .narwp-status.info { background: #2c5282; }
+    body.dark .narwp-status.served { background: #22543d; }
+    body.dark .narwp-status.waiting { background: #742a2a; }
+    body.dark .narwp-status.almost { background: #744210; }
+    body.dark .total-box { background: #2c5282; border-color: #63b3ed; }
+    body.dark .total-box .total-amount { color: #bee3f8; }
+    body.dark .total-box .total-label { color: #90cdf4; }
+    body.dark .fortnightly-box { background: #22543d; border-color: #68d391; }
+    body.dark .fortnightly-box .total-amount { color: #c6f6d5; }
+    body.dark .fortnightly-box .total-label { color: #9ae6b4; }
+    body.dark .result-row .label { color: #cbd5e0; }
+    body.dark .medicare-body,
+    body.dark .ccs-body,
+    body.dark .timeline-body,
+    body.dark .checklist-body,
+    body.dark .whatif-body,
+    body.dark .share-body { background: #2d3748; }
+    body.dark .medicare-card-type { background: #44337a; border-color: #6b46c1; }
+    body.dark .medicare-card-type strong { color: #d6bcfa; }
+    body.dark .medicare-steps li { color: #cbd5e0; }
+    body.dark .ccs-example { background: #44403c; border-color: #dd6b20; }
+    body.dark .whatif-table th { background: #2c5282; color: #bee3f8; }
+    body.dark .whatif-table td { border-color: #4a5568; color: #e2e8f0; }
+    body.dark .checklist-item { color: #e2e8f0; border-color: #4a5568; }
+    body.dark .not-eligible-box { background: #742a2a; border-color: #fc8181; }
+    body.dark .not-eligible-box h2 { color: #feb2b2; }
+    body.dark .not-eligible-box p { color: #fed7d7; }
+
+    .lang-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      border-radius: 14px;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      width: auto;
+      margin: 0;
+    }
+    .lang-btn:hover { background: rgba(255,255,255,0.25); }
+    .lang-btn.active { background: rgba(255,255,255,0.35); font-weight: 700; }
+
+    /* Multi-child */
+    .child-entry {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .child-entry select, .child-entry input {
+      flex: 1;
+    }
+    .remove-child-btn {
+      width: auto;
+      padding: 6px 12px;
+      background: #e53e3e;
+      font-size: 0.85rem;
+      margin: 0;
+      border-radius: 6px;
+    }
+    .remove-child-btn:hover { background: #c53030; }
+    .add-child-btn {
+      width: auto;
+      padding: 8px 16px;
+      background: #38a169;
+      font-size: 0.9rem;
+      margin: 4px 0 0;
+      border-radius: 6px;
+    }
+    .add-child-btn:hover { background: #2f855a; }
+
+    /* Print styles */
+    @media print {
+      body { background: white !important; color: black !important; padding: 0; }
+      .card { box-shadow: none; }
+      header { border-radius: 0; }
+      button, .dark-toggle, .lang-bar, .share-box, .print-btn { display: none !important; }
+      .results { display: block !important; }
+      .disclaimer { break-inside: avoid; }
+      .checklist-item input[type="checkbox"] { -webkit-appearance: checkbox; }
+    }
+
+    @media (max-width: 500px) {
+      .row { flex-direction: column; gap: 0; }
+      body { padding: 10px; }
+      .card { padding: 20px; }
+      .share-url { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div style="background:#1a365d;padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif">
+    <a href="../index.html" style="color:white;font-weight:800;font-size:0.95rem;text-decoration:none">SettleAU</a>
+    <div style="display:flex;gap:14px;align-items:center">
+      <a href="../money-tax/" style="color:rgba(255,255,255,0.7);font-size:0.8rem;text-decoration:none">Money & Tax</a>
+      <a href="../visas/" style="color:rgba(255,255,255,0.7);font-size:0.8rem;text-decoration:none">Visas</a>
+      <a href="../health/" style="color:rgba(255,255,255,0.7);font-size:0.8rem;text-decoration:none">Health</a>
+      <a href="../family/" style="color:rgba(255,255,255,0.7);font-size:0.8rem;text-decoration:none">Family</a>
+      <a href="../tools.html" style="color:rgba(255,255,255,0.7);font-size:0.8rem;text-decoration:none">All Tools</a>
+    </div>
+  </div>
+  <div class="container">
+    <header>
+      <h1 data-i18n="title">Centrelink Payment Estimator</h1>
+      <p data-i18n="subtitle">Family & Newborn Payments — Citizens, PR & Visa Holders</p>
+      <div class="header-controls">
+        <button class="lang-btn active" onclick="setLang('en')">English</button>
+        <button class="lang-btn" onclick="setLang('ar')">العربية</button>
+        <button class="lang-btn" onclick="setLang('zh')">中文</button>
+        <button class="lang-btn" onclick="setLang('vi')">Tiếng Việt</button>
+        <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
+        <button class="dark-toggle" onclick="toggleDark()" data-i18n="dark">Dark Mode</button>
+      </div>
+    </header>
+    <div class="card">
+      <form id="calcForm">
+        <div class="form-group">
+          <label data-i18n="visaLabel">What is your residency status? <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">Select your current visa subclass or residency status. This determines which Centrelink payments you can access and any waiting periods that apply.</span></span></label>
+          <select id="visaType" onchange="updateVisaInfo()">
+            <optgroup label="Australian Citizen / Permanent Resident">
+              <option value="citizen">Australian Citizen</option>
+              <option value="pr">Permanent Resident (any visa)</option>
+            </optgroup>
+            <optgroup label="Partner & Family (Temporary/Provisional)">
+              <option value="820">Subclass 820 — Partner (Temporary)</option>
+              <option value="309">Subclass 309 — Partner (Provisional)</option>
+              <option value="300">Subclass 300 — Prospective Marriage</option>
+              <option value="461">Subclass 461 — NZ Citizen Family Relationship</option>
+              <option value="445">Subclass 445 — Dependent Child (Temporary)</option>
+            </optgroup>
+            <optgroup label="Partner & Family (Permanent)">
+              <option value="801">Subclass 801 — Partner (Permanent)</option>
+              <option value="100">Subclass 100 — Partner (Migrant)</option>
+              <option value="101">Subclass 101 — Child (Offshore)</option>
+              <option value="102">Subclass 102 — Adoption</option>
+              <option value="802">Subclass 802 — Child (Onshore)</option>
+            </optgroup>
+            <optgroup label="Parent (Permanent)">
+              <option value="103">Subclass 103 — Parent</option>
+              <option value="143">Subclass 143 — Contributory Parent</option>
+              <option value="804">Subclass 804 — Aged Parent</option>
+              <option value="864">Subclass 864 — Contributory Aged Parent</option>
+            </optgroup>
+            <optgroup label="Parent (Temporary)">
+              <option value="173">Subclass 173 — Contributory Parent (Temporary)</option>
+              <option value="884">Subclass 884 — Contributory Aged Parent (Temporary)</option>
+              <option value="870">Subclass 870 — Sponsored Parent (Temporary)</option>
+            </optgroup>
+            <optgroup label="Skilled (Permanent)">
+              <option value="189">Subclass 189 — Skilled Independent</option>
+              <option value="190">Subclass 190 — Skilled Nominated</option>
+              <option value="186">Subclass 186 — Employer Nomination Scheme</option>
+              <option value="191">Subclass 191 — Skilled Regional (Permanent)</option>
+              <option value="858">Subclass 858 — Global Talent / National Innovation</option>
+            </optgroup>
+            <optgroup label="Skilled (Provisional/Temporary)">
+              <option value="491">Subclass 491 — Skilled Work Regional</option>
+              <option value="494">Subclass 494 — Skilled Employer Sponsored Regional</option>
+              <option value="482">Subclass 482 — Skills in Demand (TSS)</option>
+              <option value="485">Subclass 485 — Temporary Graduate</option>
+              <option value="400">Subclass 400 — Temporary Work (Short Stay)</option>
+              <option value="407">Subclass 407 — Training</option>
+              <option value="408">Subclass 408 — Temporary Activity</option>
+            </optgroup>
+            <optgroup label="Business & Investment">
+              <option value="188">Subclass 188 — Business Innovation & Investment (Provisional)</option>
+              <option value="888">Subclass 888 — Business Innovation & Investment (Permanent)</option>
+              <option value="132">Subclass 132 — Business Talent (Permanent)</option>
+            </optgroup>
+            <optgroup label="Humanitarian & Refugee">
+              <option value="200">Subclass 200 — Refugee</option>
+              <option value="201">Subclass 201 — In-country Special Humanitarian</option>
+              <option value="202">Subclass 202 — Global Special Humanitarian</option>
+              <option value="203">Subclass 203 — Emergency Rescue</option>
+              <option value="204">Subclass 204 — Woman at Risk</option>
+              <option value="866">Subclass 866 — Protection</option>
+              <option value="851">Subclass 851 — Resolution of Status</option>
+              <option value="785">Subclass 785 — Temporary Protection</option>
+              <option value="790">Subclass 790 — Safe Haven Enterprise</option>
+            </optgroup>
+            <optgroup label="Visitor & Tourist">
+              <option value="600">Subclass 600 — Visitor</option>
+              <option value="601">Subclass 601 — Electronic Travel Authority</option>
+              <option value="651">Subclass 651 — eVisitor</option>
+              <option value="771">Subclass 771 — Transit</option>
+              <option value="602">Subclass 602 — Medical Treatment</option>
+            </optgroup>
+            <optgroup label="Student">
+              <option value="500">Subclass 500 — Student</option>
+              <option value="590">Subclass 590 — Student Guardian</option>
+            </optgroup>
+            <optgroup label="Working Holiday">
+              <option value="417">Subclass 417 — Working Holiday</option>
+              <option value="462">Subclass 462 — Work and Holiday</option>
+            </optgroup>
+            <optgroup label="New Zealand Citizens">
+              <option value="444">Subclass 444 — Special Category (NZ)</option>
+            </optgroup>
+            <optgroup label="Resident Return">
+              <option value="155">Subclass 155 — Resident Return (5 Year)</option>
+              <option value="157">Subclass 157 — Resident Return (3 Month)</option>
+            </optgroup>
+            <optgroup label="Bridging Visas">
+              <option value="bridging">Bridging Visa (010, 020, 030, 050, 060)</option>
+            </optgroup>
+            <optgroup label="Other">
+              <option value="other">Other visa not listed</option>
+            </optgroup>
+          </select>
+          <div class="visa-info" id="visaInfo"></div>
+        </div>
+
+        <div class="form-group" id="visaDateGroup">
+          <label data-i18n="visaDateLabel">Visa Grant Date <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">The date your current visa was granted. You can find this on your visa grant notification letter or in your ImmiAccount. This is used to calculate your NARWP (Newly Arrived Resident's Waiting Period).</span></span></label>
+          <input type="date" id="visaDate">
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="dueDateLabel">Baby's Expected Due Date <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">Your baby's due date or actual date of birth. This is used to calculate when payments start and to build your payment timeline.</span></span></label>
+          <input type="date" id="dueDate" required>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="childrenLabel">Children <small>(add all children in your care)</small> <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">Add all children in your care, including the expected baby. FTB Part A is paid per child, while FTB Part B is per family. If this is your first child, you'll get a higher Newborn Supplement.</span></span></label>
+          <div id="childrenList">
+            <div class="child-entry">
+              <select>
+                <option value="newborn">Newborn / Expected baby</option>
+                <option value="0">Under 1 year</option>
+                <option value="1">1 year old</option>
+                <option value="2">2 years old</option>
+                <option value="3">3 years old</option>
+                <option value="4">4 years old</option>
+                <option value="5">5-12 years old</option>
+                <option value="13">13-15 years old</option>
+                <option value="16">16-19 (in study)</option>
+              </select>
+            </div>
+          </div>
+          <button type="button" class="add-child-btn" onclick="addChild()" data-i18n="addChild">+ Add Another Child</button>
+        </div>
+
+        <div class="row">
+          <div class="form-group">
+            <label data-i18n="incomeLabel">Combined Family Income <small>($/year)</small> <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">Your total household taxable income per year (both partners combined). This includes wages, salary, business income, and investment income before tax. FTB Part A reduces once family income exceeds $62,634/year and cuts off at $117,194.</span></span></label>
+            <input type="number" id="familyIncome" placeholder="e.g. 80000" required min="0">
+          </div>
+          <div class="form-group">
+            <label data-i18n="lowerIncomeLabel">Lower Earner's Income <small>($/year)</small> <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">The annual income of the partner who earns less (or $0 if not working). FTB Part B is reduced when the lower earner makes over $6,935/year. If you're a single parent, enter $0.</span></span></label>
+            <input type="number" id="lowerIncome" placeholder="e.g. 0" required min="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label data-i18n="workLabel">Have you worked in the last 10 of 13 months? <small>(for <a href="https://www.servicesaustralia.gov.au/parental-leave-pay" target="_blank">Parental Leave Pay</a>)</small> <span class="tooltip-wrap"><span class="tooltip-icon" tabindex="0">?</span><span class="tooltip-text">To qualify for Parental Leave Pay, you must have worked at least 330 hours (about 1 day/week) in 10 of the 13 months before the birth or expected due date. This can include part-time, casual, or self-employed work.</span></span></label>
+          <select id="workStatus">
+            <option value="yes">Yes — I've worked at least 330 hours in 10 of the last 13 months</option>
+            <option value="no">No — I haven't met the work test</option>
+            <option value="unsure">Not sure</option>
+          </select>
+        </div>
+
+        <button type="submit" data-i18n="calculateBtn">Calculate My Payments</button>
+      </form>
+
+      <div class="results" id="results"></div>
+
+      <div class="disclaimer" data-i18n="disclaimer">
+        <strong>Disclaimer:</strong> This is a rough estimate only, based on 2025-26 rates.
+        Actual payments depend on your full circumstances. Always confirm with
+        <strong>Centrelink on 136 150</strong>. This tool is not affiliated with Services Australia.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== TRANSLATIONS =====
+    const TRANSLATIONS = {
+      en: {
+        title: 'Centrelink Payment Estimator',
+        subtitle: 'Family & Newborn Payments — Citizens, PR & Visa Holders',
+        dark: 'Dark Mode',
+        light: 'Light Mode',
+        visaLabel: 'What is your residency status?',
+        visaDateLabel: 'Visa Grant Date',
+        dueDateLabel: "Baby's Expected Due Date",
+        childrenLabel: 'Children <small>(add all children in your care)</small>',
+        addChild: '+ Add Another Child',
+        incomeLabel: 'Combined Family Income <small>($/year)</small>',
+        lowerIncomeLabel: "Lower Earner's Income <small>($/year)</small>",
+        workLabel: 'Have you worked in the last 10 of 13 months? <small>(for <a href="https://www.servicesaustralia.gov.au/parental-leave-pay" target="_blank">Parental Leave Pay</a>)</small>',
+        calculateBtn: 'Calculate My Payments',
+        disclaimer: '<strong>Disclaimer:</strong> This is a rough estimate only, based on 2025-26 rates. Actual payments depend on your full circumstances. Always confirm with <strong>Centrelink on 136 150</strong>. This tool is not affiliated with Services Australia.',
+      },
+      ar: {
+        title: 'حاسبة مدفوعات سنترلينك',
+        subtitle: 'مدفوعات الأسرة والمواليد — المواطنون والمقيمون وحاملو التأشيرات',
+        dark: 'الوضع الداكن',
+        light: 'الوضع الفاتح',
+        visaLabel: 'ما هي حالة إقامتك؟',
+        visaDateLabel: 'تاريخ منح التأشيرة',
+        dueDateLabel: 'تاريخ الولادة المتوقع',
+        childrenLabel: 'الأطفال <small>(أضف جميع الأطفال في رعايتك)</small>',
+        addChild: '+ إضافة طفل آخر',
+        incomeLabel: 'الدخل العائلي المشترك <small>($/سنة)</small>',
+        lowerIncomeLabel: 'دخل صاحب الدخل الأقل <small>($/سنة)</small>',
+        workLabel: 'هل عملت في 10 من آخر 13 شهرًا؟ <small>(لإجازة الأبوة المدفوعة)</small>',
+        calculateBtn: 'احسب مدفوعاتي',
+        disclaimer: '<strong>إخلاء مسؤولية:</strong> هذا تقدير تقريبي فقط. تعتمد المدفوعات الفعلية على ظروفك. تأكد دائمًا مع <strong>سنترلينك على 136 150</strong>.',
+      },
+      zh: {
+        title: 'Centrelink 付款估算器',
+        subtitle: '家庭和新生儿补贴 — 公民、永久居民和签证持有人',
+        dark: '深色模式',
+        light: '浅色模式',
+        visaLabel: '您的居留身份是什么？',
+        visaDateLabel: '签证批准日期',
+        dueDateLabel: '预产期',
+        childrenLabel: '子女 <small>（添加您照顾的所有子女）</small>',
+        addChild: '+ 添加另一个孩子',
+        incomeLabel: '家庭合计收入 <small>($/年)</small>',
+        lowerIncomeLabel: '较低收入方 <small>($/年)</small>',
+        workLabel: '您在过去13个月中是否工作了至少10个月？ <small>（用于带薪育儿假）</small>',
+        calculateBtn: '计算我的补贴',
+        disclaimer: '<strong>免责声明：</strong>这只是一个粗略的估计。实际付款取决于您的具体情况。请务必致电 <strong>Centrelink 136 150</strong> 确认。',
+      },
+      vi: {
+        title: 'Công Cụ Ước Tính Thanh Toán Centrelink',
+        subtitle: 'Thanh Toán Gia Đình & Trẻ Sơ Sinh — Công Dân, PR & Thị Thực',
+        dark: 'Chế độ tối',
+        light: 'Chế độ sáng',
+        visaLabel: 'Tình trạng cư trú của bạn là gì?',
+        visaDateLabel: 'Ngày cấp thị thực',
+        dueDateLabel: 'Ngày dự sinh',
+        childrenLabel: 'Trẻ em <small>(thêm tất cả trẻ em bạn đang chăm sóc)</small>',
+        addChild: '+ Thêm trẻ khác',
+        incomeLabel: 'Thu nhập gia đình <small>($/năm)</small>',
+        lowerIncomeLabel: 'Thu nhập người có thu nhập thấp hơn <small>($/năm)</small>',
+        workLabel: 'Bạn đã làm việc 10 trong 13 tháng qua chưa? <small>(cho Nghỉ phép có lương)</small>',
+        calculateBtn: 'Tính Khoản Thanh Toán',
+        disclaimer: '<strong>Tuyên bố miễn trừ:</strong> Đây chỉ là ước tính sơ bộ. Khoản thanh toán thực tế phụ thuộc vào hoàn cảnh của bạn. Luôn xác nhận với <strong>Centrelink qua 136 150</strong>.',
+      },
+      hi: {
+        title: 'सेंटरलिंक भुगतान अनुमानक',
+        subtitle: 'परिवार और नवजात भुगतान — नागरिक, PR और वीज़ा धारक',
+        dark: 'डार्क मोड',
+        light: 'लाइट मोड',
+        visaLabel: 'आपकी निवास स्थिति क्या है?',
+        visaDateLabel: 'वीज़ा प्राप्ति तिथि',
+        dueDateLabel: 'बच्चे की अपेक्षित तिथि',
+        childrenLabel: 'बच्चे <small>(अपनी देखभाल में सभी बच्चों को जोड़ें)</small>',
+        addChild: '+ एक और बच्चा जोड़ें',
+        incomeLabel: 'संयुक्त पारिवारिक आय <small>($/वर्ष)</small>',
+        lowerIncomeLabel: 'कम कमाने वाले की आय <small>($/वर्ष)</small>',
+        workLabel: 'क्या आपने पिछले 13 में से 10 महीने काम किया है? <small>(पेड पैरेंटल लीव के लिए)</small>',
+        calculateBtn: 'मेरे भुगतान की गणना करें',
+        disclaimer: '<strong>अस्वीकरण:</strong> यह केवल एक अनुमान है। वास्तविक भुगतान आपकी परिस्थितियों पर निर्भर करता है। हमेशा <strong>सेंटरलिंक 136 150</strong> से पुष्टि करें।',
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+      const t = TRANSLATIONS[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.innerHTML = t[key];
+      });
+      if (lang === 'ar') {
+        document.body.style.direction = 'rtl';
+      } else {
+        document.body.style.direction = 'ltr';
+      }
+    }
+
+    // ===== DARK MODE =====
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      const btn = document.querySelector('.dark-toggle');
+      const isDark = document.body.classList.contains('dark');
+      const t = TRANSLATIONS[currentLang];
+      btn.textContent = isDark ? (t.light || 'Light Mode') : (t.dark || 'Dark Mode');
+    }
+
+    // ===== MULTI-CHILD =====
+    function addChild() {
+      const list = document.getElementById('childrenList');
+      const entry = document.createElement('div');
+      entry.className = 'child-entry';
+      entry.innerHTML = `
+        <select>
+          <option value="newborn">Newborn / Expected baby</option>
+          <option value="0">Under 1 year</option>
+          <option value="1">1 year old</option>
+          <option value="2">2 years old</option>
+          <option value="3">3 years old</option>
+          <option value="4">4 years old</option>
+          <option value="5">5-12 years old</option>
+          <option value="13">13-15 years old</option>
+          <option value="16">16-19 (in study)</option>
+        </select>
+        <button type="button" class="remove-child-btn" onclick="this.parentElement.remove()">Remove</button>
+      `;
+      list.appendChild(entry);
+    }
+
+    function getChildren() {
+      const entries = document.querySelectorAll('#childrenList .child-entry select');
+      return Array.from(entries).map(s => s.value);
+    }
+
+    // ===== VISA DATA =====
+    // Common links
+    const L = {
+      medicare: 'https://www.servicesaustralia.gov.au/enrolling-medicare',
+      rhca: 'https://www.servicesaustralia.gov.au/reciprocal-health-care-agreements',
+      special: 'https://www.servicesaustralia.gov.au/special-benefit',
+      ftb: 'https://www.servicesaustralia.gov.au/family-tax-benefit',
+      plp: 'https://www.servicesaustralia.gov.au/parental-leave-pay',
+      newborn: 'https://www.servicesaustralia.gov.au/newborn-upfront-payment-and-newborn-supplement',
+      ccs: 'https://www.servicesaustralia.gov.au/child-care-subsidy',
+      mygov: 'https://my.gov.au',
+      oshc: 'https://www.privatehealth.gov.au/health_insurance/overseas/overseas_student_health_cover.htm',
+      claim: 'https://www.servicesaustralia.gov.au/get-centrelink-payment',
+      pp: 'https://www.servicesaustralia.gov.au/parenting-payment',
+      jsp: 'https://www.servicesaustralia.gov.au/jobseeker-payment',
+      lihc: 'https://www.servicesaustralia.gov.au/low-income-health-care-card',
+    };
+    const lnk = (url, text) => `<a href="${url}" target="_blank" rel="noopener" style="color:inherit;font-weight:600">${text}</a>`;
+
+    // Helper templates to reduce repetition
+    const _mc_perm = { medicare: 'yes', medicareCard: 'Green Medicare Card', medicareNote: `Permanent visa holders have full Medicare eligibility. Your baby will be covered from birth. ${lnk(L.medicare, 'Enrol in Medicare here')}.`, medicareSteps: [`Visit a ${lnk(L.medicare, 'Medicare Service Centre')} with passport, visa grant letter, and proof of address`,'Complete a Medicare Enrolment Application form',`After baby is born, add the baby to your card at a Service Centre or via ${lnk(L.mygov, 'myGov')}`] };
+    const _mc_temp_partner = { medicare: 'yes', medicareCard: 'Blue Medicare Card (interim)', medicareSteps: [`Visit a ${lnk(L.medicare, 'Medicare Service Centre')} with your passport, visa grant letter, and proof of address`,'Complete a Medicare Enrolment Application form','You will get an interim card number on the spot','Your green Medicare card will arrive by post in 2-3 weeks',`After baby is born, add the baby to your card at a Service Centre or via ${lnk(L.mygov, 'myGov')}`] };
+    const _mc_rhca = { medicare: 'rhca', medicareCard: 'RHCA only (depends on country) or private insurance', medicareNote: `Not automatically eligible for Medicare. If from a ${lnk(L.rhca, 'Reciprocal Health Care Agreement')} country (UK, Ireland, NZ, Belgium, Finland, Italy, Malta, Netherlands, Norway, Slovenia, Sweden), you can enrol for essential treatment. Otherwise, private health insurance is needed.`, medicareSteps: [`Check if your home country has a ${lnk(L.rhca, 'Reciprocal Health Care Agreement')} with Australia`,`If yes: visit a ${lnk(L.medicare, 'Medicare Service Centre')} with passport and visa grant letter to enrol`,'If no: you will need private health insurance — contact your insurer about maternity cover','Your baby born in Australia may be an Australian citizen and eligible for Medicare regardless'] };
+    const _mc_none = { medicare: 'no', medicareCard: 'Not eligible for Medicare', medicareNote: 'This visa does not provide Medicare eligibility. You will need private health insurance or travel insurance. If giving birth in Australia without cover, hospital costs can be $5,000-$20,000+.', medicareSteps: ['Ensure you have adequate private health/travel insurance covering childbirth','Contact the hospital about costs if uninsured — request a quote in advance','Your baby may be an Australian citizen (if other parent is citizen/PR) and eligible for Medicare'] };
+
+    const VISA_DATA = {
+      // ========== CITIZEN ==========
+      'citizen': {
+        category: 'citizen', name: 'Australian Citizen',
+        info: 'As an Australian citizen, you have full access to all Centrelink family and newborn payments with no waiting periods. This includes <a href="' + L.ftb + '" target="_blank">FTB</a>, <a href="' + L.plp + '" target="_blank">Parental Leave Pay</a>, <a href="' + L.newborn + '" target="_blank">Newborn Supplement</a>, and <a href="' + L.pp + '" target="_blank">Parenting Payment</a>.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: true, jobseeker: true,
+        medicare: 'yes', medicareCard: 'Green Medicare Card',
+        medicareNote: `Australian citizens have full Medicare eligibility. Your baby will be automatically eligible from birth. ${lnk(L.medicare, 'Enrol in Medicare here')}.`,
+        medicareSteps: [`If not yet enrolled, visit a ${lnk(L.medicare, 'Medicare Service Centre')} with proof of Australian citizenship`,`After baby is born, add the baby to your Medicare card at a Service Centre or via ${lnk(L.mygov, 'myGov')}`,'You can also register the birth and add to Medicare through your state\'s birth registration']
+      },
+      // ========== GENERAL PR ==========
+      'pr': {
+        category: 'permanent', name: 'Permanent Resident',
+        info: 'As a permanent resident, you are eligible for most Centrelink payments. A Newly Arrived Resident\'s Waiting Period (NARWP) of 1-2 years may apply from your visa grant date.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      // ========== PARTNER & FAMILY (TEMPORARY) ==========
+      '820': {
+        category: 'partner_temp', name: 'Partner (Temporary)',
+        info: 'Eligible for <a href="' + L.ftb + '" target="_blank">FTB</a>, <a href="' + L.newborn + '" target="_blank">Newborn payments</a>, <a href="' + L.plp + '" target="_blank">Parental Leave Pay</a>, <a href="' + L.special + '" target="_blank">Special Benefit</a> & <a href="' + L.lihc + '" target="_blank">Low Income Health Care Card</a>. Subject to NARWP waiting periods.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_temp_partner, medicareNote: `Subclass 820 holders are eligible for full Medicare. You can apply as soon as your visa is granted. You will initially receive an interim (blue) card. Your baby will be covered from birth. ${lnk(L.medicare, 'Enrol in Medicare here')}.`
+      },
+      '309': {
+        category: 'partner_temp', name: 'Partner (Provisional)',
+        info: 'Eligible for <a href="' + L.ftb + '" target="_blank">FTB</a>, <a href="' + L.newborn + '" target="_blank">Newborn payments</a>, <a href="' + L.plp + '" target="_blank">Parental Leave Pay</a>, <a href="' + L.special + '" target="_blank">Special Benefit</a> & <a href="' + L.lihc + '" target="_blank">Low Income Health Care Card</a>. Subject to NARWP waiting periods.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_temp_partner, medicareNote: `Subclass 309 holders are eligible for full Medicare. You can apply as soon as your visa is granted. Your baby will be covered from birth. ${lnk(L.medicare, 'Enrol in Medicare here')}.`
+      },
+      '300': {
+        category: 'temporary', name: 'Prospective Marriage',
+        info: 'Prospective Marriage visa holders are NOT eligible for Centrelink payments. Eligibility begins once you marry and apply for a Subclass 820 Partner visa.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes', medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 300 holders are eligible for Medicare. However, you are not eligible for Centrelink payments until you hold a Partner visa (820/309).',
+        medicareSteps: ['Visit a Medicare Service Centre with your passport and visa grant letter','Complete a Medicare Enrolment Application form','After baby is born, add the baby to your card']
+      },
+      '461': {
+        category: 'temporary', name: 'NZ Citizen Family Relationship',
+        info: 'Temporary visa for family members of NZ citizens. Generally NOT eligible for most Centrelink payments. Limited access to family payments may apply depending on circumstances.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes', medicareCard: 'Blue Medicare Card',
+        medicareNote: 'Subclass 461 holders are eligible for Medicare. Your baby will be covered from birth.',
+        medicareSteps: ['Visit a Medicare Service Centre with your passport and visa grant letter','Complete a Medicare Enrolment Application form','After baby is born, add the baby to your card']
+      },
+      '445': {
+        category: 'temporary', name: 'Dependent Child (Temporary)',
+        info: 'Temporary visa for dependent children of partner visa applicants. Limited Centrelink eligibility — the parent\'s visa determines most entitlements.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes', medicareCard: 'Added to parent\'s Medicare card',
+        medicareNote: 'Covered under parent\'s Medicare enrolment.',
+        medicareSteps: ['Contact Medicare to be added to your parent\'s Medicare card']
+      },
+      // ========== PARTNER & FAMILY (PERMANENT) ==========
+      '801': {
+        category: 'permanent', name: 'Partner (Permanent)',
+        info: 'As a permanent visa holder, you are eligible for most Centrelink payments. NARWP may apply from your original visa grant date. Time on your 820/309 visa counts toward NARWP.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        medicare: 'yes', medicareCard: 'Green Medicare Card',
+        medicareNote: 'As a permanent resident, you have full Medicare eligibility. If you already had Medicare on your 820 visa, your card continues. Your baby will be covered from birth.',
+        medicareSteps: ['If already enrolled, update your visa details at a Service Centre or via myGov','If not yet enrolled, visit a Medicare Service Centre with passport and visa grant letter','After baby is born, add the baby to your card']
+      },
+      '100': {
+        category: 'permanent', name: 'Partner (Migrant)',
+        info: 'As a permanent visa holder, you are eligible for most Centrelink payments. NARWP may apply. Time on your 309 visa counts toward NARWP.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      '101': {
+        category: 'permanent', name: 'Child (Offshore)',
+        info: 'Permanent visa for children — eligible for Centrelink payments. Subject to NARWP.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      '102': {
+        category: 'permanent', name: 'Adoption',
+        info: 'Permanent visa for adopted children — eligible for Centrelink payments. Subject to NARWP.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      '802': {
+        category: 'permanent', name: 'Child (Onshore)',
+        info: 'Permanent visa for children — eligible for Centrelink payments. Subject to NARWP.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      // ========== PARENT (PERMANENT) ==========
+      '103': {
+        category: 'permanent', name: 'Parent',
+        info: 'Permanent parent visa — eligible for most Centrelink payments. Subject to NARWP from grant date.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      '143': {
+        category: 'permanent', name: 'Contributory Parent',
+        info: 'Permanent parent visa — eligible for most Centrelink payments. Subject to NARWP from grant date.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      '804': {
+        category: 'permanent', name: 'Aged Parent',
+        info: 'Permanent parent visa — eligible for most Centrelink payments including Age Pension. Subject to NARWP.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      '864': {
+        category: 'permanent', name: 'Contributory Aged Parent',
+        info: 'Permanent parent visa — eligible for most Centrelink payments including Age Pension. Subject to NARWP.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      // ========== PARENT (TEMPORARY) ==========
+      '173': {
+        category: 'temporary', name: 'Contributory Parent (Temporary)',
+        info: 'Temporary parent visa — generally NOT eligible for most Centrelink payments. This is a pathway to the permanent 143 visa.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes', medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 173 holders are eligible for Medicare. Your baby will be covered from birth.',
+        medicareSteps: ['Visit a Medicare Service Centre with passport and visa grant letter','Complete a Medicare Enrolment Application form','After baby is born, add the baby to your card']
+      },
+      '884': {
+        category: 'temporary', name: 'Contributory Aged Parent (Temporary)',
+        info: 'Temporary parent visa — generally NOT eligible for most Centrelink payments. This is a pathway to the permanent 864 visa.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes', medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 884 holders are eligible for Medicare.',
+        medicareSteps: ['Visit a Medicare Service Centre with passport and visa grant letter','Complete a Medicare Enrolment Application form']
+      },
+      '870': {
+        category: 'temporary', name: 'Sponsored Parent (Temporary)',
+        info: 'Temporary sponsored parent visa (3 or 5 years) — NOT eligible for Centrelink payments. Your sponsor must provide financial support.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes', medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 870 holders are eligible for Medicare.',
+        medicareSteps: ['Visit a Medicare Service Centre with passport and visa grant letter','Complete a Medicare Enrolment Application form']
+      },
+      // ========== SKILLED (PERMANENT) ==========
+      '189': {
+        category: 'permanent', name: 'Skilled Independent',
+        info: 'Permanent visa — eligible for most Centrelink payments. Subject to NARWP from grant date.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      '190': {
+        category: 'permanent', name: 'Skilled Nominated',
+        info: 'Permanent visa — eligible for most Centrelink payments. Subject to NARWP from grant date.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      '186': {
+        category: 'permanent', name: 'Employer Nomination Scheme',
+        info: 'Permanent visa — eligible for most Centrelink payments. Subject to NARWP from grant date.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      '191': {
+        category: 'permanent', name: 'Skilled Regional (Permanent)',
+        info: 'Permanent visa for 491/494 holders who meet regional requirements. Eligible for most Centrelink payments. Time on your provisional visa counts toward NARWP.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      '858': {
+        category: 'permanent', name: 'Global Talent / National Innovation',
+        info: 'Permanent visa for highly skilled individuals — eligible for most Centrelink payments. Subject to NARWP from grant date.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      // ========== SKILLED (PROVISIONAL/TEMPORARY) ==========
+      '491': {
+        category: 'regional_provisional', name: 'Skilled Work Regional (Provisional)',
+        info: 'Provisional visa — eligible for some family payments. Subject to NARWP waiting periods.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes', medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 491 visa holders are eligible for full Medicare. Your baby will be covered from birth.',
+        medicareSteps: ['Visit a Medicare Service Centre with passport, visa grant letter, and proof of address','Complete a Medicare Enrolment Application form','After baby is born, add the baby to your card']
+      },
+      '494': {
+        category: 'regional_provisional', name: 'Skilled Employer Sponsored Regional',
+        info: 'Provisional visa — eligible for some family payments. Subject to NARWP waiting periods.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes', medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 494 visa holders are eligible for full Medicare. Your baby will be covered from birth.',
+        medicareSteps: ['Visit a Medicare Service Centre with passport, visa grant letter, and proof of address','Complete a Medicare Enrolment Application form','After baby is born, add the baby to your card']
+      },
+      '482': {
+        category: 'temporary', name: 'Skills in Demand (TSS)',
+        info: 'Temporary work visa — generally NOT eligible for Centrelink family payments. You may be eligible for <a href="' + L.special + '" target="_blank">Special Benefit</a> in cases of severe financial hardship.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_rhca
+      },
+      '485': {
+        category: 'temporary', name: 'Temporary Graduate',
+        info: 'Temporary visa for recent graduates — NOT eligible for Centrelink family payments.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes', medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 485 holders are eligible for Medicare. Your baby will be covered from birth.',
+        medicareSteps: ['Visit a Medicare Service Centre with passport and visa grant letter','Complete a Medicare Enrolment Application form','After baby is born, add the baby to your card']
+      },
+      '400': {
+        category: 'temporary', name: 'Temporary Work (Short Stay Specialist)',
+        info: 'Short-term work visa — NOT eligible for Centrelink payments.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_rhca
+      },
+      '407': {
+        category: 'temporary', name: 'Training',
+        info: 'Training visa — NOT eligible for Centrelink payments.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_rhca
+      },
+      '408': {
+        category: 'temporary', name: 'Temporary Activity',
+        info: 'Temporary activity visa — NOT eligible for Centrelink payments.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_rhca
+      },
+      // ========== BUSINESS & INVESTMENT ==========
+      '188': {
+        category: 'regional_provisional', name: 'Business Innovation & Investment (Provisional)',
+        info: 'Provisional business visa — eligible for some family payments. Subject to NARWP waiting periods.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes', medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 188 holders are eligible for Medicare.',
+        medicareSteps: ['Visit a Medicare Service Centre with passport and visa grant letter','Complete a Medicare Enrolment Application form','After baby is born, add the baby to your card']
+      },
+      '888': {
+        category: 'permanent', name: 'Business Innovation & Investment (Permanent)',
+        info: 'Permanent business visa — eligible for most Centrelink payments. Time on your 188 visa counts toward NARWP.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      '132': {
+        category: 'permanent', name: 'Business Talent (Permanent)',
+        info: 'Permanent business visa — eligible for most Centrelink payments. Subject to NARWP. Note: this visa is closed to new applications but existing holders retain eligibility.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm
+      },
+      // ========== HUMANITARIAN & REFUGEE (NARWP EXEMPT) ==========
+      '200': {
+        category: 'humanitarian', name: 'Refugee',
+        info: 'Permanent humanitarian visa — eligible for ALL Centrelink payments with NO waiting period. Humanitarian visa holders are exempt from NARWP.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm, medicareNote: 'Refugee visa holders have full Medicare eligibility with no waiting period. Your baby will be covered from birth.'
+      },
+      '201': {
+        category: 'humanitarian', name: 'In-country Special Humanitarian',
+        info: 'Permanent humanitarian visa — eligible for ALL Centrelink payments with NO waiting period. NARWP exempt.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm, medicareNote: 'Humanitarian visa holders have full Medicare eligibility with no waiting period.'
+      },
+      '202': {
+        category: 'humanitarian', name: 'Global Special Humanitarian',
+        info: 'Permanent humanitarian visa — eligible for ALL Centrelink payments with NO waiting period. NARWP exempt.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm, medicareNote: 'Humanitarian visa holders have full Medicare eligibility with no waiting period.'
+      },
+      '203': {
+        category: 'humanitarian', name: 'Emergency Rescue',
+        info: 'Permanent humanitarian visa — eligible for ALL Centrelink payments with NO waiting period. NARWP exempt.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm, medicareNote: 'Humanitarian visa holders have full Medicare eligibility with no waiting period.'
+      },
+      '204': {
+        category: 'humanitarian', name: 'Woman at Risk',
+        info: 'Permanent humanitarian visa — eligible for ALL Centrelink payments with NO waiting period. NARWP exempt.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm, medicareNote: 'Humanitarian visa holders have full Medicare eligibility with no waiting period.'
+      },
+      '866': {
+        category: 'humanitarian', name: 'Protection',
+        info: 'Permanent protection visa — eligible for ALL Centrelink payments with NO waiting period. NARWP exempt.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm, medicareNote: 'Protection visa holders have full Medicare eligibility with no waiting period.'
+      },
+      '851': {
+        category: 'humanitarian', name: 'Resolution of Status',
+        info: 'Permanent visa — eligible for ALL Centrelink payments with NO waiting period. NARWP exempt.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm, medicareNote: 'Resolution of Status visa holders have full Medicare eligibility.'
+      },
+      '785': {
+        category: 'humanitarian_temp', name: 'Temporary Protection',
+        info: 'Temporary protection visa — eligible for some Centrelink payments including <a href="' + L.ftb + '" target="_blank">FTB</a>, <a href="' + L.special + '" target="_blank">Special Benefit</a>, and some concession cards. NARWP exempt.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: true,
+        medicare: 'yes', medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Temporary Protection visa holders are eligible for Medicare. Your baby will be covered from birth.',
+        medicareSteps: ['Visit a Medicare Service Centre with passport and visa grant letter','Complete a Medicare Enrolment Application form','After baby is born, add the baby to your card']
+      },
+      '790': {
+        category: 'humanitarian_temp', name: 'Safe Haven Enterprise',
+        info: 'Temporary visa — eligible for some Centrelink payments including <a href="' + L.ftb + '" target="_blank">FTB</a>, <a href="' + L.special + '" target="_blank">Special Benefit</a>, and some concession cards. NARWP exempt.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: true,
+        medicare: 'yes', medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Safe Haven Enterprise visa holders are eligible for Medicare. Your baby will be covered from birth.',
+        medicareSteps: ['Visit a Medicare Service Centre with passport and visa grant letter','Complete a Medicare Enrolment Application form','After baby is born, add the baby to your card']
+      },
+      // ========== VISITOR & TOURIST ==========
+      '600': {
+        category: 'temporary', name: 'Visitor',
+        info: 'Visitor visa holders are NOT eligible for any Centrelink payments.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'rhca', medicareCard: 'RHCA only (depends on country) or private insurance',
+        medicareNote: 'Visitor visa holders are generally NOT eligible for Medicare. If from an RHCA country, you may access essential treatment. Otherwise, travel insurance is needed. Giving birth without cover can cost $5,000-$20,000+.',
+        medicareSteps: ['Check if your home country has an RHCA with Australia','If yes: visit a Medicare Service Centre to enrol for essential treatment','If no: ensure you have adequate travel/health insurance covering childbirth','Contact the hospital about costs if uninsured — request a quote in advance']
+      },
+      '601': {
+        category: 'temporary', name: 'Electronic Travel Authority (ETA)',
+        info: 'ETA holders are NOT eligible for Centrelink payments.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_rhca
+      },
+      '651': {
+        category: 'temporary', name: 'eVisitor',
+        info: 'eVisitor holders are NOT eligible for Centrelink payments.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_rhca
+      },
+      '771': {
+        category: 'temporary', name: 'Transit',
+        info: 'Transit visa — NOT eligible for any Centrelink payments or Medicare.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_none
+      },
+      '602': {
+        category: 'temporary', name: 'Medical Treatment',
+        info: 'Medical treatment visa — NOT eligible for Centrelink payments.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_rhca
+      },
+      // ========== STUDENT ==========
+      '500': {
+        category: 'temporary', name: 'Student',
+        info: 'Student visa holders are generally NOT eligible for any Centrelink payments. You may be eligible for <a href="' + L.special + '" target="_blank">Special Benefit</a> in extreme financial hardship.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'no', medicareCard: 'Not eligible — need Overseas Student Health Cover (OSHC)',
+        medicareNote: `Student visa holders are NOT eligible for Medicare. You must have ${lnk(L.oshc, 'Overseas Student Health Cover (OSHC)')}. Check if your policy covers pregnancy — many basic policies do NOT. You may need to upgrade.`,
+        medicareSteps: [`Check your ${lnk(L.oshc, 'OSHC policy')} for pregnancy/maternity coverage`,'If not covered, contact your OSHC provider to upgrade (e.g. Medibank, Bupa, Allianz, nib)','Note: there is usually a 12-month waiting period for pregnancy on OSHC',`Your baby born in Australia may be an Australian citizen (if other parent is citizen/PR) and eligible for ${lnk(L.medicare, 'Medicare')}`,'If baby is not a citizen, they need to be added to your OSHC within 28 days of birth']
+      },
+      '590': {
+        category: 'temporary', name: 'Student Guardian',
+        info: 'Student guardian visa — NOT eligible for Centrelink payments.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_none, medicareNote: 'Student Guardian visa holders are NOT eligible for Medicare. You need private health insurance.'
+      },
+      // ========== WORKING HOLIDAY ==========
+      '417': {
+        category: 'temporary', name: 'Working Holiday',
+        info: 'Working holiday visa — NOT eligible for Centrelink payments.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_rhca
+      },
+      '462': {
+        category: 'temporary', name: 'Work and Holiday',
+        info: 'Work and holiday visa — NOT eligible for Centrelink payments.',
+        ftbA: false, ftbB: false, plp: false, newborn: false,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        ..._mc_rhca
+      },
+      // ========== NEW ZEALAND ==========
+      '444': {
+        category: 'nz_special', name: 'Special Category Visa (NZ)',
+        info: 'NZ citizens on SCV may be eligible for family payments if classified as a "protected SCV holder" (arrived before 26 Feb 2001) or meet other criteria. Non-protected SCV holders have limited access.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes', medicareCard: 'Green Medicare Card',
+        medicareNote: 'NZ citizens are eligible for full Medicare under the Reciprocal Health Care Agreement. Your baby will be covered from birth.',
+        medicareSteps: ['Visit a Medicare Service Centre with your NZ passport','Complete a Medicare Enrolment Application form','After baby is born, add the baby to your card']
+      },
+      // ========== RESIDENT RETURN ==========
+      '155': {
+        category: 'permanent', name: 'Resident Return (5 Year)',
+        info: 'You are already a permanent resident returning to Australia. Full access to Centrelink payments — NARWP should already be served from your original visa.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm, medicareNote: 'As a returning permanent resident, you have full Medicare eligibility.'
+      },
+      '157': {
+        category: 'permanent', name: 'Resident Return (3 Month)',
+        info: 'You are already a permanent resident returning to Australia. Full access to Centrelink payments — NARWP should already be served.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
+        parenting_payment: true, jobseeker: true,
+        ..._mc_perm, medicareNote: 'As a returning permanent resident, you have full Medicare eligibility.'
+      },
+      // ========== BRIDGING ==========
+      'bridging': {
+        category: 'bridging', name: 'Bridging Visa',
+        info: 'Bridging visa eligibility depends on your substantive visa application. If you applied for a permanent or partner visa, you may retain some Centrelink access. Contact Centrelink on 136 150 to check your specific situation.',
+        ftbA: true, ftbB: true, plp: false, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'limited', medicareCard: 'Depends on substantive visa application',
+        medicareNote: 'Medicare eligibility on a bridging visa depends on what visa you have applied for. If you applied for a partner or permanent visa, you may be eligible. Contact Medicare on 132 011.',
+        medicareSteps: ['Call Medicare on 132 011 or visit a Service Centre','Bring your bridging visa grant letter and proof of your substantive visa application','They will assess eligibility based on your pending application']
+      },
+      // ========== OTHER ==========
+      'other': {
+        category: 'unknown', name: 'Other Visa',
+        info: 'Eligibility depends on your specific visa type. Please contact Centrelink on 136 150 to check.',
+        ftbA: true, ftbB: true, plp: true, newborn: true,
+        narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
+        parenting_payment: false, jobseeker: false,
+        medicare: 'limited', medicareCard: 'Depends on visa type — check with Medicare',
+        medicareNote: 'Medicare eligibility depends on your specific visa subclass. Contact Medicare on 132 011 to check.',
+        medicareSteps: ['Call Medicare on 132 011 or visit a Service Centre','Bring your passport and visa grant letter','They will check your visa type against their eligibility list']
+      }
+    };
+
+    const RATES = {
+      ftbA_max_fortnight: 227.36,
+      ftbA_base_fortnight: 72.94,
+      ftbA_supplement_annual: 938.05,
+      ftbA_income_free: 62634,
+      ftbA_income_taper1: 0.20,
+      ftbA_income_cap_base: 117194,
+
+      ftbB_max_fortnight: 193.34,
+      ftbB_supplement_annual: 459.90,
+      ftbB_lower_earner_free: 6935,
+      ftbB_lower_earner_taper: 0.20,
+      ftbB_primary_earner_cap: 120007,
+
+      newborn_upfront: 683.00,
+      newborn_supplement_first: 2003.82,
+      newborn_supplement_sub: 668.85,
+
+      energyA_fortnight: 4.76,
+      energyB_fortnight: 2.80,
+
+      plp_weekly: 882.75,
+      plp_weeks: 20,
+
+      parenting_payment_fortnight: 922.10,
+    };
+
+    // ===== CCS RATES (2025-26) =====
+    const CCS_THRESHOLDS = [
+      { min: 0, max: 83280, rate: 90 },
+      { min: 83281, max: 93280, rate: 85 },
+      { min: 93281, max: 103280, rate: 80 },
+      { min: 103281, max: 113280, rate: 75 },
+      { min: 113281, max: 123280, rate: 70 },
+      { min: 123281, max: 143280, rate: 65 },
+      { min: 143281, max: 173280, rate: 55 },
+      { min: 173281, max: 203280, rate: 50 },
+      { min: 203281, max: 253280, rate: 45 },
+      { min: 253281, max: 343280, rate: 35 },
+      { min: 343281, max: 433280, rate: 20 },
+      { min: 433281, max: Infinity, rate: 0 },
+    ];
+    const CCS_HOURLY_CAP = 13.73; // per hour cap for centre-based care
+
+    function getCCSRate(income) {
+      for (const t of CCS_THRESHOLDS) {
+        if (income >= t.min && income <= t.max) return t.rate;
+      }
+      return 0;
+    }
+
+    // ===== FORM HANDLERS =====
+    function updateVisaInfo() {
+      const visaType = document.getElementById('visaType').value;
+      const visa = VISA_DATA[visaType];
+      const infoDiv = document.getElementById('visaInfo');
+      const visaDateGroup = document.getElementById('visaDateGroup');
+      if (visa) {
+        infoDiv.innerHTML = visa.info;
+        infoDiv.style.display = 'block';
+        infoDiv.className = 'visa-info' + (visa.category === 'temporary' ? ' not-eligible' : '');
+        // Hide visa date for citizens (no visa grant date)
+        visaDateGroup.style.display = visa.category === 'citizen' ? 'none' : 'block';
+      } else {
+        infoDiv.style.display = 'none';
+      }
+    }
+
+    document.getElementById('calcForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      calculate();
+    });
+
+    function calculate() {
+      const visaType = document.getElementById('visaType').value;
+      const visa = VISA_DATA[visaType];
+      const visaDateVal = document.getElementById('visaDate').value;
+      const visaDate = visaDateVal ? new Date(visaDateVal) : new Date('2000-01-01'); // citizens: far past = all NARWP served
+      const dueDate = new Date(document.getElementById('dueDate').value);
+      const children = getChildren();
+      const hasNewborn = children.includes('newborn');
+      const numChildren = children.length;
+      const firstChild = numChildren === 1 && hasNewborn;
+      const familyIncome = parseFloat(document.getElementById('familyIncome').value) || 0;
+      const lowerIncome = parseFloat(document.getElementById('lowerIncome').value) || 0;
+      const today = new Date();
+      const resultsDiv = document.getElementById('results');
+
+      // Not eligible at all
+      if (!visa.ftbA && !visa.ftbB && !visa.plp) {
+        resultsDiv.innerHTML = `
+          <div class="not-eligible-box">
+            <h2>Not Eligible for Family Payments</h2>
+            <p>Unfortunately, holders of a <strong>Subclass ${visaType} (${visa.name})</strong> visa are generally
+            <strong>not eligible</strong> for Centrelink family or newborn payments.</p>
+            <p style="margin-top:12px">You may be eligible for <a href="${L.special}" target="_blank" style="color:#742a2a;font-weight:700"><strong>Special Benefit</strong></a> if you are in severe financial hardship.
+            Contact Centrelink on <strong>136 150</strong> to discuss your options.</p>
+          </div>` + buildMedicareSection(visa, visaType) + buildCCSSection(familyIncome, visa) + buildChecklistSection(visa) + buildShareSection();
+        resultsDiv.style.display = 'block';
+        resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+
+      // NARWP calculations
+      const ftbANarwpWeeks = visa.narwp_ftbA_weeks;
+      const plpNarwpWeeks = visa.narwp_plp_weeks;
+      const ftbAEligibleDate = new Date(visaDate.getTime() + ftbANarwpWeeks * 7 * 24 * 60 * 60 * 1000);
+      const plpEligibleDate = new Date(visaDate.getTime() + plpNarwpWeeks * 7 * 24 * 60 * 60 * 1000);
+      const ftbAServed = ftbANarwpWeeks === 0 || today >= ftbAEligibleDate;
+      const plpServed = plpNarwpWeeks === 0 || today >= plpEligibleDate;
+
+      const weeksUntilFtbA = ftbAServed ? 0 : Math.ceil((ftbAEligibleDate - today) / (7 * 24 * 60 * 60 * 1000));
+      const weeksUntilPlp = plpServed ? 0 : Math.ceil((plpEligibleDate - today) / (7 * 24 * 60 * 60 * 1000));
+
+      // FTB Part A rate (income tested) — per child
+      let ftbA_per_child = 0;
+      if (visa.ftbA) {
+        ftbA_per_child = RATES.ftbA_max_fortnight;
+        if (familyIncome > RATES.ftbA_income_free) {
+          const reduction = (familyIncome - RATES.ftbA_income_free) * RATES.ftbA_income_taper1 / 26;
+          ftbA_per_child = Math.max(RATES.ftbA_base_fortnight, RATES.ftbA_max_fortnight - reduction);
+        }
+        if (familyIncome > RATES.ftbA_income_cap_base) {
+          ftbA_per_child = 0;
+        }
+      }
+      const ftbA_fortnight = ftbA_per_child * numChildren;
+
+      // FTB Part B rate (per family, not per child)
+      let ftbB_fortnight = 0;
+      if (visa.ftbB) {
+        ftbB_fortnight = RATES.ftbB_max_fortnight;
+        const higherIncome = familyIncome - lowerIncome;
+        if (higherIncome > RATES.ftbB_primary_earner_cap) {
+          ftbB_fortnight = 0;
+        } else if (lowerIncome > RATES.ftbB_lower_earner_free) {
+          const reduction = (lowerIncome - RATES.ftbB_lower_earner_free) * RATES.ftbB_lower_earner_taper / 26;
+          ftbB_fortnight = Math.max(0, RATES.ftbB_max_fortnight - reduction);
+        }
+      }
+
+      // Newborn payments (only if there's a newborn)
+      const newbornSupplement = firstChild ? RATES.newborn_supplement_first : RATES.newborn_supplement_sub;
+      const newbornTotal = RATES.newborn_upfront + newbornSupplement;
+
+      // PLP total
+      const plpTotal = RATES.plp_weekly * RATES.plp_weeks;
+
+      // Calculate FTB Part A months in first year
+      let ftbAMonthsInFirstYear = 12;
+      if (!ftbAServed && visa.ftbA) {
+        const babyBirth = dueDate > today ? dueDate : today;
+        if (ftbAEligibleDate > babyBirth) {
+          const delayMs = ftbAEligibleDate - babyBirth;
+          const delayMonths = delayMs / (30.44 * 24 * 60 * 60 * 1000);
+          ftbAMonthsInFirstYear = Math.max(0, 12 - delayMonths);
+        }
+      }
+
+      // Annual estimates
+      const ftbA_annual = ftbA_fortnight * 26 * (ftbAMonthsInFirstYear / 12);
+      const ftbB_annual = ftbB_fortnight * 26;
+      const energy_annual = ((visa.ftbA ? RATES.energyA_fortnight : 0) + (visa.ftbB ? RATES.energyB_fortnight : 0)) * 26;
+      const supplements = (ftbA_per_child > 0 ? RATES.ftbA_supplement_annual * numChildren : 0) + (ftbB_fortnight > 0 ? RATES.ftbB_supplement_annual : 0);
+      const newbornAvailable = visa.newborn && ftbA_per_child > 0 && hasNewborn;
+      const workStatus = document.getElementById('workStatus').value;
+      const meetsWorkTest = workStatus === 'yes';
+      const workUnsure = workStatus === 'unsure';
+      const plpAvailable = visa.plp && plpServed && meetsWorkTest;
+
+      const newbornInTotal = (newbornAvailable && !plpAvailable) ? newbornTotal : (newbornAvailable ? RATES.newborn_upfront : 0);
+
+      const firstYearTotal = ftbA_annual + ftbB_annual + energy_annual + supplements + newbornInTotal + (plpAvailable ? plpTotal : 0);
+      const fortnightlyTotal = ftbA_fortnight + ftbB_fortnight +
+        (visa.ftbA ? RATES.energyA_fortnight : 0) + (visa.ftbB ? RATES.energyB_fortnight : 0);
+
+      // Build results
+      let html = '';
+
+      // Visa badge
+      const visaLabel = (visaType === 'citizen' || visaType === 'pr') ? visa.name : `Subclass ${visaType} — ${visa.name}`;
+      html += `<div class="narwp-status info"><strong>Status:</strong> ${visaLabel}${numChildren > 1 ? ` | ${numChildren} children` : ''}</div>`;
+
+      // NARWP Status
+      if (visa.ftbA && ftbANarwpWeeks > 0) {
+        if (ftbAServed) {
+          html += `<div class="narwp-status served"><strong>FTB Part A:</strong> ${ftbANarwpWeeks}-week waiting period served. Eligible now.</div>`;
+        } else {
+          html += `<div class="narwp-status ${weeksUntilFtbA <= 6 ? 'almost' : 'waiting'}">
+            <strong>FTB Part A:</strong> ${weeksUntilFtbA} weeks remaining on ${ftbANarwpWeeks}-week waiting period.
+            Eligible from <strong>${ftbAEligibleDate.toLocaleDateString('en-AU', {day:'numeric',month:'long',year:'numeric'})}</strong>.
+          </div>`;
+        }
+      }
+
+      if (visa.plp && plpNarwpWeeks > 0) {
+        if (plpServed) {
+          html += `<div class="narwp-status served"><strong>Parental Leave Pay:</strong> ${plpNarwpWeeks}-week waiting period served. Eligible now.</div>`;
+        } else {
+          html += `<div class="narwp-status waiting">
+            <strong>Parental Leave Pay:</strong> ${weeksUntilPlp} weeks remaining (${plpNarwpWeeks}-week wait).
+            Eligible from <strong>${plpEligibleDate.toLocaleDateString('en-AU', {day:'numeric',month:'long',year:'numeric'})}</strong>.
+          </div>`;
+        }
+      }
+
+      if (visa.ftbA && ftbANarwpWeeks === 0 && visa.plp && plpNarwpWeeks === 0) {
+        html += `<div class="narwp-status served"><strong>No waiting period</strong> applies to your visa type.</div>`;
+      }
+
+      // Fortnightly breakdown
+      html += `<h2>Fortnightly Payments</h2>`;
+      html += `<div class="result-section">`;
+      if (visa.ftbA) {
+        const ftbALabel = numChildren > 1 ? `FTB Part A (${numChildren} children)` : 'FTB Part A';
+        html += resultRow(ftbALabel, ftbA_fortnight, ftbAServed ? 'eligible' : 'waiting',
+          !ftbAServed ? `(from ${ftbAEligibleDate.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})})` : (numChildren > 1 ? `$${ftbA_per_child.toFixed(2)} x ${numChildren}` : ''));
+      } else {
+        html += resultRow('FTB Part A', 0, 'na', 'not available on this visa');
+      }
+
+      if (visa.ftbB) {
+        html += resultRow('FTB Part B', ftbB_fortnight, ftbB_fortnight > 0 ? 'eligible' : 'not-eligible',
+          ftbB_fortnight > 0 ? '(per family, no waiting period)' : '(income too high)');
+      } else {
+        html += resultRow('FTB Part B', 0, 'na', 'not available on this visa');
+      }
+
+      html += resultRow('Energy Supplement',
+        (visa.ftbA ? RATES.energyA_fortnight : 0) + (visa.ftbB ? RATES.energyB_fortnight : 0),
+        'eligible', '');
+      html += `</div>`;
+
+      html += `<div class="fortnightly-box">
+        <div class="total-label">Estimated Fortnightly Payment (once all eligible)</div>
+        <div class="total-amount">$${fortnightlyTotal.toFixed(2)}</div>
+      </div>`;
+
+      // One-off payments
+      html += `<h2 style="margin-top:24px">One-Off / Lump Sum Payments</h2>`;
+      html += `<div class="result-section">`;
+
+      if (visa.plp) {
+        let plpStatus, plpNote;
+        if (!plpServed) {
+          plpStatus = 'waiting';
+          plpNote = `(NARWP: from ${plpEligibleDate.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})})`;
+        } else if (!meetsWorkTest && !workUnsure) {
+          plpStatus = 'not-eligible';
+          plpNote = 'work test not met';
+        } else if (workUnsure) {
+          plpStatus = 'waiting';
+          plpNote = 'check if you meet the work test';
+        } else {
+          plpStatus = 'eligible';
+          plpNote = 'work test met';
+        }
+        html += resultRow(`Parental Leave Pay (${RATES.plp_weeks} weeks)`, plpTotal, plpStatus, plpNote);
+      } else {
+        html += resultRow('Parental Leave Pay', 0, 'na', 'not available on this visa');
+      }
+
+      if (visa.newborn && hasNewborn) {
+        html += resultRow('Newborn Upfront Payment', RATES.newborn_upfront,
+          newbornAvailable ? 'eligible' : 'waiting',
+          newbornAvailable ? 'lump sum' : '(needs FTB Part A)');
+        const nsNote = plpAvailable ? 'N/A — receiving PLP instead' : (!meetsWorkTest && plpServed && visa.plp ? 'you get this instead of PLP' : 'over 13 weeks');
+        html += resultRow('Newborn Supplement (' + (firstChild ? '1st child' : 'subsequent') + ')',
+          newbornSupplement,
+          newbornAvailable ? 'eligible' : 'waiting',
+          nsNote);
+      } else if (visa.newborn) {
+        html += resultRow('Newborn Payments', 0, 'na', 'no newborn selected');
+      } else {
+        html += resultRow('Newborn Payments', 0, 'na', 'not available on this visa');
+      }
+
+      html += resultRow('FTB Part A Supplement', RATES.ftbA_supplement_annual * (ftbA_per_child > 0 ? numChildren : 0),
+        visa.ftbA && ftbA_per_child > 0 ? 'eligible' : 'na', 'end of financial year');
+      html += resultRow('FTB Part B Supplement', RATES.ftbB_supplement_annual,
+        visa.ftbB && ftbB_fortnight > 0 ? 'eligible' : 'na', 'end of financial year');
+      html += `</div>`;
+
+      // Total first year
+      html += `<div class="total-box">
+        <div class="total-label">Estimated Total in Baby's First Year</div>
+        <div class="total-amount">~$${Math.round(firstYearTotal).toLocaleString()}</div>
+        <div class="total-note">Based on 2025-26 rates. ${plpAvailable ? 'Includes Parental Leave Pay.' : (visa.plp && plpServed && !meetsWorkTest ? 'Excludes Parental Leave Pay (work test not met).' : '')} Actual amount depends on individual circumstances.</div>
+      </div>`;
+
+      // Extra info for permanent visa holders
+      if (visa.parenting_payment) {
+        html += `<div class="narwp-status info" style="margin-top:16px">
+          <strong>Tip:</strong> As a permanent visa holder, you may also be eligible for <a href="${L.pp}" target="_blank" style="color:#2c5282;font-weight:700">Parenting Payment</a>
+          (up to $922.10/fn for single, $667.50/fn for partnered) and <a href="${L.jsp}" target="_blank" style="color:#2c5282;font-weight:700">JobSeeker Payment</a> once the NARWP is served.
+          <a href="${L.claim}" target="_blank" style="color:#2c5282">Make a claim here</a> or call Centrelink on 136 150.
+        </div>`;
+      }
+
+      // Timeline
+      html += buildTimelineSection(visa, dueDate, ftbAEligibleDate, plpEligibleDate, ftbAServed, plpServed, hasNewborn, ftbA_fortnight, ftbB_fortnight, plpTotal, newbornSupplement);
+
+      // Medicare
+      html += buildMedicareSection(visa, visaType);
+
+      // CCS
+      html += buildCCSSection(familyIncome, visa);
+
+      // What-if comparison (only for temp/provisional visas)
+      if (!['permanent','citizen','humanitarian','humanitarian_temp'].includes(visa.category) && visa.ftbA) {
+        html += buildWhatIfSection(visa, visaType, familyIncome, lowerIncome, numChildren, ftbA_per_child, ftbB_fortnight, fortnightlyTotal, firstYearTotal);
+      }
+
+      // Checklist
+      html += buildChecklistSection(visa);
+
+      // Print button
+      html += `<button class="print-btn" onclick="window.print()">Print / Save as PDF</button>`;
+
+      // Share
+      html += buildShareSection();
+
+      resultsDiv.innerHTML = html;
+      resultsDiv.style.display = 'block';
+      resultsDiv.scrollIntoView({ behavior: 'smooth' });
+      updateShareURL();
+    }
+
+    // ===== TIMELINE SECTION =====
+    function buildTimelineSection(visa, dueDate, ftbADate, plpDate, ftbAServed, plpServed, hasNewborn, ftbAFn, ftbBFn, plpTotal, newbornSupp) {
+      const events = [];
+      const fmt = d => d.toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'});
+      const money = v => `$${v.toLocaleString('en-AU', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      const addDays = (d, n) => new Date(d.getTime() + n * 24 * 60 * 60 * 1000);
+      const addWeeks = (d, n) => addDays(d, n * 7);
+      const baby1stBday = addDays(dueDate, 365);
+
+      // Timeline events
+      if (visa.ftbB) {
+        events.push({ date: dueDate, label: 'FTB Part B starts', amount: `${money(ftbBFn)}/fortnight`, desc: 'No waiting period — begins from birth', color: 'green' });
+      }
+      if (visa.ftbA && !ftbAServed) {
+        events.push({ date: ftbADate, label: 'FTB Part A starts', amount: `${money(ftbAFn)}/fortnight`, desc: 'NARWP waiting period ends', color: 'orange' });
+      } else if (visa.ftbA) {
+        events.push({ date: dueDate, label: 'FTB Part A starts', amount: `${money(ftbAFn)}/fortnight`, desc: 'Waiting period already served — begins from birth', color: 'green' });
+      }
+      if (hasNewborn && visa.newborn) {
+        events.push({ date: dueDate, label: 'Newborn Upfront Payment', amount: money(RATES.newborn_upfront), desc: 'Lump sum paid after birth (requires FTB Part A)', color: 'blue' });
+        const nsEnd = addWeeks(dueDate, 13);
+        events.push({ date: nsEnd, label: 'Newborn Supplement ends', amount: `${money(newbornSupp)} total over 13 weeks`, desc: `Paid fortnightly from ${fmt(dueDate)} to ${fmt(nsEnd)}`, color: 'blue' });
+      }
+      if (visa.plp && !plpServed) {
+        const plpEnd = addWeeks(plpDate, RATES.plp_weeks);
+        events.push({ date: plpDate, label: 'Parental Leave Pay starts', amount: `${money(plpTotal)} over ${RATES.plp_weeks} weeks`, desc: `NARWP ends — paid ${fmt(plpDate)} to ${fmt(plpEnd)}`, color: 'purple' });
+        events.push({ date: plpEnd, label: 'Parental Leave Pay ends', amount: '', desc: `Final PLP payment week`, color: 'purple' });
+      } else if (visa.plp) {
+        const plpEnd = addWeeks(dueDate, RATES.plp_weeks);
+        events.push({ date: dueDate, label: 'Parental Leave Pay starts', amount: `${money(plpTotal)} over ${RATES.plp_weeks} weeks`, desc: `Paid ${fmt(dueDate)} to ${fmt(plpEnd)} — subject to work test`, color: 'green' });
+        events.push({ date: plpEnd, label: 'Parental Leave Pay ends', amount: '', desc: `Final PLP payment — ${fmt(plpEnd)}`, color: 'purple' });
+      }
+
+      events.sort((a, b) => a.date - b.date);
+
+      // --- Simple timeline view ---
+      let timelineHtml = '';
+      events.forEach(e => {
+        timelineHtml += `<div class="timeline-item">
+          <div class="timeline-dot ${e.color}"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">${fmt(e.date)} — ${e.label}</div>
+            <div class="timeline-desc">${e.amount ? `<strong>${e.amount}</strong> — ` : ''}${e.desc}</div>
+          </div>
+        </div>`;
+      });
+
+      // --- Roadmap view (visual bars) ---
+      const roadmapBars = [];
+      const timelineStart = new Date(Math.min(dueDate.getTime(), ...(visa.ftbA && !ftbAServed ? [ftbADate.getTime()] : [dueDate.getTime()])));
+      const timelineEnd = addDays(baby1stBday, 30); // a bit past 1st birthday
+      const totalSpan = timelineEnd - timelineStart;
+      const pct = (start, end) => Math.min(100, Math.max(3, ((end - start) / totalSpan) * 100));
+      const offset = (start) => Math.max(0, ((start - timelineStart) / totalSpan) * 100);
+
+      if (visa.ftbB) {
+        roadmapBars.push({ label: 'FTB Part B', start: dueDate, end: null, amount: `${money(ftbBFn)}/fn — ongoing`, color: 'green', ongoing: true });
+      }
+      if (visa.ftbA) {
+        const ftbAStart = ftbAServed ? dueDate : ftbADate;
+        roadmapBars.push({ label: 'FTB Part A', start: ftbAStart, end: null, amount: `${money(ftbAFn)}/fn — ongoing`, color: ftbAServed ? 'teal' : 'orange', ongoing: true });
+      }
+      if (hasNewborn && visa.newborn) {
+        const nsStart = dueDate;
+        const nsEnd = addWeeks(dueDate, 13);
+        roadmapBars.push({ label: 'Newborn Supplement', start: nsStart, end: nsEnd, amount: `${money(newbornSupp)} total`, color: 'blue', ongoing: false });
+      }
+      if (visa.plp) {
+        const plpStart = plpServed ? dueDate : plpDate;
+        const plpEnd = addWeeks(plpStart, RATES.plp_weeks);
+        roadmapBars.push({ label: 'Parental Leave Pay', start: plpStart, end: plpEnd, amount: `${money(plpTotal)} total`, color: 'purple', ongoing: false });
+      }
+
+      let roadmapHtml = '';
+      roadmapBars.forEach(bar => {
+        const barEnd = bar.ongoing ? timelineEnd : bar.end;
+        const widthPct = pct(bar.start, barEnd);
+        roadmapHtml += `<div class="roadmap-bar-wrap">
+          <div class="roadmap-bar-label">
+            <span>${bar.label}</span>
+            <span>${bar.amount}</span>
+          </div>
+          <div class="roadmap-bar-dates">
+            <span>${fmt(bar.start)}</span>
+            <span>${bar.ongoing ? 'Ongoing (until youngest child ages out)' : fmt(bar.end)}</span>
+          </div>
+          <div class="roadmap-bar">
+            <div class="roadmap-fill ${bar.color}" style="width:${widthPct}%">${bar.ongoing ? '' : Math.round((barEnd - bar.start) / (7*24*60*60*1000)) + 'w'}</div>
+          </div>
+        </div>`;
+      });
+
+      // --- Snake view ---
+      // Build milestone data for the snake
+      const snakeMilestones = [];
+      // Add start node
+      snakeMilestones.push({ date: dueDate, label: 'Birth', shortLabel: 'Birth', amount: '', desc: 'Baby arrives — payments begin', color: 'gray', endDate: null });
+
+      if (visa.ftbB) {
+        snakeMilestones.push({ date: dueDate, label: 'FTB Part B starts', shortLabel: 'FTB B', amount: `${money(ftbBFn)}/fn`, desc: 'No waiting period — ongoing fortnightly payment', color: 'green', endDate: null, ongoing: true });
+      }
+      if (visa.ftbA && ftbAServed) {
+        snakeMilestones.push({ date: dueDate, label: 'FTB Part A starts', shortLabel: 'FTB A', amount: `${money(ftbAFn)}/fn`, desc: 'Waiting period served — ongoing fortnightly payment', color: 'teal', endDate: null, ongoing: true });
+      }
+      if (hasNewborn && visa.newborn) {
+        snakeMilestones.push({ date: dueDate, label: 'Newborn Upfront Payment', shortLabel: '$683', amount: money(RATES.newborn_upfront), desc: 'One-off lump sum paid after claiming', color: 'blue', endDate: dueDate });
+      }
+      if (visa.plp && plpServed) {
+        const plpEnd = addWeeks(dueDate, RATES.plp_weeks);
+        snakeMilestones.push({ date: dueDate, label: 'Parental Leave Pay starts', shortLabel: 'PLP Start', amount: `${money(RATES.plp_weekly)}/week`, desc: `Paid weekly for ${RATES.plp_weeks} weeks`, color: 'purple', endDate: plpEnd });
+      }
+      if (visa.ftbA && !ftbAServed) {
+        snakeMilestones.push({ date: ftbADate, label: 'FTB Part A starts', shortLabel: 'FTB A', amount: `${money(ftbAFn)}/fn`, desc: 'NARWP waiting period ends — ongoing fortnightly payment', color: 'orange', endDate: null, ongoing: true });
+      }
+      if (hasNewborn && visa.newborn) {
+        const nsEnd = addWeeks(dueDate, 13);
+        snakeMilestones.push({ date: nsEnd, label: 'Newborn Supplement ends', shortLabel: 'NS End', amount: `${money(newbornSupp)} total`, desc: '13 weeks of fortnightly supplement payments complete', color: 'blue', endDate: nsEnd });
+      }
+      if (visa.plp && plpServed) {
+        const plpEnd = addWeeks(dueDate, RATES.plp_weeks);
+        snakeMilestones.push({ date: plpEnd, label: 'Parental Leave Pay ends', shortLabel: 'PLP End', amount: money(plpTotal) + ' total received', desc: `Final week of Parental Leave Pay — ${fmt(plpEnd)}`, color: 'purple', endDate: plpEnd });
+      }
+      if (visa.plp && !plpServed) {
+        snakeMilestones.push({ date: plpDate, label: 'PLP eligible', shortLabel: 'PLP Start', amount: `${money(RATES.plp_weekly)}/week`, desc: `NARWP ends — paid for ${RATES.plp_weeks} weeks until ${fmt(addWeeks(plpDate, RATES.plp_weeks))}`, color: 'purple', endDate: addWeeks(plpDate, RATES.plp_weeks) });
+        snakeMilestones.push({ date: addWeeks(plpDate, RATES.plp_weeks), label: 'PLP ends', shortLabel: 'PLP End', amount: money(plpTotal) + ' total', desc: 'Final Parental Leave Pay week', color: 'purple', endDate: addWeeks(plpDate, RATES.plp_weeks) });
+      }
+      // Add 1st birthday
+      snakeMilestones.push({ date: baby1stBday, label: "Baby's 1st Birthday", shortLabel: '1 Year', amount: '', desc: 'FTB Part B rate may change after age 1. FTB Part A continues.', color: 'gray', endDate: null });
+
+      snakeMilestones.sort((a, b) => a.date - b.date);
+      // Deduplicate by label
+      const seen = new Set();
+      const uniqueMilestones = snakeMilestones.filter(m => {
+        if (seen.has(m.label)) return false;
+        seen.add(m.label);
+        return true;
+      });
+
+      // Build snake HTML
+      let snakeHtml = '<div class="snake-track">';
+      const perRow = 3;
+      for (let i = 0; i < uniqueMilestones.length; i++) {
+        const m = uniqueMilestones[i];
+        const rowIdx = Math.floor(i / perRow);
+        const isReverse = rowIdx % 2 === 1;
+        const posInRow = i % perRow;
+
+        // Start new row
+        if (posInRow === 0) {
+          snakeHtml += `<div class="snake-row${isReverse ? ' reverse' : ''}">`;
+        }
+
+        // Path connector (not before first node in row)
+        if (posInRow > 0) {
+          snakeHtml += `<div class="snake-path"></div>`;
+        }
+
+        // Node
+        const dateStr = fmt(m.date);
+        const monthLabel = m.date.toLocaleDateString('en-AU', { month: 'short' });
+        snakeHtml += `<div style="text-align:center;flex-shrink:0">
+          <div class="snake-node ${m.color}" onclick="toggleSnakeDetail(this)" data-idx="${i}">
+            ${m.shortLabel}
+          </div>
+          <div class="snake-month-label">${dateStr}</div>
+        </div>`;
+
+        // End row and add bend
+        if (posInRow === perRow - 1 || i === uniqueMilestones.length - 1) {
+          snakeHtml += `</div>`;
+          // Detail panel for each node in this row
+          const rowStart = rowIdx * perRow;
+          const rowEnd = Math.min(rowStart + perRow, uniqueMilestones.length);
+          for (let j = rowStart; j < rowEnd; j++) {
+            const rm = uniqueMilestones[j];
+            const endInfo = rm.ongoing ? 'Ongoing' : (rm.endDate ? fmt(rm.endDate) : '');
+            snakeHtml += `<div class="snake-detail" data-detail="${j}">
+              <div class="snake-detail-title">${rm.label}</div>
+              ${rm.amount ? `<div class="snake-detail-amount">${rm.amount}</div>` : ''}
+              <div class="snake-detail-dates">${fmt(rm.date)}${endInfo && endInfo !== fmt(rm.date) ? ` → ${endInfo}` : ''}</div>
+              <div class="snake-detail-desc">${rm.desc}</div>
+            </div>`;
+          }
+          // Bend connector between rows
+          if (i < uniqueMilestones.length - 1 && posInRow === perRow - 1) {
+            const bendSide = isReverse ? 'snake-bend-left' : 'snake-bend-right';
+            snakeHtml += `<div style="position:relative;height:40px"><div class="snake-bend ${bendSide}" style="position:absolute;top:-20px;height:80px;width:40px"></div></div>`;
+          }
+        }
+      }
+      // Legend
+      snakeHtml += `<div class="snake-legend">
+        <div class="snake-legend-item"><div class="snake-legend-dot" style="background:#48bb78"></div>FTB Part B</div>
+        <div class="snake-legend-item"><div class="snake-legend-dot" style="background:#4fd1c5"></div>FTB Part A</div>
+        <div class="snake-legend-item"><div class="snake-legend-dot" style="background:#63b3ed"></div>Newborn</div>
+        <div class="snake-legend-item"><div class="snake-legend-dot" style="background:#9f7aea"></div>Parental Leave</div>
+        <div class="snake-legend-item"><div class="snake-legend-dot" style="background:#a0aec0"></div>Milestone</div>
+      </div>`;
+      snakeHtml += '</div>';
+
+      // Combine all views
+      let html = `<div class="timeline-box">
+        <h2>Payment Timeline</h2>
+        <div class="timeline-toggle">
+          <button class="active" onclick="toggleTimelineView(this, 'timeline')">Timeline</button>
+          <button onclick="toggleTimelineView(this, 'roadmap')">Roadmap</button>
+          <button onclick="toggleTimelineView(this, 'snake')">Snake</button>
+        </div>
+        <div class="timeline-body active" id="timelineView">${timelineHtml}</div>
+        <div class="roadmap" id="roadmapView">${roadmapHtml}</div>
+        <div class="snake" id="snakeView">${snakeHtml}</div>
+      </div>`;
+      return html;
+    }
+
+    function toggleTimelineView(btn, view) {
+      const btns = btn.parentElement.querySelectorAll('button');
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const box = btn.closest('.timeline-box');
+      box.querySelector('.timeline-body').classList.toggle('active', view === 'timeline');
+      box.querySelector('.roadmap').classList.toggle('active', view === 'roadmap');
+      box.querySelector('.snake').classList.toggle('active', view === 'snake');
+    }
+
+    function toggleSnakeDetail(node) {
+      const idx = node.dataset.idx;
+      const box = node.closest('.snake-track');
+      // Close all other details
+      box.querySelectorAll('.snake-detail.active').forEach(d => {
+        if (d.dataset.detail !== idx) d.classList.remove('active');
+      });
+      box.querySelectorAll('.snake-node.active').forEach(n => {
+        if (n.dataset.idx !== idx) n.classList.remove('active');
+      });
+      // Toggle this one
+      const detail = box.querySelector(`.snake-detail[data-detail="${idx}"]`);
+      if (detail) {
+        detail.classList.toggle('active');
+        node.classList.toggle('active');
+      }
+    }
+
+    // ===== MEDICARE SECTION =====
+    function buildMedicareSection(visa, visaType) {
+      const badgeClass = visa.medicare === 'yes' ? 'yes' :
+                         visa.medicare === 'rhca' ? 'rhca' :
+                         visa.medicare === 'limited' ? 'limited' : 'no';
+      const badgeText = visa.medicare === 'yes' ? 'ELIGIBLE' :
+                        visa.medicare === 'rhca' ? 'RHCA ONLY' :
+                        visa.medicare === 'limited' ? 'CHECK ELIGIBILITY' : 'NOT ELIGIBLE';
+
+      let html = `<div class="medicare-box">
+        <h2>Medicare Eligibility</h2>
+        <div class="medicare-body">
+          <div class="medicare-status">
+            <span class="medicare-badge ${badgeClass}">${badgeText}</span>
+            <span class="medicare-detail">${visa.medicareCard}</span>
+          </div>
+          <p style="font-size:0.92rem;color:#4a5568;margin-bottom:12px">${visa.medicareNote}</p>`;
+
+      if (visa.medicareSteps && visa.medicareSteps.length > 0) {
+        html += `<div class="medicare-card-type"><strong>How to enrol / what to do:</strong></div>
+          <ol class="medicare-steps">`;
+        visa.medicareSteps.forEach((step, i) => {
+          html += `<li data-step="${i + 1}">${step}</li>`;
+        });
+        html += `</ol>`;
+      }
+
+      html += `</div></div>`;
+      return html;
+    }
+
+    // ===== CCS SECTION =====
+    function buildCCSSection(familyIncome, visa) {
+      const ccsRate = getCCSRate(familyIncome);
+      const ccsEligible = visa.category !== 'temporary' || visa.category === 'nz_special';
+      const dailyCost = 120; // typical daily fee
+      const dailySubsidy = Math.min(dailyCost, CCS_HOURLY_CAP * 12) * (ccsRate / 100);
+      const annualSaving = dailySubsidy * 5 * 48; // 5 days/week, 48 weeks
+
+      let html = `<div class="ccs-box"><h2>Child Care Subsidy (CCS) Estimate</h2><div class="ccs-body">`;
+
+      if (!ccsEligible) {
+        html += `<p style="color:#c05621;font-weight:600">Your visa type may not qualify for Child Care Subsidy. CCS is generally available to permanent and provisional visa holders who meet residency requirements.</p>`;
+      } else {
+        html += `<div class="ccs-rate">${ccsRate}% subsidised</div>`;
+        html += `<p class="ccs-detail">Based on your family income of <strong>$${familyIncome.toLocaleString()}</strong>, the government would cover <strong>${ccsRate}%</strong> of child care fees (up to the hourly cap of $${CCS_HOURLY_CAP}/hr).</p>`;
+        html += `<div class="ccs-example">
+          <strong>Example:</strong> For a typical centre charging $120/day (5 days/week):<br>
+          You'd pay ~<strong>$${Math.round(dailyCost - dailySubsidy)}/day</strong> out of pocket (saving ~$${Math.round(annualSaving).toLocaleString()}/year per child).<br>
+          <small>Actual subsidy depends on approved activity hours and provider fees.</small>
+        </div>`;
+      }
+
+      html += `<p class="ccs-detail" style="margin-top:12px"><strong>Note:</strong> CCS requires an activity test (work/study/training hours). Visa holders must also meet residency requirements. <a href="${L.ccs}" target="_blank" style="color:#c05621;font-weight:600">Learn more about Child Care Subsidy</a> or apply through <a href="${L.mygov}" target="_blank" style="color:#c05621;font-weight:600">myGov</a>.</p>`;
+      html += `</div></div>`;
+      return html;
+    }
+
+    // ===== WHAT-IF COMPARISON =====
+    function buildWhatIfSection(visa, visaType, familyIncome, lowerIncome, numChildren, ftbA_per_child, ftbB_fortnight, currentFn, currentAnnual) {
+      // Calculate what they'd get on 801 (permanent)
+      const v801 = VISA_DATA['801'];
+      let ftbA801 = RATES.ftbA_max_fortnight;
+      if (familyIncome > RATES.ftbA_income_free) {
+        const reduction = (familyIncome - RATES.ftbA_income_free) * RATES.ftbA_income_taper1 / 26;
+        ftbA801 = Math.max(RATES.ftbA_base_fortnight, RATES.ftbA_max_fortnight - reduction);
+      }
+      if (familyIncome > RATES.ftbA_income_cap_base) ftbA801 = 0;
+      const ftbA801Total = ftbA801 * numChildren;
+
+      let ftbB801 = RATES.ftbB_max_fortnight;
+      const higherIncome = familyIncome - lowerIncome;
+      if (higherIncome > RATES.ftbB_primary_earner_cap) {
+        ftbB801 = 0;
+      } else if (lowerIncome > RATES.ftbB_lower_earner_free) {
+        const reduction = (lowerIncome - RATES.ftbB_lower_earner_free) * RATES.ftbB_lower_earner_taper / 26;
+        ftbB801 = Math.max(0, RATES.ftbB_max_fortnight - reduction);
+      }
+
+      const fn801 = ftbA801Total + ftbB801 + RATES.energyA_fortnight + RATES.energyB_fortnight;
+      const annual801 = fn801 * 26 + (ftbA801 > 0 ? RATES.ftbA_supplement_annual * numChildren : 0) + (ftbB801 > 0 ? RATES.ftbB_supplement_annual : 0);
+      const ppEligible = true; // 801 = permanent
+
+      const better = (a, b) => a > b ? 'whatif-better' : '';
+
+      let html = `<div class="whatif-box"><h2>What If: Current Visa vs. Permanent (801)</h2><div class="whatif-body">`;
+      html += `<p style="font-size:0.9rem;color:#4a5568;margin-bottom:12px">Comparison of your payments now vs. after receiving a Subclass 801 (Permanent Partner) visa:</p>`;
+      html += `<table class="whatif-table">
+        <tr><th>Payment</th><th>Now (${visaType})</th><th>After 801</th></tr>
+        <tr><td>FTB Part A /fn</td><td>$${(ftbA_per_child * numChildren).toFixed(2)}</td><td class="${better(ftbA801Total, ftbA_per_child * numChildren)}">$${ftbA801Total.toFixed(2)}</td></tr>
+        <tr><td>FTB Part B /fn</td><td>$${ftbB_fortnight.toFixed(2)}</td><td>$${ftbB801.toFixed(2)}</td></tr>
+        <tr><td>Fortnightly Total</td><td>$${currentFn.toFixed(2)}</td><td class="${better(fn801, currentFn)}">$${fn801.toFixed(2)}</td></tr>
+        <tr><td><a href="${L.pp}" target="_blank" style="color:inherit">Parenting Payment</a></td><td style="color:#c53030">Not eligible</td><td class="whatif-better">Up to $922.10/fn</td></tr>
+        <tr><td>JobSeeker</td><td style="color:#c53030">Not eligible</td><td class="whatif-better">Eligible</td></tr>
+        <tr><td>NARWP</td><td>May apply</td><td>Time on temp visa counts</td></tr>
+      </table>`;
+      html += `<p style="font-size:0.85rem;color:#718096;margin-top:10px">The 801 visa unlocks Parenting Payment and JobSeeker Access. Your NARWP time on the 820/309 counts toward the 801 waiting period.</p>`;
+      html += `</div></div>`;
+      return html;
+    }
+
+    // ===== CHECKLIST SECTION =====
+    function buildChecklistSection(visa) {
+      const items = [
+        { text: 'Birth Certificate (or proof of expected due date / pregnancy)', always: true },
+        { text: 'Your passport with current visa', always: true },
+        { text: 'Visa grant notification letter (from VEVO or ImmiAccount)', always: true },
+        { text: 'Tax File Number (TFN) — yours and your partner\'s', always: true },
+        { text: 'Bank account details (BSB & account number)', always: true },
+        { text: 'Proof of income (payslips, tax return, or employer letter)', always: true },
+        { text: 'Partner\'s identity documents (if applicable)', always: true },
+        { text: 'Medicare card (or enrolment receipt)', always: true },
+        { text: 'Proof of Australian address (utility bill, rental agreement)', always: true },
+        { text: 'Immunisation history statement (for children — from Medicare)', always: true },
+        { text: 'Centrelink Customer Reference Number (CRN) — if you have one', always: true },
+        { text: '<a href="' + L.mygov + '" target="_blank" style="color:inherit;font-weight:600">myGov</a> account linked to Centrelink', always: true },
+        { text: 'Proof of work hours (for Parental Leave Pay work test)', condition: visa.plp },
+        { text: 'Employer details & expected return-to-work date', condition: visa.plp },
+      ];
+
+      let html = `<div class="checklist-box"><h2>Centrelink Claim Checklist</h2><div class="checklist-body">`;
+      html += `<p style="font-size:0.88rem;color:#4a5568;margin-bottom:12px">Take these documents to your Centrelink appointment or have them ready when claiming online:</p>`;
+      items.forEach(item => {
+        if (item.always || item.condition) {
+          html += `<label class="checklist-item"><input type="checkbox"><span>${item.text}</span></label>`;
+        }
+      });
+      html += `</div></div>`;
+      return html;
+    }
+
+    // ===== SHARE SECTION =====
+    function buildShareSection() {
+      return `<div class="share-box"><h2>Save / Share Results</h2><div class="share-body">
+        <p style="font-size:0.88rem;color:#4a5568;margin-bottom:10px">Copy this link to save your inputs and share with others:</p>
+        <div class="share-url">
+          <input type="text" id="shareUrl" readonly onclick="this.select()">
+          <button onclick="copyShareURL()">Copy</button>
+        </div>
+        <div class="copy-success" id="copySuccess">Link copied to clipboard!</div>
+      </div></div>`;
+    }
+
+    function updateShareURL() {
+      const params = new URLSearchParams();
+      params.set('v', document.getElementById('visaType').value);
+      params.set('vd', document.getElementById('visaDate').value);
+      params.set('dd', document.getElementById('dueDate').value);
+      params.set('fi', document.getElementById('familyIncome').value);
+      params.set('li', document.getElementById('lowerIncome').value);
+      const children = getChildren();
+      params.set('ch', children.join(','));
+      params.set('w', document.getElementById('workStatus').value);
+      const url = window.location.origin + window.location.pathname + '?' + params.toString();
+      const shareInput = document.getElementById('shareUrl');
+      if (shareInput) shareInput.value = url;
+    }
+
+    function copyShareURL() {
+      const input = document.getElementById('shareUrl');
+      input.select();
+      navigator.clipboard.writeText(input.value).then(() => {
+        const msg = document.getElementById('copySuccess');
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 3000);
+      });
+    }
+
+    // ===== LOAD FROM URL =====
+    function loadFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      if (!params.has('v')) return false;
+
+      if (params.has('v')) document.getElementById('visaType').value = params.get('v');
+      if (params.has('vd')) document.getElementById('visaDate').value = params.get('vd');
+      if (params.has('dd')) document.getElementById('dueDate').value = params.get('dd');
+      if (params.has('fi')) document.getElementById('familyIncome').value = params.get('fi');
+      if (params.has('li')) document.getElementById('lowerIncome').value = params.get('li');
+
+      if (params.has('ch')) {
+        const children = params.get('ch').split(',');
+        const list = document.getElementById('childrenList');
+        // Set first child
+        if (children.length > 0) {
+          list.querySelector('select').value = children[0];
+        }
+        // Add additional children
+        for (let i = 1; i < children.length; i++) {
+          addChild();
+          const selects = list.querySelectorAll('.child-entry select');
+          selects[selects.length - 1].value = children[i];
+        }
+      }
+
+      if (params.has('w')) document.getElementById('workStatus').value = params.get('w');
+
+      updateVisaInfo();
+      return true;
+    }
+
+    function resultRow(label, amount, status, note) {
+      const noteHtml = note ? ` <small style="color:#718096">${note}</small>` : '';
+      const amountStr = status === 'na' ? 'N/A' : `$${amount.toFixed(2)}`;
+      const suffix = status === 'na' ? '' : (status === 'waiting' ? ' *' : '/fn');
+      return `<div class="result-row ${status}">
+        <span class="label">${label}${noteHtml}</span>
+        <span class="value">${amountStr}${suffix}</span>
+      </div>`;
+    }
+
+    // ===== INIT =====
+    const loadedFromURL = loadFromURL();
+    if (!loadedFromURL) {
+      document.getElementById('visaDate').value = '2025-04-30';
+      document.getElementById('dueDate').value = '2026-04-14';
+    }
+    updateVisaInfo();
+    if (loadedFromURL) calculate();
+  </script>
+</body>
+</html>

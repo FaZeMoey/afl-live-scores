@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health & Medicare Tools — SettleAU</title>
+  <meta name="description" content="Free Australian health and Medicare tools. Check Medicare eligibility, find bulk billing doctors, and compare health insurance options.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: hidden; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1a202c; line-height: 1.6; overflow-x: hidden; -webkit-text-size-adjust: 100%;
+    }
+    a { text-decoration: none; color: inherit; }
+    h1, h2, h3, p { overflow-wrap: break-word; word-wrap: break-word; }
+
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      padding: 16px 24px; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(26, 54, 93, 0.95); backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.15);
+    }
+    .nav-logo { font-weight: 800; font-size: 1.1rem; color: white; }
+    .nav-links { display: flex; align-items: center; gap: 20px; }
+    .nav-link { color: rgba(255,255,255,0.7); font-size: 0.85rem; font-weight: 500; transition: color 0.2s; }
+    .nav-link:hover { color: white; }
+    .nav-link.active { color: white; }
+    .nav-cta {
+      background: white; color: #1a365d; padding: 8px 20px; border-radius: 8px;
+      font-weight: 600; font-size: 0.9rem; transition: transform 0.2s;
+    }
+    .nav-cta:hover { transform: translateY(-1px); }
+
+    .hero {
+      background: linear-gradient(135deg, #1a365d 0%, #2c5282 40%, #2b6cb0 100%);
+      padding: 140px 24px 80px; text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; top: -50%; right: -20%;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(99,179,237,0.15) 0%, transparent 70%); border-radius: 50%;
+    }
+    .hero-content { max-width: 720px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-block; background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2); color: #bee3f8;
+      padding: 6px 16px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; margin-bottom: 20px;
+    }
+    .hero h1 { font-size: 2.5rem; font-weight: 900; color: white; line-height: 1.1; margin-bottom: 16px; letter-spacing: -0.02em; }
+    .hero p { font-size: 1.15rem; color: #bee3f8; max-width: 560px; margin: 0 auto; }
+
+    section { padding: 80px 24px; }
+    .section-inner { max-width: 1000px; margin: 0 auto; overflow: hidden; }
+    .section-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #38a169; margin-bottom: 8px; }
+    .section-title { margin-bottom: 32px; }
+    .section-title h2 { font-size: 1.8rem; font-weight: 800; color: #1a365d; margin-bottom: 8px; }
+    .section-title p { font-size: 1rem; color: #718096; max-width: 560px; }
+
+    .tools-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .tool-card {
+      background: white; padding: 28px; border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s;
+      display: block; border: 1px solid #e2e8f0;
+    }
+    .tool-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+    .tool-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 14px;
+    }
+    .tool-card h3 { font-size: 1.05rem; font-weight: 700; color: #1a365d; margin-bottom: 6px; }
+    .tool-card p { font-size: 0.88rem; color: #718096; line-height: 1.5; }
+
+    .cross-section { background: #f0f4f8; }
+    .cross-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .cross-card {
+      background: white; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0;
+      display: block; transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .cross-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+    .cross-tag { display: inline-block; padding: 3px 10px; border-radius: 6px; font-size: 0.72rem; font-weight: 600; margin-bottom: 10px; }
+    .tag-money { background: #ebf8ff; color: #2b6cb0; }
+    .tag-family { background: #fffbeb; color: #d69e2e; }
+    .cross-card h3 { font-size: 0.95rem; font-weight: 700; color: #1a365d; margin-bottom: 4px; }
+    .cross-card p { font-size: 0.83rem; color: #718096; }
+
+    .coming-section { background: white; }
+    .coming-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .coming-card {
+      background: #f7fafc; padding: 24px; border-radius: 12px; border: 1px dashed #cbd5e0; opacity: 0.7;
+    }
+    .coming-card h3 { font-size: 0.95rem; font-weight: 700; color: #718096; margin-bottom: 4px; }
+    .coming-card p { font-size: 0.83rem; color: #a0aec0; }
+    .coming-badge {
+      display: inline-block; background: #edf2f7; color: #a0aec0; padding: 2px 10px;
+      border-radius: 6px; font-size: 0.7rem; font-weight: 600; margin-bottom: 10px;
+    }
+
+    .faq-section { background: #f0f4f8; }
+    .faq-list { max-width: 700px; }
+    .faq-item { border-bottom: 1px solid #e2e8f0; padding: 18px 0; }
+    .faq-q {
+      font-weight: 700; color: #1a365d; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center; font-size: 1rem;
+    }
+    .faq-q::after { content: '+'; font-size: 1.3rem; color: #a0aec0; transition: transform 0.2s; }
+    .faq-item.open .faq-q::after { content: '-'; }
+    .faq-a { display: none; padding-top: 10px; font-size: 0.9rem; color: #4a5568; line-height: 1.6; }
+    .faq-item.open .faq-a { display: block; }
+
+    .cta-section {
+      background: linear-gradient(135deg, #1a365d, #2c5282);
+      text-align: center; padding: 80px 24px;
+    }
+    .cta-section h2 { font-size: 2rem; font-weight: 800; color: white; margin-bottom: 12px; }
+    .cta-section p { font-size: 1.05rem; color: #bee3f8; max-width: 500px; margin: 0 auto 28px; }
+    .cta-btn {
+      display: inline-block; background: #48bb78; color: white;
+      padding: 14px 36px; border-radius: 12px; font-size: 1.05rem; font-weight: 700;
+      transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 14px rgba(72,187,120,0.4);
+      margin: 0 8px 12px;
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(72,187,120,0.5); }
+    .cta-btn.secondary { background: transparent; border: 2px solid rgba(255,255,255,0.3); box-shadow: none; }
+    .cta-btn.secondary:hover { border-color: rgba(255,255,255,0.6); box-shadow: none; }
+
+    footer {
+      background: #1a202c; color: #a0aec0; padding: 60px 24px 40px;
+      font-size: 0.85rem; overflow-wrap: break-word;
+    }
+    .footer-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+    .footer-col h4 { color: white; font-size: 0.9rem; font-weight: 700; margin-bottom: 14px; }
+    .footer-col a { display: block; color: #a0aec0; font-size: 0.83rem; margin-bottom: 8px; transition: color 0.2s; }
+    .footer-col a:hover { color: #63b3ed; }
+    .footer-bottom { max-width: 1000px; margin: 32px auto 0; padding-top: 24px; border-top: 1px solid #2d3748; text-align: center; font-size: 0.8rem; color: #718096; }
+
+    @media (max-width: 960px) {
+      .tools-grid, .cross-grid, .coming-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-inner { grid-template-columns: repeat(2, 1fr); }
+      section { padding: 60px 20px; }
+      .cta-section { padding: 60px 20px; }
+    }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 1.7rem; }
+      .hero p { font-size: 1rem; }
+      .hero { padding: 100px 16px 56px; }
+      .nav-link { display: none; }
+      section { padding: 48px 16px; }
+      .cta-section { padding: 48px 16px; }
+      .cta-section h2 { font-size: 1.5rem; }
+      .section-title h2 { font-size: 1.5rem; }
+      .tools-grid, .cross-grid, .coming-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+      nav { padding: 12px 16px; }
+      .nav-logo { font-size: 0.95rem; }
+      .nav-cta { padding: 7px 14px; font-size: 0.82rem; }
+    }
+    @media (max-width: 400px) {
+      .hero h1 { font-size: 1.45rem; }
+      .footer-inner { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-logo">SettleAU</a>
+    <div class="nav-links">
+      <a href="../money-tax/index.html" class="nav-link">Money & Tax</a>
+      <a href="../visas/index.html" class="nav-link">Visas</a>
+      <a href="../health/index.html" class="nav-link active">Health</a>
+      <a href="../family/index.html" class="nav-link">Family</a>
+      <a href="../settling-in/index.html" class="nav-link">Settling In</a>
+      <a href="../blog/centrelink-820-partner-visa.html" class="nav-link">Blog</a>
+      <a href="../tools.html" class="nav-cta">All Tools</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Home &rsaquo; Health & Medicare</div>
+      <h1>Health & Medicare Tools</h1>
+      <p>Check your Medicare eligibility, find bulk billing doctors</p>
+    </div>
+  </section>
+
+  <!-- Tools -->
+  <section>
+    <div class="section-inner">
+      <div class="section-title">
+        <div class="section-label">Health & Medicare</div>
+        <h2>Tools</h2>
+      </div>
+      <div class="tools-grid">
+        <a href="medicare-comparison.html" class="tool-card">
+          <div class="tool-icon" style="background:#f0fff4;color:#38a169">+</div>
+          <h3>Medicare vs Private Health</h3>
+          <p>Compare Medicare and private health insurance side-by-side to find the right cover for your situation and visa type.</p>
+        </a>
+        <a href="bulk-billing-finder.html" class="tool-card">
+          <div class="tool-icon" style="background:#f0fff4;color:#38a169">&#9906;</div>
+          <h3>Bulk Billing GP Finder</h3>
+          <p>Find bulk billing doctors near you so you can see a GP at no out-of-pocket cost.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cross-pillar -->
+  <section class="cross-section">
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>Also useful</h2>
+        <p>Related tools from other pillars</p>
+      </div>
+      <div class="cross-grid">
+        <a href="../money-tax/centrelink-calculator.html" class="cross-card">
+          <span class="cross-tag tag-money">Money & Tax</span>
+          <h3>Centrelink Calculator</h3>
+          <p>Estimate your Centrelink payments including Medicare-related eligibility checks.</p>
+        </a>
+        <a href="../family/baby-cost-calculator.html" class="cross-card">
+          <span class="cross-tag tag-family">Family</span>
+          <h3>Baby Cost Calculator</h3>
+          <p>Plan the cost of having a baby, including hospital and health-related expenses.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Coming soon -->
+  <section class="coming-section">
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>Coming soon</h2>
+        <p>New health tools we're building</p>
+      </div>
+      <div class="coming-grid">
+        <div class="coming-card">
+          <span class="coming-badge">Coming soon</span>
+          <h3>Medicare Eligibility Checker</h3>
+          <p>Answer a few questions to find out if you're eligible for Medicare based on your visa and residency status.</p>
+        </div>
+        <div class="coming-card">
+          <span class="coming-badge">Coming soon</span>
+          <h3>Mental Health Finder</h3>
+          <p>Find free and low-cost mental health services near you, including Medicare-covered psychology sessions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Who is eligible for Medicare in Australia?</div>
+          <div class="faq-a">Australian citizens, permanent residents, and certain visa holders (e.g., those from Reciprocal Health Care Agreement countries) are eligible for Medicare. Most temporary visa holders are not eligible.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What is bulk billing?</div>
+          <div class="faq-a">Bulk billing means the doctor charges Medicare directly and you pay nothing out of pocket. Not all GPs bulk bill — use our finder to locate bulk billing doctors near you.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What is a Reciprocal Health Care Agreement (RHCA)?</div>
+          <div class="faq-a">Australia has RHCAs with 11 countries (including UK, Ireland, NZ, Sweden, Netherlands, and others) that provide visitors access to Medicare-funded treatment for medically necessary care during their stay.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I need OSHC on a student visa?</div>
+          <div class="faq-a">Yes, international students on a student visa (subclass 500) must maintain Overseas Student Health Cover (OSHC) for the duration of their visa. OSHC covers hospital and medical services.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Do I need private health insurance?</div>
+          <div class="faq-a">It depends on your situation. If you earn over $93,000 and don't have private hospital cover, you'll pay the Medicare Levy Surcharge (1-1.5%). If you're over 31, you may also face Lifetime Health Cover loading. Our comparison tool can help you decide.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Explore more pillars</h2>
+    <p>Health connects to family planning and settling in — explore those tools too.</p>
+    <a href="../family/index.html" class="cta-btn">Family & Kids</a>
+    <a href="../settling-in/index.html" class="cta-btn secondary">Settling In</a>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <h4>Pillars</h4>
+        <a href="../money-tax/index.html">Money & Tax</a>
+        <a href="../visas/index.html">Visas & Immigration</a>
+        <a href="../health/index.html">Health & Medicare</a>
+        <a href="../family/index.html">Family & Kids</a>
+        <a href="../settling-in/index.html">Settling In</a>
+      </div>
+      <div class="footer-col">
+        <h4>Popular Tools</h4>
+        <a href="../money-tax/centrelink-calculator.html">Centrelink Calculator</a>
+        <a href="../money-tax/tax-calculator.html">Tax Calculator</a>
+        <a href="../family/baby-cost-calculator.html">Baby Cost Calculator</a>
+        <a href="../visas/visa-pathway.html">Visa Pathway Comparison</a>
+      </div>
+      <div class="footer-col">
+        <h4>Guides</h4>
+        <a href="../blog/centrelink-820-partner-visa.html">820 Partner Visa Guide</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="../about.html">About SettleAU</a>
+        <a href="../tools.html">All Tools</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>SettleAU is not affiliated with the Australian Government. Not financial, medical, or migration advice.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

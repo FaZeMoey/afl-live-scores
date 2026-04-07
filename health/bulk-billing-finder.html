@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk Billing GP Finder — Find Free Doctors Near You in Australia</title>
+  <meta name="description" content="Find bulk-billing GPs and medical centres near your suburb. Free doctor visits with Medicare. Tips for visa holders on accessing healthcare in Australia.">
+  <link rel="canonical" href="https://centrelinkestimator.com.au/tools/bulk-billing-finder">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{overflow-x:hidden}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#f0f4f8;color:#1a202c;line-height:1.6}
+    a{color:#2b6cb0;text-decoration:none;font-weight:600}a:hover{text-decoration:underline}h1,h2,h3,p{overflow-wrap:break-word}
+    nav{background:#1a365d;padding:14px 24px;display:flex;justify-content:space-between;align-items:center}
+    .nav-logo{font-weight:800;font-size:1.05rem;color:white;text-decoration:none}.nav-logo:hover{text-decoration:none}
+    .nav-links{display:flex;align-items:center;gap:16px}.nav-link{color:rgba(255,255,255,0.7);font-size:0.82rem;font-weight:500}.nav-link:hover{color:white;text-decoration:none}
+    .nav-cta{background:#48bb78;color:white;padding:7px 16px;border-radius:8px;font-weight:600;font-size:0.82rem}.nav-cta:hover{text-decoration:none;background:#38a169}
+    @media(max-width:640px){.nav-link{display:none}}
+    .container{max-width:800px;margin:0 auto;padding:24px 16px 60px}
+    .page-header{text-align:center;margin-bottom:28px}.page-header h1{font-size:1.8rem;font-weight:900;color:#1a365d;margin-bottom:6px}.page-header p{color:#718096;font-size:0.95rem}
+    .card{background:white;border-radius:14px;padding:28px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:20px;overflow:hidden}
+    .form-group{margin-bottom:16px}label{display:block;font-weight:600;font-size:0.9rem;margin-bottom:5px;color:#2d3748}label small{font-weight:400;color:#718096}
+    input,select{width:100%;padding:10px 14px;border:2px solid #e2e8f0;border-radius:8px;font-size:1rem;font-family:inherit}input:focus,select:focus{outline:none;border-color:#3182ce}
+    .row{display:flex;gap:14px}.row .form-group{flex:1}
+    button.search-btn{width:100%;padding:14px;background:#e53e3e;color:white;border:none;border-radius:10px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}button.search-btn:hover{background:#c53030}
+    .results{display:none}.results.active{display:block}
+    .search-links{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:20px 0}
+    .search-link{display:block;background:#f7fafc;border:2px solid #e2e8f0;border-radius:12px;padding:18px;text-align:center;text-decoration:none;transition:border-color 0.2s,transform 0.2s}
+    .search-link:hover{border-color:#e53e3e;transform:translateY(-2px);text-decoration:none}
+    .search-link .icon{font-size:1.8rem;margin-bottom:6px}
+    .search-link h3{font-size:0.92rem;font-weight:700;color:#1a365d;margin-bottom:3px}
+    .search-link p{font-size:0.78rem;color:#718096;font-weight:400}
+    .section-title{font-size:1.1rem;font-weight:800;color:#1a365d;margin:28px 0 12px;padding-top:16px;border-top:1px solid #e2e8f0}
+    .section-title:first-child{border-top:none;padding-top:0;margin-top:0}
+    .explain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin:16px 0}
+    .explain-card{padding:16px;border-radius:10px;font-size:0.85rem}
+    .explain-card h4{font-size:0.9rem;font-weight:700;margin-bottom:4px}
+    .explain-card p{font-size:0.82rem;color:#4a5568}
+    .explain-card .price{font-weight:700;font-size:0.95rem;margin-top:6px}
+    .step-list{list-style:none;padding:0;counter-reset:steps}
+    .step-list li{padding:14px 0 14px 48px;position:relative;border-bottom:1px solid #f0f4f8;font-size:0.88rem;color:#2d3748;counter-increment:steps}
+    .step-list li:last-child{border-bottom:none}
+    .step-list li::before{content:counter(steps);position:absolute;left:0;top:14px;width:32px;height:32px;background:#e53e3e;color:white;border-radius:50%;font-size:0.82rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+    .visa-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0}
+    .visa-tag{padding:8px 12px;border-radius:8px;font-size:0.78rem;font-weight:600;text-align:center}
+    .visa-tag.yes{background:#f0fff4;color:#276749;border:1px solid #c6f6d5}
+    .visa-tag.no{background:#fff5f5;color:#c53030;border:1px solid #fed7d7}
+    .visa-tag.partial{background:#fffaf0;color:#c05621;border:1px solid #feebc8}
+    .tip-box{background:#fff5f5;border:2px solid #fc8181;border-radius:12px;padding:18px;margin:16px 0}
+    .tip-box h4{color:#c53030;font-size:0.92rem;margin-bottom:6px}
+    .tip-box p{font-size:0.85rem;color:#4a5568}
+    .info-box{padding:14px 16px;border-radius:8px;font-size:0.88rem;margin:16px 0}
+    .info-box.blue{background:#ebf8ff;border-left:4px solid #3182ce;color:#2c5282}
+    .info-box.green{background:#f0fff4;border-left:4px solid #38a169;color:#276749}
+    .info-box.red{background:#fff5f5;border-left:4px solid #e53e3e;color:#742a2a}
+    .emergency-box{background:#fff5f5;border:2px solid #e53e3e;border-radius:12px;padding:20px;text-align:center;margin:20px 0}
+    .emergency-box h3{color:#c53030;font-size:1.1rem;margin-bottom:4px}
+    .emergency-box .number{font-size:2rem;font-weight:900;color:#c53030;margin:8px 0}
+    .emergency-box p{font-size:0.85rem;color:#4a5568}
+    .cta-box{background:linear-gradient(135deg,#1a365d,#2c5282);color:white;padding:28px;border-radius:14px;text-align:center;margin:24px 0}
+    .cta-box h3{color:white;font-size:1.1rem;margin-bottom:6px}.cta-box p{color:#bee3f8;font-size:0.9rem;margin-bottom:14px}
+    .cta-btn{display:inline-block;background:#48bb78;color:white;padding:10px 28px;border-radius:10px;font-weight:700;font-size:0.95rem}.cta-btn:hover{text-decoration:none;background:#38a169}
+    footer{background:#1a202c;color:#a0aec0;padding:32px 16px;text-align:center;font-size:0.82rem}footer a{color:#63b3ed}footer p{margin-bottom:6px}
+    @media(max-width:640px){.row{flex-direction:column;gap:0}.card{padding:20px}.page-header h1{font-size:1.4rem}.search-links{grid-template-columns:1fr}.explain-grid{grid-template-columns:1fr}.visa-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <nav><a href="../index.html" class="nav-logo">SettleAU</a><div class="nav-links"><a href="../money-tax/" class="nav-link">Money & Tax</a><a href="../visas/" class="nav-link">Visas</a><a href="../health/" class="nav-link">Health</a><a href="../family/" class="nav-link">Family</a><a href="../settling-in/" class="nav-link">Settling In</a><a href="../tools.html" class="nav-cta">All Tools</a></div></nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>Bulk Billing GP Finder</h1>
+      <p>Find doctors who bulk bill (free visits with Medicare) near your suburb</p>
+    </div>
+
+    <!-- Emergency box -->
+    <div class="emergency-box">
+      <h3>Medical Emergency?</h3>
+      <div class="number">Call 000</div>
+      <p>For emergencies, call 000 for ambulance. Go to your nearest hospital Emergency Department. You do NOT need Medicare for emergency treatment.</p>
+    </div>
+
+    <div class="card">
+      <div class="form-group">
+        <label>Your suburb or postcode</label>
+        <input type="text" id="suburb" placeholder="e.g. Bankstown or 2200" required>
+      </div>
+      <div class="row">
+        <div class="form-group">
+          <label>What do you need?</label>
+          <select id="serviceType">
+            <option value="gp">GP / General Practitioner</option>
+            <option value="medical_centre">Medical Centre (walk-in)</option>
+            <option value="after_hours">After Hours / Weekend</option>
+            <option value="maternal">Maternal / Pregnancy Care</option>
+            <option value="paediatric">Paediatric (Children's Doctor)</option>
+            <option value="mental_health">Mental Health / Counselling</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Your Medicare status</label>
+          <select id="medicareStatus">
+            <option value="yes">I have Medicare</option>
+            <option value="no">I don't have Medicare</option>
+            <option value="unsure">Not sure</option>
+          </select>
+        </div>
+      </div>
+      <button class="search-btn" onclick="searchDoctors()">Find Bulk Billing Doctors</button>
+    </div>
+
+    <div class="results" id="results">
+      <div class="card">
+        <h2 id="resultTitle">Doctors near you</h2>
+        <p style="font-size:0.9rem;color:#718096;margin-bottom:16px" id="resultSubtitle"></p>
+        <div class="search-links" id="searchLinks"></div>
+        <div id="noMedicareAlert"></div>
+      </div>
+
+      <!-- What is bulk billing -->
+      <div class="card">
+        <div class="section-title">What is Bulk Billing?</div>
+        <div class="explain-grid">
+          <div class="explain-card" style="background:#f0fff4">
+            <h4 style="color:#276749">Bulk Billed (Free)</h4>
+            <p>The doctor bills Medicare directly. You pay nothing. Just show your Medicare card.</p>
+            <div class="price" style="color:#276749">Cost: $0</div>
+          </div>
+          <div class="explain-card" style="background:#fff5f5">
+            <h4 style="color:#c53030">Private Billing (Gap Fee)</h4>
+            <p>The doctor charges more than the Medicare rebate. You pay the difference ("gap") out of pocket.</p>
+            <div class="price" style="color:#c53030">Cost: $30-$90+ gap fee</div>
+          </div>
+          <div class="explain-card" style="background:#ebf8ff">
+            <h4 style="color:#2c5282">Mixed Billing</h4>
+            <p>The clinic bulk bills some patients (concession card holders, children under 16) but charges a gap for others.</p>
+            <div class="price" style="color:#2c5282">Cost: $0 or $30-$60</div>
+          </div>
+          <div class="explain-card" style="background:#fffaf0">
+            <h4 style="color:#c05621">No Medicare</h4>
+            <p>Without Medicare, you pay the full fee. A standard GP visit costs $60-$120. You may be able to claim on private health insurance.</p>
+            <div class="price" style="color:#c05621">Cost: $60-$120+</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- How to see a bulk billing doctor -->
+      <div class="card">
+        <div class="section-title">How to See a Bulk Billing Doctor</div>
+        <ol class="step-list">
+          <li><strong>Make sure you have a Medicare card.</strong> If you're eligible but haven't enrolled, visit a Medicare Service Centre with your passport and visa. <a href="https://www.servicesaustralia.gov.au/enrolling-medicare" target="_blank">Enrol in Medicare here</a>.</li>
+          <li><strong>Find a bulk billing clinic.</strong> Use the search links above, or call the clinic and ask: "Do you bulk bill?" Many clinics bulk bill children under 16 and concession card holders even if they don't bulk bill adults.</li>
+          <li><strong>Book an appointment or walk in.</strong> Most medical centres accept walk-ins. Wait times are typically 15-60 minutes. You can also book online through <a href="https://www.hotdoc.com.au" target="_blank">HotDoc</a> or <a href="https://www.healthengine.com.au" target="_blank">HealthEngine</a>.</li>
+          <li><strong>Bring your Medicare card (or number).</strong> The clinic will swipe your card at reception. If you only have your Medicare number (from the app or letter), that works too.</li>
+          <li><strong>See the doctor — pay nothing.</strong> The doctor will bulk bill Medicare directly. You walk out without paying. If a prescription is needed, you'll pay for medication at the pharmacy (PBS-subsidised, usually $7.70-$31.60).</li>
+        </ol>
+      </div>
+
+      <!-- Medicare eligibility by visa -->
+      <div class="card">
+        <div class="section-title">Medicare Eligibility by Visa Type</div>
+        <div class="visa-grid">
+          <div class="visa-tag yes">Australian Citizen — Full Medicare</div>
+          <div class="visa-tag yes">Permanent Resident — Full Medicare</div>
+          <div class="visa-tag yes">820/309 Partner — Full Medicare</div>
+          <div class="visa-tag yes">491/494 Regional — Full Medicare</div>
+          <div class="visa-tag yes">485 Graduate — Full Medicare</div>
+          <div class="visa-tag yes">NZ Citizen (444) — Full Medicare</div>
+          <div class="visa-tag yes">Humanitarian (200-204) — Full Medicare</div>
+          <div class="visa-tag partial">482 TSS — RHCA countries only</div>
+          <div class="visa-tag partial">417/462 WHM — RHCA countries only</div>
+          <div class="visa-tag no">500 Student — Not eligible (need OSHC)</div>
+          <div class="visa-tag no">600 Visitor — Not eligible</div>
+          <div class="visa-tag partial">Bridging Visa — Depends on application</div>
+        </div>
+        <div class="info-box blue">
+          <strong>RHCA countries</strong> (Reciprocal Health Care Agreement): UK, Ireland, New Zealand, Belgium, Finland, Italy, Malta, Netherlands, Norway, Slovenia, Sweden. If you're from one of these countries on a temp visa, you can enrol in Medicare for essential treatment. <a href="https://www.servicesaustralia.gov.au/reciprocal-health-care-agreements" target="_blank" style="color:#2c5282">Check RHCA eligibility</a>.
+        </div>
+      </div>
+
+      <!-- Useful numbers -->
+      <div class="card">
+        <div class="section-title">Useful Health Numbers</div>
+        <div style="font-size:0.9rem">
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f4f8">
+            <span><strong>Emergency</strong></span><span style="font-weight:700;color:#c53030">000</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f4f8">
+            <span><strong>Health Direct</strong> (24/7 nurse advice)</span><span style="font-weight:700;color:#2b6cb0">1800 022 222</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f4f8">
+            <span><strong>Poisons Information</strong></span><span style="font-weight:700;color:#2b6cb0">13 11 26</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f4f8">
+            <span><strong>Mental Health Crisis</strong> (Lifeline)</span><span style="font-weight:700;color:#2b6cb0">13 11 14</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0f4f8">
+            <span><strong>Medicare enquiries</strong></span><span style="font-weight:700;color:#2b6cb0">132 011</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:10px 0">
+            <span><strong>Translating & Interpreting Service</strong> (free)</span><span style="font-weight:700;color:#2b6cb0">131 450</span>
+          </div>
+        </div>
+        <div class="info-box green">
+          <strong>Free interpreters:</strong> You can call the Translating & Interpreting Service (TIS) on <strong>131 450</strong> and they will connect a phone interpreter for free when you're at a doctor or hospital. You can also ask the clinic to book an interpreter before your appointment.
+        </div>
+      </div>
+
+      <div class="cta-box">
+        <h3>Check your Medicare eligibility</h3>
+        <p>Our tool shows your exact Medicare status, card type, and how to enrol based on your visa.</p>
+        <a href="medicare-comparison.html" class="cta-btn">Medicare Eligibility Check</a>
+      </div>
+    </div>
+  </div>
+
+  <footer><p><strong>SettleAU</strong> — Free tools for Australian families</p><p>Not medical advice. Not affiliated with <a href="https://www.servicesaustralia.gov.au" target="_blank">Services Australia</a> or any medical provider.</p></footer>
+
+  <script>
+    const SERVICE_LABELS = {
+      gp: 'GPs & general practitioners',
+      medical_centre: 'medical centres',
+      after_hours: 'after-hours doctors',
+      maternal: 'maternal & pregnancy care',
+      paediatric: 'paediatric doctors',
+      mental_health: 'mental health services',
+    };
+
+    function searchDoctors() {
+      const suburb = document.getElementById('suburb').value.trim();
+      const serviceType = document.getElementById('serviceType').value;
+      const medicareStatus = document.getElementById('medicareStatus').value;
+      if (!suburb) return;
+
+      const serviceLabel = SERVICE_LABELS[serviceType];
+      document.getElementById('resultTitle').textContent = `Find ${serviceLabel} near ${suburb}`;
+      document.getElementById('resultSubtitle').textContent = 'Click a link below to search official health directories:';
+
+      const searchQuery = encodeURIComponent(`bulk billing ${serviceType === 'gp' ? 'GP' : serviceLabel} ${suburb}`);
+      const healthDirectQuery = encodeURIComponent(suburb);
+
+      let html = '';
+      html += `<a href="https://www.healthdirect.gov.au/australian-health-services?q=${healthDirectQuery}&type=GP" target="_blank" class="search-link">
+        <div class="icon">&#9764;</div>
+        <h3>HealthDirect</h3>
+        <p>Official government health service finder — shows bulk billing status</p>
+      </a>`;
+      html += `<a href="https://www.hotdoc.com.au/search?q=${healthDirectQuery}&filters=bulkBilling" target="_blank" class="search-link">
+        <div class="icon">&#128197;</div>
+        <h3>HotDoc</h3>
+        <p>Book online — filter by bulk billing. See next available appointment</p>
+      </a>`;
+      html += `<a href="https://healthengine.com.au/find/gp/${healthDirectQuery}" target="_blank" class="search-link">
+        <div class="icon">&#128269;</div>
+        <h3>HealthEngine</h3>
+        <p>Search GPs with reviews, bulk billing filter, and online booking</p>
+      </a>`;
+      html += `<a href="https://www.google.com/maps/search/${searchQuery}" target="_blank" class="search-link">
+        <div class="icon">&#128205;</div>
+        <h3>Google Maps</h3>
+        <p>See clinics on a map with reviews, hours, and phone numbers</p>
+      </a>`;
+
+      document.getElementById('searchLinks').innerHTML = html;
+
+      // Medicare alert
+      let alertHtml = '';
+      if (medicareStatus === 'no') {
+        alertHtml = `<div class="info-box red"><strong>You don't have Medicare.</strong> Without Medicare, you'll need to pay the full fee ($60-$120+ per visit). Check if your visa qualifies — many temporary visas are eligible. <a href="https://www.servicesaustralia.gov.au/enrolling-medicare" target="_blank" style="color:#742a2a;font-weight:700">Check Medicare eligibility</a>. If you have private health insurance (OSHC, travel insurance), check if GP visits are covered.</div>`;
+      } else if (medicareStatus === 'unsure') {
+        alertHtml = `<div class="info-box blue"><strong>Not sure about Medicare?</strong> Use our <a href="medicare-comparison.html" style="color:#2c5282">Medicare eligibility tool</a> to check based on your visa type, or call Medicare on <strong>132 011</strong>.</div>`;
+      }
+      document.getElementById('noMedicareAlert').innerHTML = alertHtml;
+
+      document.getElementById('results').classList.add('active');
+      document.getElementById('results').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.getElementById('suburb').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); searchDoctors(); }
+    });
+  </script>
+</body>
+</html>
