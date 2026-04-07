@@ -356,7 +356,8 @@
       font-size: 1.1rem;
       border: none;
     }
-    .timeline-body { padding: 18px 18px 8px; }
+    .timeline-body { padding: 18px 18px 8px; display: none; }
+    .timeline-body.active { display: block; }
     .timeline-item {
       display: flex;
       gap: 14px;
@@ -392,6 +393,85 @@
     .timeline-content { flex: 1; }
     .timeline-date { font-weight: 600; font-size: 0.88rem; color: #2d3748; }
     .timeline-desc { font-size: 0.85rem; color: #4a5568; margin-top: 2px; }
+    .timeline-toggle {
+      display: flex;
+      gap: 8px;
+      padding: 12px 18px 0;
+    }
+    .timeline-toggle button {
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      border-radius: 16px;
+      width: auto;
+      margin: 0;
+      background: #e2e8f0;
+      color: #2d3748;
+      font-weight: 600;
+    }
+    .timeline-toggle button:hover { background: #cbd5e0; }
+    .timeline-toggle button.active { background: #319795; color: white; }
+    body.dark .timeline-toggle button { background: #4a5568; color: #e2e8f0; }
+    body.dark .timeline-toggle button.active { background: #319795; color: white; }
+
+    /* Roadmap view */
+    .roadmap { padding: 18px; display: none; }
+    .roadmap.active { display: block; }
+    .roadmap-bar-wrap {
+      margin-bottom: 18px;
+    }
+    .roadmap-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 4px;
+    }
+    .roadmap-bar-dates {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #718096;
+      margin-bottom: 4px;
+    }
+    .roadmap-bar {
+      height: 28px;
+      border-radius: 14px;
+      position: relative;
+      overflow: hidden;
+      background: #e2e8f0;
+    }
+    .roadmap-fill {
+      height: 100%;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: white;
+      min-width: 40px;
+      transition: width 0.6s ease;
+    }
+    .roadmap-fill.green { background: linear-gradient(90deg, #38a169, #48bb78); }
+    .roadmap-fill.blue { background: linear-gradient(90deg, #3182ce, #63b3ed); }
+    .roadmap-fill.purple { background: linear-gradient(90deg, #805ad5, #9f7aea); }
+    .roadmap-fill.orange { background: linear-gradient(90deg, #dd6b20, #ed8936); }
+    .roadmap-fill.teal { background: linear-gradient(90deg, #319795, #4fd1c5); }
+    .roadmap-bar-amount {
+      font-size: 0.82rem;
+      color: #4a5568;
+      margin-top: 3px;
+    }
+    .roadmap-ongoing {
+      font-size: 0.75rem;
+      color: #718096;
+      font-style: italic;
+    }
+    body.dark .roadmap-bar { background: #4a5568; }
+    body.dark .roadmap-bar-label { color: #e2e8f0; }
+    body.dark .roadmap-bar-dates { color: #a0aec0; }
+    body.dark .roadmap-bar-amount { color: #cbd5e0; }
 
     /* Print button */
     .print-btn {
@@ -1819,7 +1899,11 @@
       const events = [];
       const fmt = d => d.toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'});
       const money = v => `$${v.toLocaleString('en-AU', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+      const addDays = (d, n) => new Date(d.getTime() + n * 24 * 60 * 60 * 1000);
+      const addWeeks = (d, n) => addDays(d, n * 7);
+      const baby1stBday = addDays(dueDate, 365);
 
+      // Timeline events
       if (visa.ftbB) {
         events.push({ date: dueDate, label: 'FTB Part B starts', amount: `${money(ftbBFn)}/fortnight`, desc: 'No waiting period — begins from birth', color: 'green' });
       }
@@ -1830,29 +1914,105 @@
       }
       if (hasNewborn && visa.newborn) {
         events.push({ date: dueDate, label: 'Newborn Upfront Payment', amount: money(RATES.newborn_upfront), desc: 'Lump sum paid after birth (requires FTB Part A)', color: 'blue' });
-        const nsEnd = new Date(dueDate.getTime() + 13 * 7 * 24 * 60 * 60 * 1000);
-        events.push({ date: nsEnd, label: 'Newborn Supplement ends', amount: `${money(newbornSupp)} total over 13 weeks`, desc: 'Paid fortnightly over 13 weeks after birth', color: 'blue' });
+        const nsEnd = addWeeks(dueDate, 13);
+        events.push({ date: nsEnd, label: 'Newborn Supplement ends', amount: `${money(newbornSupp)} total over 13 weeks`, desc: `Paid fortnightly from ${fmt(dueDate)} to ${fmt(nsEnd)}`, color: 'blue' });
       }
       if (visa.plp && !plpServed) {
-        events.push({ date: plpDate, label: 'Parental Leave Pay eligible', amount: `${money(plpTotal)} (${RATES.plp_weeks} weeks)`, desc: '2-year NARWP ends — can claim if work test met', color: 'purple' });
+        const plpEnd = addWeeks(plpDate, RATES.plp_weeks);
+        events.push({ date: plpDate, label: 'Parental Leave Pay starts', amount: `${money(plpTotal)} over ${RATES.plp_weeks} weeks`, desc: `NARWP ends — paid ${fmt(plpDate)} to ${fmt(plpEnd)}`, color: 'purple' });
+        events.push({ date: plpEnd, label: 'Parental Leave Pay ends', amount: '', desc: `Final PLP payment week`, color: 'purple' });
       } else if (visa.plp) {
-        events.push({ date: dueDate, label: 'Parental Leave Pay eligible', amount: `${money(plpTotal)} (${RATES.plp_weeks} weeks)`, desc: 'From birth — subject to work test', color: 'green' });
+        const plpEnd = addWeeks(dueDate, RATES.plp_weeks);
+        events.push({ date: dueDate, label: 'Parental Leave Pay starts', amount: `${money(plpTotal)} over ${RATES.plp_weeks} weeks`, desc: `Paid ${fmt(dueDate)} to ${fmt(plpEnd)} — subject to work test`, color: 'green' });
+        events.push({ date: plpEnd, label: 'Parental Leave Pay ends', amount: '', desc: `Final PLP payment — ${fmt(plpEnd)}`, color: 'purple' });
       }
 
       events.sort((a, b) => a.date - b.date);
 
-      let html = `<div class="timeline-box"><h2>Payment Timeline</h2><div class="timeline-body">`;
+      // --- Simple timeline view ---
+      let timelineHtml = '';
       events.forEach(e => {
-        html += `<div class="timeline-item">
+        timelineHtml += `<div class="timeline-item">
           <div class="timeline-dot ${e.color}"></div>
           <div class="timeline-content">
             <div class="timeline-date">${fmt(e.date)} — ${e.label}</div>
-            <div class="timeline-desc"><strong>${e.amount}</strong> — ${e.desc}</div>
+            <div class="timeline-desc">${e.amount ? `<strong>${e.amount}</strong> — ` : ''}${e.desc}</div>
           </div>
         </div>`;
       });
-      html += `</div></div>`;
+
+      // --- Roadmap view (visual bars) ---
+      const roadmapBars = [];
+      const timelineStart = new Date(Math.min(dueDate.getTime(), ...(visa.ftbA && !ftbAServed ? [ftbADate.getTime()] : [dueDate.getTime()])));
+      const timelineEnd = addDays(baby1stBday, 30); // a bit past 1st birthday
+      const totalSpan = timelineEnd - timelineStart;
+      const pct = (start, end) => Math.min(100, Math.max(3, ((end - start) / totalSpan) * 100));
+      const offset = (start) => Math.max(0, ((start - timelineStart) / totalSpan) * 100);
+
+      if (visa.ftbB) {
+        roadmapBars.push({ label: 'FTB Part B', start: dueDate, end: null, amount: `${money(ftbBFn)}/fn — ongoing`, color: 'green', ongoing: true });
+      }
+      if (visa.ftbA) {
+        const ftbAStart = ftbAServed ? dueDate : ftbADate;
+        roadmapBars.push({ label: 'FTB Part A', start: ftbAStart, end: null, amount: `${money(ftbAFn)}/fn — ongoing`, color: ftbAServed ? 'teal' : 'orange', ongoing: true });
+      }
+      if (hasNewborn && visa.newborn) {
+        const nsStart = dueDate;
+        const nsEnd = addWeeks(dueDate, 13);
+        roadmapBars.push({ label: 'Newborn Supplement', start: nsStart, end: nsEnd, amount: `${money(newbornSupp)} total`, color: 'blue', ongoing: false });
+      }
+      if (visa.plp) {
+        const plpStart = plpServed ? dueDate : plpDate;
+        const plpEnd = addWeeks(plpStart, RATES.plp_weeks);
+        roadmapBars.push({ label: 'Parental Leave Pay', start: plpStart, end: plpEnd, amount: `${money(plpTotal)} total`, color: 'purple', ongoing: false });
+      }
+
+      let roadmapHtml = '';
+      roadmapBars.forEach(bar => {
+        const barEnd = bar.ongoing ? timelineEnd : bar.end;
+        const widthPct = pct(bar.start, barEnd);
+        roadmapHtml += `<div class="roadmap-bar-wrap">
+          <div class="roadmap-bar-label">
+            <span>${bar.label}</span>
+            <span>${bar.amount}</span>
+          </div>
+          <div class="roadmap-bar-dates">
+            <span>${fmt(bar.start)}</span>
+            <span>${bar.ongoing ? 'Ongoing (until youngest child ages out)' : fmt(bar.end)}</span>
+          </div>
+          <div class="roadmap-bar">
+            <div class="roadmap-fill ${bar.color}" style="width:${widthPct}%">${bar.ongoing ? '' : Math.round((barEnd - bar.start) / (7*24*60*60*1000)) + 'w'}</div>
+          </div>
+        </div>`;
+      });
+
+      // Combine
+      let html = `<div class="timeline-box">
+        <h2>Payment Timeline</h2>
+        <div class="timeline-toggle">
+          <button class="active" onclick="toggleTimelineView(this, 'timeline')">Timeline</button>
+          <button onclick="toggleTimelineView(this, 'roadmap')">Roadmap</button>
+        </div>
+        <div class="timeline-body active" id="timelineView">${timelineHtml}</div>
+        <div class="roadmap" id="roadmapView">${roadmapHtml}</div>
+      </div>`;
       return html;
+    }
+
+    function toggleTimelineView(btn, view) {
+      const btns = btn.parentElement.querySelectorAll('button');
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const box = btn.closest('.timeline-box');
+      const tv = box.querySelector('.timeline-body');
+      const rv = box.querySelector('.roadmap');
+      if (view === 'timeline') {
+        tv.classList.add('active');
+        rv.classList.remove('active');
+      } else {
+        tv.classList.remove('active');
+        rv.classList.add('active');
+      }
     }
 
     // ===== MEDICARE SECTION =====
