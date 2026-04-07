@@ -184,6 +184,78 @@
     .not-eligible-box h2 { color: #c53030; border: none; }
     .not-eligible-box p { color: #742a2a; margin-top: 8px; }
 
+    .medicare-box {
+      margin-top: 24px;
+      border: 2px solid #805ad5;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .medicare-box h2 {
+      background: #805ad5;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .medicare-body {
+      padding: 18px;
+    }
+    .medicare-status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .medicare-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+    .medicare-badge.yes { background: #f0fff4; color: #276749; border: 1px solid #38a169; }
+    .medicare-badge.limited { background: #fffff0; color: #744210; border: 1px solid #d69e2e; }
+    .medicare-badge.no { background: #fff5f5; color: #c53030; border: 1px solid #fc8181; }
+    .medicare-badge.rhca { background: #ebf8ff; color: #2c5282; border: 1px solid #3182ce; }
+    .medicare-detail { font-size: 0.92rem; color: #4a5568; }
+    .medicare-card-type {
+      background: #faf5ff;
+      border: 1px solid #d6bcfa;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    .medicare-card-type strong { color: #553c9a; }
+    .medicare-steps {
+      margin-top: 12px;
+      padding-left: 0;
+      list-style: none;
+    }
+    .medicare-steps li {
+      padding: 6px 0 6px 28px;
+      position: relative;
+      font-size: 0.9rem;
+      color: #4a5568;
+    }
+    .medicare-steps li::before {
+      content: attr(data-step);
+      position: absolute;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      background: #805ad5;
+      color: white;
+      border-radius: 50%;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      top: 7px;
+    }
+
     @media (max-width: 500px) {
       .row { flex-direction: column; gap: 0; }
       body { padding: 10px; }
@@ -282,7 +354,17 @@
         info: 'Eligible for FTB, Newborn payments, Parental Leave Pay, Special Benefit & Low Income Health Care Card. Subject to NARWP waiting periods.',
         ftbA: true, ftbB: true, plp: true, newborn: true,
         narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
-        parenting_payment: false, jobseeker: false
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes',
+        medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 820 visa holders are eligible for full Medicare. You can apply as soon as your visa is granted. You will initially receive an interim (blue) card. Your baby will be covered under your Medicare card from birth.',
+        medicareSteps: [
+          'Visit a Medicare Service Centre with your passport, visa grant letter, and proof of address',
+          'Complete a Medicare Enrolment Application form',
+          'You will get an interim card number on the spot',
+          'Your green Medicare card will arrive by post in 2-3 weeks',
+          'After baby is born, add the baby to your card at a Service Centre or via myGov'
+        ]
       },
       '309': {
         category: 'partner_temp',
@@ -290,7 +372,17 @@
         info: 'Eligible for FTB, Newborn payments, Parental Leave Pay, Special Benefit & Low Income Health Care Card. Subject to NARWP waiting periods.',
         ftbA: true, ftbB: true, plp: true, newborn: true,
         narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
-        parenting_payment: false, jobseeker: false
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes',
+        medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 309 visa holders are eligible for full Medicare. You can apply as soon as your visa is granted. Your baby will be covered from birth.',
+        medicareSteps: [
+          'Visit a Medicare Service Centre with your passport, visa grant letter, and proof of address',
+          'Complete a Medicare Enrolment Application form',
+          'You will get an interim card number on the spot',
+          'Your green Medicare card will arrive by post in 2-3 weeks',
+          'After baby is born, add the baby to your card at a Service Centre or via myGov'
+        ]
       },
       '801': {
         category: 'permanent',
@@ -298,7 +390,15 @@
         info: 'As a permanent visa holder, you are eligible for most Centrelink payments. NARWP may apply from your original visa grant date. Time on your 820/309 visa counts toward NARWP.',
         ftbA: true, ftbB: true, plp: true, newborn: true,
         narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
-        parenting_payment: true, jobseeker: true
+        parenting_payment: true, jobseeker: true,
+        medicare: 'yes',
+        medicareCard: 'Green Medicare Card',
+        medicareNote: 'As a permanent resident, you have full Medicare eligibility. If you already had Medicare on your 820 visa, your card continues. Your baby will be covered from birth.',
+        medicareSteps: [
+          'If already enrolled, update your visa details at a Service Centre or via myGov',
+          'If not yet enrolled, visit a Medicare Service Centre with passport and visa grant letter',
+          'After baby is born, add the baby to your card'
+        ]
       },
       '100': {
         category: 'permanent',
@@ -306,7 +406,15 @@
         info: 'As a permanent visa holder, you are eligible for most Centrelink payments. NARWP may apply. Time on your 309 visa counts toward NARWP.',
         ftbA: true, ftbB: true, plp: true, newborn: true,
         narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
-        parenting_payment: true, jobseeker: true
+        parenting_payment: true, jobseeker: true,
+        medicare: 'yes',
+        medicareCard: 'Green Medicare Card',
+        medicareNote: 'As a permanent resident, you have full Medicare eligibility. Your baby will be covered from birth.',
+        medicareSteps: [
+          'If already enrolled, update your visa details at a Service Centre or via myGov',
+          'If not yet enrolled, visit a Medicare Service Centre with passport and visa grant letter',
+          'After baby is born, add the baby to your card'
+        ]
       },
       '189': {
         category: 'permanent',
@@ -314,7 +422,15 @@
         info: 'Permanent visa — eligible for most Centrelink payments. Subject to NARWP from grant date.',
         ftbA: true, ftbB: true, plp: true, newborn: true,
         narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
-        parenting_payment: true, jobseeker: true
+        parenting_payment: true, jobseeker: true,
+        medicare: 'yes',
+        medicareCard: 'Green Medicare Card',
+        medicareNote: 'Permanent visa holders have full Medicare eligibility. Your baby will be covered from birth.',
+        medicareSteps: [
+          'Visit a Medicare Service Centre with passport, visa grant letter, and proof of address',
+          'Complete a Medicare Enrolment Application form',
+          'After baby is born, add the baby to your card'
+        ]
       },
       '190': {
         category: 'permanent',
@@ -322,7 +438,15 @@
         info: 'Permanent visa — eligible for most Centrelink payments. Subject to NARWP from grant date.',
         ftbA: true, ftbB: true, plp: true, newborn: true,
         narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
-        parenting_payment: true, jobseeker: true
+        parenting_payment: true, jobseeker: true,
+        medicare: 'yes',
+        medicareCard: 'Green Medicare Card',
+        medicareNote: 'Permanent visa holders have full Medicare eligibility. Your baby will be covered from birth.',
+        medicareSteps: [
+          'Visit a Medicare Service Centre with passport, visa grant letter, and proof of address',
+          'Complete a Medicare Enrolment Application form',
+          'After baby is born, add the baby to your card'
+        ]
       },
       '186': {
         category: 'permanent',
@@ -330,7 +454,15 @@
         info: 'Permanent visa — eligible for most Centrelink payments. Subject to NARWP from grant date.',
         ftbA: true, ftbB: true, plp: true, newborn: true,
         narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
-        parenting_payment: true, jobseeker: true
+        parenting_payment: true, jobseeker: true,
+        medicare: 'yes',
+        medicareCard: 'Green Medicare Card',
+        medicareNote: 'Permanent visa holders have full Medicare eligibility. Your baby will be covered from birth.',
+        medicareSteps: [
+          'Visit a Medicare Service Centre with passport, visa grant letter, and proof of address',
+          'Complete a Medicare Enrolment Application form',
+          'After baby is born, add the baby to your card'
+        ]
       },
       '491': {
         category: 'regional_provisional',
@@ -338,7 +470,15 @@
         info: 'Provisional visa — eligible for some family payments. Subject to NARWP waiting periods.',
         ftbA: true, ftbB: true, plp: true, newborn: true,
         narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
-        parenting_payment: false, jobseeker: false
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes',
+        medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 491 visa holders are eligible for full Medicare. Your baby will be covered from birth.',
+        medicareSteps: [
+          'Visit a Medicare Service Centre with passport, visa grant letter, and proof of address',
+          'Complete a Medicare Enrolment Application form',
+          'After baby is born, add the baby to your card'
+        ]
       },
       '494': {
         category: 'regional_provisional',
@@ -346,7 +486,15 @@
         info: 'Provisional visa — eligible for some family payments. Subject to NARWP waiting periods.',
         ftbA: true, ftbB: true, plp: true, newborn: true,
         narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
-        parenting_payment: false, jobseeker: false
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes',
+        medicareCard: 'Blue Medicare Card (interim)',
+        medicareNote: 'Subclass 494 visa holders are eligible for full Medicare. Your baby will be covered from birth.',
+        medicareSteps: [
+          'Visit a Medicare Service Centre with passport, visa grant letter, and proof of address',
+          'Complete a Medicare Enrolment Application form',
+          'After baby is born, add the baby to your card'
+        ]
       },
       '482': {
         category: 'temporary',
@@ -354,7 +502,17 @@
         info: 'Temporary work visa — generally NOT eligible for Centrelink family payments. You may only be eligible for Special Benefit in cases of severe financial hardship.',
         ftbA: false, ftbB: false, plp: false, newborn: false,
         narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
-        parenting_payment: false, jobseeker: false
+        parenting_payment: false, jobseeker: false,
+        medicare: 'rhca',
+        medicareCard: 'Reciprocal Health Care Agreement (RHCA) — depends on country',
+        medicareNote: 'Subclass 482 holders are NOT automatically eligible for Medicare. However, if you are from a country with a Reciprocal Health Care Agreement (UK, Ireland, NZ, Belgium, Finland, Italy, Malta, Netherlands, Norway, Slovenia, Sweden), you can enrol in Medicare for essential treatment. Otherwise, you will need private health insurance for the birth.',
+        medicareSteps: [
+          'Check if your home country has an RHCA with Australia',
+          'If yes: visit a Medicare Service Centre with passport and visa grant letter to enrol',
+          'If no: you will need private health insurance — contact your insurer about maternity cover',
+          'Note: RHCA only covers "medically necessary" treatment, not elective procedures',
+          'Your baby born in Australia is an Australian citizen and eligible for Medicare regardless'
+        ]
       },
       '444': {
         category: 'nz_special',
@@ -362,7 +520,15 @@
         info: 'NZ citizens on SCV may be eligible for family payments if classified as a "protected SCV holder" (arrived before 26 Feb 2001) or meet other criteria. Non-protected SCV holders have limited access.',
         ftbA: true, ftbB: true, plp: true, newborn: true,
         narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
-        parenting_payment: false, jobseeker: false
+        parenting_payment: false, jobseeker: false,
+        medicare: 'yes',
+        medicareCard: 'Green Medicare Card',
+        medicareNote: 'NZ citizens are eligible for full Medicare under the Reciprocal Health Care Agreement between Australia and New Zealand. Your baby will be covered from birth.',
+        medicareSteps: [
+          'Visit a Medicare Service Centre with your NZ passport',
+          'Complete a Medicare Enrolment Application form',
+          'After baby is born, add the baby to your card'
+        ]
       },
       '500': {
         category: 'temporary',
@@ -370,7 +536,17 @@
         info: 'Student visa holders are generally NOT eligible for any Centrelink payments. You may only be eligible for Special Benefit in extreme financial hardship.',
         ftbA: false, ftbB: false, plp: false, newborn: false,
         narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
-        parenting_payment: false, jobseeker: false
+        parenting_payment: false, jobseeker: false,
+        medicare: 'no',
+        medicareCard: 'Not eligible — need Overseas Student Health Cover (OSHC)',
+        medicareNote: 'Student visa holders are NOT eligible for Medicare. You must have Overseas Student Health Cover (OSHC) as a condition of your visa. Check if your OSHC policy covers pregnancy and birth — many basic policies do NOT. You may need to upgrade your cover.',
+        medicareSteps: [
+          'Check your OSHC policy for pregnancy/maternity coverage',
+          'If not covered, contact your OSHC provider to upgrade (e.g. Medibank, Bupa, Allianz, nib)',
+          'Note: there is usually a 12-month waiting period for pregnancy on OSHC',
+          'Your baby born in Australia may be an Australian citizen (if other parent is citizen/PR) and eligible for Medicare',
+          'If baby is not a citizen, they need to be added to your OSHC within 28 days of birth'
+        ]
       },
       '600': {
         category: 'temporary',
@@ -378,7 +554,17 @@
         info: 'Visitor visa holders are NOT eligible for any Centrelink payments.',
         ftbA: false, ftbB: false, plp: false, newborn: false,
         narwp_ftbA_weeks: 0, narwp_ftbB_weeks: 0, narwp_plp_weeks: 0,
-        parenting_payment: false, jobseeker: false
+        parenting_payment: false, jobseeker: false,
+        medicare: 'rhca',
+        medicareCard: 'RHCA only (depends on country) or private insurance',
+        medicareNote: 'Visitor visa holders are generally NOT eligible for Medicare. If you are from an RHCA country (UK, Ireland, NZ, etc.), you may access essential medical treatment. Otherwise, you will need travel insurance or pay out-of-pocket. Giving birth in Australia on a visitor visa without cover can cost $5,000-$20,000+.',
+        medicareSteps: [
+          'Check if your home country has an RHCA with Australia',
+          'If yes: visit a Medicare Service Centre to enrol for essential treatment',
+          'If no: ensure you have adequate travel/health insurance covering childbirth',
+          'Contact the hospital about costs if uninsured — request a quote in advance',
+          'Your baby born in Australia is NOT automatically a citizen unless the other parent is'
+        ]
       },
       'other': {
         category: 'unknown',
@@ -386,7 +572,15 @@
         info: 'Eligibility depends on your specific visa type. Please contact Centrelink on 136 150 to check. This estimate assumes limited access similar to temporary partner visas.',
         ftbA: true, ftbB: true, plp: true, newborn: true,
         narwp_ftbA_weeks: 52, narwp_ftbB_weeks: 0, narwp_plp_weeks: 104,
-        parenting_payment: false, jobseeker: false
+        parenting_payment: false, jobseeker: false,
+        medicare: 'limited',
+        medicareCard: 'Depends on visa type — check with Medicare',
+        medicareNote: 'Medicare eligibility depends on your specific visa subclass. Contact Medicare on 132 011 to check your eligibility.',
+        medicareSteps: [
+          'Call Medicare on 132 011 or visit a Service Centre',
+          'Bring your passport and visa grant letter',
+          'They will check your visa type against their eligibility list'
+        ]
       }
     };
 
@@ -455,7 +649,7 @@
             <strong>not eligible</strong> for Centrelink family or newborn payments.</p>
             <p style="margin-top:12px">You may be eligible for <strong>Special Benefit</strong> if you are in severe financial hardship.
             Contact Centrelink on <strong>136 150</strong> to discuss your options.</p>
-          </div>`;
+          </div>` + buildMedicareSection(visa, visaType);
         resultsDiv.style.display = 'block';
         resultsDiv.scrollIntoView({ behavior: 'smooth' });
         return;
@@ -637,9 +831,42 @@
         </div>`;
       }
 
+      // Medicare section
+      html += buildMedicareSection(visa, visaType);
+
       resultsDiv.innerHTML = html;
       resultsDiv.style.display = 'block';
       resultsDiv.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function buildMedicareSection(visa, visaType) {
+      const badgeClass = visa.medicare === 'yes' ? 'yes' :
+                         visa.medicare === 'rhca' ? 'rhca' :
+                         visa.medicare === 'limited' ? 'limited' : 'no';
+      const badgeText = visa.medicare === 'yes' ? 'ELIGIBLE' :
+                        visa.medicare === 'rhca' ? 'RHCA ONLY' :
+                        visa.medicare === 'limited' ? 'CHECK ELIGIBILITY' : 'NOT ELIGIBLE';
+
+      let html = `<div class="medicare-box">
+        <h2>Medicare Eligibility</h2>
+        <div class="medicare-body">
+          <div class="medicare-status">
+            <span class="medicare-badge ${badgeClass}">${badgeText}</span>
+            <span class="medicare-detail">${visa.medicareCard}</span>
+          </div>
+          <p style="font-size:0.92rem;color:#4a5568;margin-bottom:12px">${visa.medicareNote}</p>`;
+
+      if (visa.medicareSteps && visa.medicareSteps.length > 0) {
+        html += `<div class="medicare-card-type"><strong>How to enrol / what to do:</strong></div>
+          <ol class="medicare-steps">`;
+        visa.medicareSteps.forEach((step, i) => {
+          html += `<li data-step="${i + 1}">${step}</li>`;
+        });
+        html += `</ol>`;
+      }
+
+      html += `</div></div>`;
+      return html;
     }
 
     function resultRow(label, amount, status, note) {
