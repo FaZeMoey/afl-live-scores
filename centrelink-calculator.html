@@ -256,23 +256,352 @@
       top: 7px;
     }
 
+    /* CCS Section */
+    .ccs-box {
+      margin-top: 24px;
+      border: 2px solid #dd6b20;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .ccs-box h2 {
+      background: #dd6b20;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .ccs-body { padding: 18px; }
+    .ccs-rate {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #c05621;
+      text-align: center;
+      margin: 8px 0;
+    }
+    .ccs-detail { font-size: 0.9rem; color: #4a5568; margin-top: 8px; }
+    .ccs-example {
+      background: #fffaf0;
+      border: 1px solid #fbd38d;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-size: 0.88rem;
+    }
+
+    /* Timeline */
+    .timeline-box {
+      margin-top: 24px;
+      border: 2px solid #319795;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .timeline-box h2 {
+      background: #319795;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .timeline-body { padding: 18px 18px 8px; }
+    .timeline-item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: 15px;
+      top: 32px;
+      bottom: -16px;
+      width: 2px;
+      background: #b2dfdb;
+    }
+    .timeline-item:last-child::before { display: none; }
+    .timeline-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+    .timeline-dot.green { background: #38a169; }
+    .timeline-dot.orange { background: #dd6b20; }
+    .timeline-dot.blue { background: #3182ce; }
+    .timeline-dot.purple { background: #805ad5; }
+    .timeline-content { flex: 1; }
+    .timeline-date { font-weight: 600; font-size: 0.88rem; color: #2d3748; }
+    .timeline-desc { font-size: 0.85rem; color: #4a5568; margin-top: 2px; }
+
+    /* Print button */
+    .print-btn {
+      background: #718096;
+      margin-top: 16px;
+    }
+    .print-btn:hover { background: #4a5568; }
+
+    /* Checklist */
+    .checklist-box {
+      margin-top: 24px;
+      border: 2px solid #38a169;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .checklist-box h2 {
+      background: #38a169;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .checklist-body { padding: 18px; }
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      font-size: 0.9rem;
+      color: #2d3748;
+      border-bottom: 1px solid #f0f4f8;
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item input[type="checkbox"] {
+      width: auto;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    /* What-if comparison */
+    .whatif-box {
+      margin-top: 24px;
+      border: 2px solid #667eea;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .whatif-box h2 {
+      background: #667eea;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .whatif-body { padding: 18px; }
+    .whatif-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    .whatif-table th {
+      background: #ebf4ff;
+      padding: 10px 12px;
+      text-align: left;
+      font-weight: 600;
+      color: #2c5282;
+    }
+    .whatif-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .whatif-table tr:last-child td { border-bottom: none; }
+    .whatif-better { color: #276749; font-weight: 600; }
+
+    /* Share box */
+    .share-box {
+      margin-top: 24px;
+      border: 2px solid #a0aec0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .share-box h2 {
+      background: #718096;
+      color: white;
+      margin: 0;
+      padding: 14px 18px;
+      font-size: 1.1rem;
+      border: none;
+    }
+    .share-body { padding: 18px; }
+    .share-url {
+      display: flex;
+      gap: 8px;
+    }
+    .share-url input {
+      flex: 1;
+      font-size: 0.85rem;
+    }
+    .share-url button {
+      width: auto;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      margin-top: 0;
+    }
+    .copy-success {
+      color: #38a169;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      display: none;
+    }
+
+    /* Dark mode */
+    .dark-toggle {
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .dark-toggle:hover { background: rgba(255,255,255,0.25); }
+    header { position: relative; }
+
+    body.dark {
+      background: #1a202c;
+      color: #e2e8f0;
+    }
+    body.dark .card {
+      background: #2d3748;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    body.dark input, body.dark select {
+      background: #4a5568;
+      color: #e2e8f0;
+      border-color: #4a5568;
+    }
+    body.dark .result-row:nth-child(even) { background: #374151; }
+    body.dark .disclaimer { background: #44403c; color: #fbbf24; }
+    body.dark .visa-info { background: #2c5282; color: #bee3f8; }
+    body.dark .visa-info.not-eligible { background: #742a2a; color: #feb2b2; }
+    body.dark .narwp-status.info { background: #2c5282; }
+    body.dark .narwp-status.served { background: #22543d; }
+    body.dark .narwp-status.waiting { background: #742a2a; }
+    body.dark .narwp-status.almost { background: #744210; }
+    body.dark .total-box { background: #2c5282; border-color: #63b3ed; }
+    body.dark .total-box .total-amount { color: #bee3f8; }
+    body.dark .total-box .total-label { color: #90cdf4; }
+    body.dark .fortnightly-box { background: #22543d; border-color: #68d391; }
+    body.dark .fortnightly-box .total-amount { color: #c6f6d5; }
+    body.dark .fortnightly-box .total-label { color: #9ae6b4; }
+    body.dark .result-row .label { color: #cbd5e0; }
+    body.dark .medicare-body,
+    body.dark .ccs-body,
+    body.dark .timeline-body,
+    body.dark .checklist-body,
+    body.dark .whatif-body,
+    body.dark .share-body { background: #2d3748; }
+    body.dark .medicare-card-type { background: #44337a; border-color: #6b46c1; }
+    body.dark .medicare-card-type strong { color: #d6bcfa; }
+    body.dark .medicare-steps li { color: #cbd5e0; }
+    body.dark .ccs-example { background: #44403c; border-color: #dd6b20; }
+    body.dark .whatif-table th { background: #2c5282; color: #bee3f8; }
+    body.dark .whatif-table td { border-color: #4a5568; color: #e2e8f0; }
+    body.dark .checklist-item { color: #e2e8f0; border-color: #4a5568; }
+    body.dark .not-eligible-box { background: #742a2a; border-color: #fc8181; }
+    body.dark .not-eligible-box h2 { color: #feb2b2; }
+    body.dark .not-eligible-box p { color: #fed7d7; }
+
+    /* Language bar */
+    .lang-bar {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+    .lang-btn {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      border-radius: 14px;
+      padding: 2px 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      width: auto;
+      margin: 0;
+    }
+    .lang-btn:hover { background: rgba(255,255,255,0.25); }
+    .lang-btn.active { background: rgba(255,255,255,0.35); font-weight: 700; }
+
+    /* Multi-child */
+    .child-entry {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .child-entry select, .child-entry input {
+      flex: 1;
+    }
+    .remove-child-btn {
+      width: auto;
+      padding: 6px 12px;
+      background: #e53e3e;
+      font-size: 0.85rem;
+      margin: 0;
+      border-radius: 6px;
+    }
+    .remove-child-btn:hover { background: #c53030; }
+    .add-child-btn {
+      width: auto;
+      padding: 8px 16px;
+      background: #38a169;
+      font-size: 0.9rem;
+      margin: 4px 0 0;
+      border-radius: 6px;
+    }
+    .add-child-btn:hover { background: #2f855a; }
+
+    /* Print styles */
+    @media print {
+      body { background: white !important; color: black !important; padding: 0; }
+      .card { box-shadow: none; }
+      header { border-radius: 0; }
+      button, .dark-toggle, .lang-bar, .share-box, .print-btn { display: none !important; }
+      .results { display: block !important; }
+      .disclaimer { break-inside: avoid; }
+      .checklist-item input[type="checkbox"] { -webkit-appearance: checkbox; }
+    }
+
     @media (max-width: 500px) {
       .row { flex-direction: column; gap: 0; }
       body { padding: 10px; }
       .card { padding: 20px; }
+      .share-url { flex-direction: column; }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Centrelink Payment Estimator</h1>
-      <p>For Australian Visa Holders — Family & Newborn Payments</p>
+      <h1 data-i18n="title">Centrelink Payment Estimator</h1>
+      <p data-i18n="subtitle">For Australian Visa Holders — Family & Newborn Payments</p>
+      <button class="dark-toggle" onclick="toggleDark()" data-i18n="dark">Dark Mode</button>
+      <div class="lang-bar">
+        <button class="lang-btn active" onclick="setLang('en')">English</button>
+        <button class="lang-btn" onclick="setLang('ar')">العربية</button>
+        <button class="lang-btn" onclick="setLang('zh')">中文</button>
+        <button class="lang-btn" onclick="setLang('vi')">Tiếng Việt</button>
+        <button class="lang-btn" onclick="setLang('hi')">हिन्दी</button>
+      </div>
     </header>
     <div class="card">
       <form id="calcForm">
         <div class="form-group">
-          <label>What visa do you hold?</label>
+          <label data-i18n="visaLabel">What visa do you hold?</label>
           <select id="visaType" onchange="updateVisaInfo()">
             <optgroup label="Partner Visas (Temporary/Provisional)">
               <option value="820">Subclass 820 — Partner (Temporary)</option>
@@ -303,40 +632,52 @@
         </div>
 
         <div class="form-group">
-          <label>Visa Grant Date</label>
+          <label data-i18n="visaDateLabel">Visa Grant Date</label>
           <input type="date" id="visaDate" required>
         </div>
 
         <div class="form-group">
-          <label>Baby's Expected Due Date</label>
+          <label data-i18n="dueDateLabel">Baby's Expected Due Date</label>
           <input type="date" id="dueDate" required>
         </div>
 
         <div class="form-group">
-          <label>Is this your first child? <small>(in your care)</small></label>
-          <select id="firstChild">
-            <option value="yes">Yes — First child</option>
-            <option value="no">No — We have other children</option>
-          </select>
+          <label data-i18n="childrenLabel">Children <small>(add all children in your care)</small></label>
+          <div id="childrenList">
+            <div class="child-entry">
+              <select>
+                <option value="newborn">Newborn / Expected baby</option>
+                <option value="0">Under 1 year</option>
+                <option value="1">1 year old</option>
+                <option value="2">2 years old</option>
+                <option value="3">3 years old</option>
+                <option value="4">4 years old</option>
+                <option value="5">5-12 years old</option>
+                <option value="13">13-15 years old</option>
+                <option value="16">16-19 (in study)</option>
+              </select>
+            </div>
+          </div>
+          <button type="button" class="add-child-btn" onclick="addChild()" data-i18n="addChild">+ Add Another Child</button>
         </div>
 
         <div class="row">
           <div class="form-group">
-            <label>Combined Family Income <small>($/year)</small></label>
+            <label data-i18n="incomeLabel">Combined Family Income <small>($/year)</small></label>
             <input type="number" id="familyIncome" placeholder="e.g. 80000" required min="0">
           </div>
           <div class="form-group">
-            <label>Lower Earner's Income <small>($/year)</small></label>
+            <label data-i18n="lowerIncomeLabel">Lower Earner's Income <small>($/year)</small></label>
             <input type="number" id="lowerIncome" placeholder="e.g. 0" required min="0">
           </div>
         </div>
 
-        <button type="submit">Calculate My Payments</button>
+        <button type="submit" data-i18n="calculateBtn">Calculate My Payments</button>
       </form>
 
       <div class="results" id="results"></div>
 
-      <div class="disclaimer">
+      <div class="disclaimer" data-i18n="disclaimer">
         <strong>Disclaimer:</strong> This is a rough estimate only, based on 2025-26 rates.
         Actual payments depend on your full circumstances. Always confirm with
         <strong>Centrelink on 136 150</strong>. This tool is not affiliated with Services Australia.
@@ -345,8 +686,140 @@
   </div>
 
   <script>
-    // Visa eligibility rules
-    // category: 'permanent', 'partner_temp', 'regional_provisional', 'temporary', 'nz_special', 'none'
+    // ===== TRANSLATIONS =====
+    const TRANSLATIONS = {
+      en: {
+        title: 'Centrelink Payment Estimator',
+        subtitle: 'For Australian Visa Holders — Family & Newborn Payments',
+        dark: 'Dark Mode',
+        light: 'Light Mode',
+        visaLabel: 'What visa do you hold?',
+        visaDateLabel: 'Visa Grant Date',
+        dueDateLabel: "Baby's Expected Due Date",
+        childrenLabel: 'Children <small>(add all children in your care)</small>',
+        addChild: '+ Add Another Child',
+        incomeLabel: 'Combined Family Income <small>($/year)</small>',
+        lowerIncomeLabel: "Lower Earner's Income <small>($/year)</small>",
+        calculateBtn: 'Calculate My Payments',
+        disclaimer: '<strong>Disclaimer:</strong> This is a rough estimate only, based on 2025-26 rates. Actual payments depend on your full circumstances. Always confirm with <strong>Centrelink on 136 150</strong>. This tool is not affiliated with Services Australia.',
+      },
+      ar: {
+        title: 'حاسبة مدفوعات سنترلينك',
+        subtitle: 'لحاملي التأشيرات الأسترالية — مدفوعات الأسرة والمواليد',
+        dark: 'الوضع الداكن',
+        light: 'الوضع الفاتح',
+        visaLabel: 'ما هي التأشيرة التي تحملها؟',
+        visaDateLabel: 'تاريخ منح التأشيرة',
+        dueDateLabel: 'تاريخ الولادة المتوقع',
+        childrenLabel: 'الأطفال <small>(أضف جميع الأطفال في رعايتك)</small>',
+        addChild: '+ إضافة طفل آخر',
+        incomeLabel: 'الدخل العائلي المشترك <small>($/سنة)</small>',
+        lowerIncomeLabel: 'دخل صاحب الدخل الأقل <small>($/سنة)</small>',
+        calculateBtn: 'احسب مدفوعاتي',
+        disclaimer: '<strong>إخلاء مسؤولية:</strong> هذا تقدير تقريبي فقط. تعتمد المدفوعات الفعلية على ظروفك. تأكد دائمًا مع <strong>سنترلينك على 136 150</strong>.',
+      },
+      zh: {
+        title: 'Centrelink 付款估算器',
+        subtitle: '适用于澳大利亚签证持有人 — 家庭和新生儿补贴',
+        dark: '深色模式',
+        light: '浅色模式',
+        visaLabel: '您持有什么签证？',
+        visaDateLabel: '签证批准日期',
+        dueDateLabel: '预产期',
+        childrenLabel: '子女 <small>（添加您照顾的所有子女）</small>',
+        addChild: '+ 添加另一个孩子',
+        incomeLabel: '家庭合计收入 <small>($/年)</small>',
+        lowerIncomeLabel: '较低收入方 <small>($/年)</small>',
+        calculateBtn: '计算我的补贴',
+        disclaimer: '<strong>免责声明：</strong>这只是一个粗略的估计。实际付款取决于您的具体情况。请务必致电 <strong>Centrelink 136 150</strong> 确认。',
+      },
+      vi: {
+        title: 'Công Cụ Ước Tính Thanh Toán Centrelink',
+        subtitle: 'Dành cho Người Có Thị Thực Úc — Thanh Toán Gia Đình & Trẻ Sơ Sinh',
+        dark: 'Chế độ tối',
+        light: 'Chế độ sáng',
+        visaLabel: 'Bạn đang giữ loại thị thực nào?',
+        visaDateLabel: 'Ngày cấp thị thực',
+        dueDateLabel: 'Ngày dự sinh',
+        childrenLabel: 'Trẻ em <small>(thêm tất cả trẻ em bạn đang chăm sóc)</small>',
+        addChild: '+ Thêm trẻ khác',
+        incomeLabel: 'Thu nhập gia đình <small>($/năm)</small>',
+        lowerIncomeLabel: 'Thu nhập người có thu nhập thấp hơn <small>($/năm)</small>',
+        calculateBtn: 'Tính Khoản Thanh Toán',
+        disclaimer: '<strong>Tuyên bố miễn trừ:</strong> Đây chỉ là ước tính sơ bộ. Khoản thanh toán thực tế phụ thuộc vào hoàn cảnh của bạn. Luôn xác nhận với <strong>Centrelink qua 136 150</strong>.',
+      },
+      hi: {
+        title: 'सेंटरलिंक भुगतान अनुमानक',
+        subtitle: 'ऑस्ट्रेलियाई वीज़ा धारकों के लिए — परिवार और नवजात भुगतान',
+        dark: 'डार्क मोड',
+        light: 'लाइट मोड',
+        visaLabel: 'आपके पास कौन सा वीज़ा है?',
+        visaDateLabel: 'वीज़ा प्राप्ति तिथि',
+        dueDateLabel: 'बच्चे की अपेक्षित तिथि',
+        childrenLabel: 'बच्चे <small>(अपनी देखभाल में सभी बच्चों को जोड़ें)</small>',
+        addChild: '+ एक और बच्चा जोड़ें',
+        incomeLabel: 'संयुक्त पारिवारिक आय <small>($/वर्ष)</small>',
+        lowerIncomeLabel: 'कम कमाने वाले की आय <small>($/वर्ष)</small>',
+        calculateBtn: 'मेरे भुगतान की गणना करें',
+        disclaimer: '<strong>अस्वीकरण:</strong> यह केवल एक अनुमान है। वास्तविक भुगतान आपकी परिस्थितियों पर निर्भर करता है। हमेशा <strong>सेंटरलिंक 136 150</strong> से पुष्टि करें।',
+      }
+    };
+
+    let currentLang = 'en';
+
+    function setLang(lang) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+      const t = TRANSLATIONS[lang];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.innerHTML = t[key];
+      });
+      if (lang === 'ar') {
+        document.body.style.direction = 'rtl';
+      } else {
+        document.body.style.direction = 'ltr';
+      }
+    }
+
+    // ===== DARK MODE =====
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      const btn = document.querySelector('.dark-toggle');
+      const isDark = document.body.classList.contains('dark');
+      const t = TRANSLATIONS[currentLang];
+      btn.textContent = isDark ? (t.light || 'Light Mode') : (t.dark || 'Dark Mode');
+    }
+
+    // ===== MULTI-CHILD =====
+    function addChild() {
+      const list = document.getElementById('childrenList');
+      const entry = document.createElement('div');
+      entry.className = 'child-entry';
+      entry.innerHTML = `
+        <select>
+          <option value="newborn">Newborn / Expected baby</option>
+          <option value="0">Under 1 year</option>
+          <option value="1">1 year old</option>
+          <option value="2">2 years old</option>
+          <option value="3">3 years old</option>
+          <option value="4">4 years old</option>
+          <option value="5">5-12 years old</option>
+          <option value="13">13-15 years old</option>
+          <option value="16">16-19 (in study)</option>
+        </select>
+        <button type="button" class="remove-child-btn" onclick="this.parentElement.remove()">Remove</button>
+      `;
+      list.appendChild(entry);
+    }
+
+    function getChildren() {
+      const entries = document.querySelectorAll('#childrenList .child-entry select');
+      return Array.from(entries).map(s => s.value);
+    }
+
+    // ===== VISA DATA =====
     const VISA_DATA = {
       '820': {
         category: 'partner_temp',
@@ -611,6 +1084,31 @@
       parenting_payment_fortnight: 922.10,
     };
 
+    // ===== CCS RATES (2025-26) =====
+    const CCS_THRESHOLDS = [
+      { min: 0, max: 83280, rate: 90 },
+      { min: 83281, max: 93280, rate: 85 },
+      { min: 93281, max: 103280, rate: 80 },
+      { min: 103281, max: 113280, rate: 75 },
+      { min: 113281, max: 123280, rate: 70 },
+      { min: 123281, max: 143280, rate: 65 },
+      { min: 143281, max: 173280, rate: 55 },
+      { min: 173281, max: 203280, rate: 50 },
+      { min: 203281, max: 253280, rate: 45 },
+      { min: 253281, max: 343280, rate: 35 },
+      { min: 343281, max: 433280, rate: 20 },
+      { min: 433281, max: Infinity, rate: 0 },
+    ];
+    const CCS_HOURLY_CAP = 13.73; // per hour cap for centre-based care
+
+    function getCCSRate(income) {
+      for (const t of CCS_THRESHOLDS) {
+        if (income >= t.min && income <= t.max) return t.rate;
+      }
+      return 0;
+    }
+
+    // ===== FORM HANDLERS =====
     function updateVisaInfo() {
       const visaType = document.getElementById('visaType').value;
       const visa = VISA_DATA[visaType];
@@ -634,7 +1132,10 @@
       const visa = VISA_DATA[visaType];
       const visaDate = new Date(document.getElementById('visaDate').value);
       const dueDate = new Date(document.getElementById('dueDate').value);
-      const firstChild = document.getElementById('firstChild').value === 'yes';
+      const children = getChildren();
+      const hasNewborn = children.includes('newborn');
+      const numChildren = children.length;
+      const firstChild = numChildren === 1 && hasNewborn;
       const familyIncome = parseFloat(document.getElementById('familyIncome').value) || 0;
       const lowerIncome = parseFloat(document.getElementById('lowerIncome').value) || 0;
       const today = new Date();
@@ -649,7 +1150,7 @@
             <strong>not eligible</strong> for Centrelink family or newborn payments.</p>
             <p style="margin-top:12px">You may be eligible for <strong>Special Benefit</strong> if you are in severe financial hardship.
             Contact Centrelink on <strong>136 150</strong> to discuss your options.</p>
-          </div>` + buildMedicareSection(visa, visaType);
+          </div>` + buildMedicareSection(visa, visaType) + buildCCSSection(familyIncome, visa) + buildChecklistSection(visa) + buildShareSection();
         resultsDiv.style.display = 'block';
         resultsDiv.scrollIntoView({ behavior: 'smooth' });
         return;
@@ -666,20 +1167,21 @@
       const weeksUntilFtbA = ftbAServed ? 0 : Math.ceil((ftbAEligibleDate - today) / (7 * 24 * 60 * 60 * 1000));
       const weeksUntilPlp = plpServed ? 0 : Math.ceil((plpEligibleDate - today) / (7 * 24 * 60 * 60 * 1000));
 
-      // FTB Part A rate (income tested)
-      let ftbA_fortnight = 0;
+      // FTB Part A rate (income tested) — per child
+      let ftbA_per_child = 0;
       if (visa.ftbA) {
-        ftbA_fortnight = RATES.ftbA_max_fortnight;
+        ftbA_per_child = RATES.ftbA_max_fortnight;
         if (familyIncome > RATES.ftbA_income_free) {
           const reduction = (familyIncome - RATES.ftbA_income_free) * RATES.ftbA_income_taper1 / 26;
-          ftbA_fortnight = Math.max(RATES.ftbA_base_fortnight, RATES.ftbA_max_fortnight - reduction);
+          ftbA_per_child = Math.max(RATES.ftbA_base_fortnight, RATES.ftbA_max_fortnight - reduction);
         }
         if (familyIncome > RATES.ftbA_income_cap_base) {
-          ftbA_fortnight = 0;
+          ftbA_per_child = 0;
         }
       }
+      const ftbA_fortnight = ftbA_per_child * numChildren;
 
-      // FTB Part B rate
+      // FTB Part B rate (per family, not per child)
       let ftbB_fortnight = 0;
       if (visa.ftbB) {
         ftbB_fortnight = RATES.ftbB_max_fortnight;
@@ -692,7 +1194,7 @@
         }
       }
 
-      // Newborn payments
+      // Newborn payments (only if there's a newborn)
       const newbornSupplement = firstChild ? RATES.newborn_supplement_first : RATES.newborn_supplement_sub;
       const newbornTotal = RATES.newborn_upfront + newbornSupplement;
 
@@ -714,11 +1216,10 @@
       const ftbA_annual = ftbA_fortnight * 26 * (ftbAMonthsInFirstYear / 12);
       const ftbB_annual = ftbB_fortnight * 26;
       const energy_annual = ((visa.ftbA ? RATES.energyA_fortnight : 0) + (visa.ftbB ? RATES.energyB_fortnight : 0)) * 26;
-      const supplements = (ftbA_fortnight > 0 ? RATES.ftbA_supplement_annual : 0) + (ftbB_fortnight > 0 ? RATES.ftbB_supplement_annual : 0);
-      const newbornAvailable = visa.newborn && ftbA_fortnight > 0;
+      const supplements = (ftbA_per_child > 0 ? RATES.ftbA_supplement_annual * numChildren : 0) + (ftbB_fortnight > 0 ? RATES.ftbB_supplement_annual : 0);
+      const newbornAvailable = visa.newborn && ftbA_per_child > 0 && hasNewborn;
       const plpAvailable = visa.plp && plpServed;
 
-      // If getting PLP, you don't get Newborn Supplement (you get one or the other)
       const newbornInTotal = (newbornAvailable && !plpAvailable) ? newbornTotal : (newbornAvailable ? RATES.newborn_upfront : 0);
 
       const firstYearTotal = ftbA_annual + ftbB_annual + energy_annual + supplements + newbornInTotal + (plpAvailable ? plpTotal : 0);
@@ -729,7 +1230,7 @@
       let html = '';
 
       // Visa badge
-      html += `<div class="narwp-status info"><strong>Visa:</strong> Subclass ${visaType} — ${visa.name}</div>`;
+      html += `<div class="narwp-status info"><strong>Visa:</strong> Subclass ${visaType} — ${visa.name}${numChildren > 1 ? ` | ${numChildren} children` : ''}</div>`;
 
       // NARWP Status
       if (visa.ftbA && ftbANarwpWeeks > 0) {
@@ -762,15 +1263,16 @@
       html += `<h2>Fortnightly Payments</h2>`;
       html += `<div class="result-section">`;
       if (visa.ftbA) {
-        html += resultRow('FTB Part A', ftbA_fortnight, ftbAServed ? 'eligible' : 'waiting',
-          !ftbAServed ? `(from ${ftbAEligibleDate.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})})` : '');
+        const ftbALabel = numChildren > 1 ? `FTB Part A (${numChildren} children)` : 'FTB Part A';
+        html += resultRow(ftbALabel, ftbA_fortnight, ftbAServed ? 'eligible' : 'waiting',
+          !ftbAServed ? `(from ${ftbAEligibleDate.toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'})})` : (numChildren > 1 ? `$${ftbA_per_child.toFixed(2)} x ${numChildren}` : ''));
       } else {
         html += resultRow('FTB Part A', 0, 'na', 'not available on this visa');
       }
 
       if (visa.ftbB) {
         html += resultRow('FTB Part B', ftbB_fortnight, ftbB_fortnight > 0 ? 'eligible' : 'not-eligible',
-          ftbB_fortnight > 0 ? '(no waiting period)' : '(income too high)');
+          ftbB_fortnight > 0 ? '(per family, no waiting period)' : '(income too high)');
       } else {
         html += resultRow('FTB Part B', 0, 'na', 'not available on this visa');
       }
@@ -797,7 +1299,7 @@
         html += resultRow('Parental Leave Pay', 0, 'na', 'not available on this visa');
       }
 
-      if (visa.newborn) {
+      if (visa.newborn && hasNewborn) {
         html += resultRow('Newborn Upfront Payment', RATES.newborn_upfront,
           newbornAvailable ? 'eligible' : 'waiting',
           newbornAvailable ? 'lump sum' : '(needs FTB Part A)');
@@ -805,12 +1307,14 @@
           newbornSupplement,
           newbornAvailable ? 'eligible' : 'waiting',
           plpAvailable ? 'N/A if receiving PLP' : 'over 13 weeks');
+      } else if (visa.newborn) {
+        html += resultRow('Newborn Payments', 0, 'na', 'no newborn selected');
       } else {
         html += resultRow('Newborn Payments', 0, 'na', 'not available on this visa');
       }
 
-      html += resultRow('FTB Part A Supplement', RATES.ftbA_supplement_annual,
-        visa.ftbA && ftbA_fortnight > 0 ? 'eligible' : 'na', 'end of financial year');
+      html += resultRow('FTB Part A Supplement', RATES.ftbA_supplement_annual * (ftbA_per_child > 0 ? numChildren : 0),
+        visa.ftbA && ftbA_per_child > 0 ? 'eligible' : 'na', 'end of financial year');
       html += resultRow('FTB Part B Supplement', RATES.ftbB_supplement_annual,
         visa.ftbB && ftbB_fortnight > 0 ? 'eligible' : 'na', 'end of financial year');
       html += `</div>`;
@@ -831,14 +1335,76 @@
         </div>`;
       }
 
-      // Medicare section
+      // Timeline
+      html += buildTimelineSection(visa, dueDate, ftbAEligibleDate, plpEligibleDate, ftbAServed, plpServed, hasNewborn);
+
+      // Medicare
       html += buildMedicareSection(visa, visaType);
+
+      // CCS
+      html += buildCCSSection(familyIncome, visa);
+
+      // What-if comparison (only for temp/provisional visas)
+      if (visa.category !== 'permanent' && visa.ftbA) {
+        html += buildWhatIfSection(visa, visaType, familyIncome, lowerIncome, numChildren, ftbA_per_child, ftbB_fortnight, fortnightlyTotal, firstYearTotal);
+      }
+
+      // Checklist
+      html += buildChecklistSection(visa);
+
+      // Print button
+      html += `<button class="print-btn" onclick="window.print()">Print / Save as PDF</button>`;
+
+      // Share
+      html += buildShareSection();
 
       resultsDiv.innerHTML = html;
       resultsDiv.style.display = 'block';
       resultsDiv.scrollIntoView({ behavior: 'smooth' });
+      updateShareURL();
     }
 
+    // ===== TIMELINE SECTION =====
+    function buildTimelineSection(visa, dueDate, ftbADate, plpDate, ftbAServed, plpServed, hasNewborn) {
+      const events = [];
+      const fmt = d => d.toLocaleDateString('en-AU', {day:'numeric', month:'short', year:'numeric'});
+
+      if (visa.ftbB) {
+        events.push({ date: dueDate, label: 'FTB Part B starts', desc: 'No waiting period — begins from birth', color: 'green' });
+      }
+      if (visa.ftbA && !ftbAServed) {
+        events.push({ date: ftbADate, label: 'FTB Part A starts', desc: 'NARWP waiting period ends', color: 'orange' });
+      } else if (visa.ftbA) {
+        events.push({ date: dueDate, label: 'FTB Part A starts', desc: 'Waiting period already served — begins from birth', color: 'green' });
+      }
+      if (hasNewborn && visa.newborn) {
+        events.push({ date: dueDate, label: 'Newborn Upfront Payment', desc: 'Lump sum paid after birth (requires FTB Part A)', color: 'blue' });
+        const nsEnd = new Date(dueDate.getTime() + 13 * 7 * 24 * 60 * 60 * 1000);
+        events.push({ date: nsEnd, label: 'Newborn Supplement ends', desc: 'Paid over 13 weeks after birth', color: 'blue' });
+      }
+      if (visa.plp && !plpServed) {
+        events.push({ date: plpDate, label: 'Parental Leave Pay eligible', desc: '2-year NARWP ends — can claim if work test met', color: 'purple' });
+      } else if (visa.plp) {
+        events.push({ date: dueDate, label: 'Parental Leave Pay eligible', desc: 'From birth — subject to work test', color: 'green' });
+      }
+
+      events.sort((a, b) => a.date - b.date);
+
+      let html = `<div class="timeline-box"><h2>Payment Timeline</h2><div class="timeline-body">`;
+      events.forEach(e => {
+        html += `<div class="timeline-item">
+          <div class="timeline-dot ${e.color}"></div>
+          <div class="timeline-content">
+            <div class="timeline-date">${fmt(e.date)} — ${e.label}</div>
+            <div class="timeline-desc">${e.desc}</div>
+          </div>
+        </div>`;
+      });
+      html += `</div></div>`;
+      return html;
+    }
+
+    // ===== MEDICARE SECTION =====
     function buildMedicareSection(visa, visaType) {
       const badgeClass = visa.medicare === 'yes' ? 'yes' :
                          visa.medicare === 'rhca' ? 'rhca' :
@@ -869,6 +1435,172 @@
       return html;
     }
 
+    // ===== CCS SECTION =====
+    function buildCCSSection(familyIncome, visa) {
+      const ccsRate = getCCSRate(familyIncome);
+      const ccsEligible = visa.category !== 'temporary' || visa.category === 'nz_special';
+      const dailyCost = 120; // typical daily fee
+      const dailySubsidy = Math.min(dailyCost, CCS_HOURLY_CAP * 12) * (ccsRate / 100);
+      const annualSaving = dailySubsidy * 5 * 48; // 5 days/week, 48 weeks
+
+      let html = `<div class="ccs-box"><h2>Child Care Subsidy (CCS) Estimate</h2><div class="ccs-body">`;
+
+      if (!ccsEligible) {
+        html += `<p style="color:#c05621;font-weight:600">Your visa type may not qualify for Child Care Subsidy. CCS is generally available to permanent and provisional visa holders who meet residency requirements.</p>`;
+      } else {
+        html += `<div class="ccs-rate">${ccsRate}% subsidised</div>`;
+        html += `<p class="ccs-detail">Based on your family income of <strong>$${familyIncome.toLocaleString()}</strong>, the government would cover <strong>${ccsRate}%</strong> of child care fees (up to the hourly cap of $${CCS_HOURLY_CAP}/hr).</p>`;
+        html += `<div class="ccs-example">
+          <strong>Example:</strong> For a typical centre charging $120/day (5 days/week):<br>
+          You'd pay ~<strong>$${Math.round(dailyCost - dailySubsidy)}/day</strong> out of pocket (saving ~$${Math.round(annualSaving).toLocaleString()}/year per child).<br>
+          <small>Actual subsidy depends on approved activity hours and provider fees.</small>
+        </div>`;
+      }
+
+      html += `<p class="ccs-detail" style="margin-top:12px"><strong>Note:</strong> CCS requires an activity test (work/study/training hours). Visa holders must also meet residency requirements. Apply through myGov/Centrelink.</p>`;
+      html += `</div></div>`;
+      return html;
+    }
+
+    // ===== WHAT-IF COMPARISON =====
+    function buildWhatIfSection(visa, visaType, familyIncome, lowerIncome, numChildren, ftbA_per_child, ftbB_fortnight, currentFn, currentAnnual) {
+      // Calculate what they'd get on 801 (permanent)
+      const v801 = VISA_DATA['801'];
+      let ftbA801 = RATES.ftbA_max_fortnight;
+      if (familyIncome > RATES.ftbA_income_free) {
+        const reduction = (familyIncome - RATES.ftbA_income_free) * RATES.ftbA_income_taper1 / 26;
+        ftbA801 = Math.max(RATES.ftbA_base_fortnight, RATES.ftbA_max_fortnight - reduction);
+      }
+      if (familyIncome > RATES.ftbA_income_cap_base) ftbA801 = 0;
+      const ftbA801Total = ftbA801 * numChildren;
+
+      let ftbB801 = RATES.ftbB_max_fortnight;
+      const higherIncome = familyIncome - lowerIncome;
+      if (higherIncome > RATES.ftbB_primary_earner_cap) {
+        ftbB801 = 0;
+      } else if (lowerIncome > RATES.ftbB_lower_earner_free) {
+        const reduction = (lowerIncome - RATES.ftbB_lower_earner_free) * RATES.ftbB_lower_earner_taper / 26;
+        ftbB801 = Math.max(0, RATES.ftbB_max_fortnight - reduction);
+      }
+
+      const fn801 = ftbA801Total + ftbB801 + RATES.energyA_fortnight + RATES.energyB_fortnight;
+      const annual801 = fn801 * 26 + (ftbA801 > 0 ? RATES.ftbA_supplement_annual * numChildren : 0) + (ftbB801 > 0 ? RATES.ftbB_supplement_annual : 0);
+      const ppEligible = true; // 801 = permanent
+
+      const better = (a, b) => a > b ? 'whatif-better' : '';
+
+      let html = `<div class="whatif-box"><h2>What If: Current Visa vs. Permanent (801)</h2><div class="whatif-body">`;
+      html += `<p style="font-size:0.9rem;color:#4a5568;margin-bottom:12px">Comparison of your payments now vs. after receiving a Subclass 801 (Permanent Partner) visa:</p>`;
+      html += `<table class="whatif-table">
+        <tr><th>Payment</th><th>Now (${visaType})</th><th>After 801</th></tr>
+        <tr><td>FTB Part A /fn</td><td>$${(ftbA_per_child * numChildren).toFixed(2)}</td><td class="${better(ftbA801Total, ftbA_per_child * numChildren)}">$${ftbA801Total.toFixed(2)}</td></tr>
+        <tr><td>FTB Part B /fn</td><td>$${ftbB_fortnight.toFixed(2)}</td><td>$${ftbB801.toFixed(2)}</td></tr>
+        <tr><td>Fortnightly Total</td><td>$${currentFn.toFixed(2)}</td><td class="${better(fn801, currentFn)}">$${fn801.toFixed(2)}</td></tr>
+        <tr><td>Parenting Payment</td><td style="color:#c53030">Not eligible</td><td class="whatif-better">Up to $922.10/fn</td></tr>
+        <tr><td>JobSeeker</td><td style="color:#c53030">Not eligible</td><td class="whatif-better">Eligible</td></tr>
+        <tr><td>NARWP</td><td>May apply</td><td>Time on temp visa counts</td></tr>
+      </table>`;
+      html += `<p style="font-size:0.85rem;color:#718096;margin-top:10px">The 801 visa unlocks Parenting Payment and JobSeeker Access. Your NARWP time on the 820/309 counts toward the 801 waiting period.</p>`;
+      html += `</div></div>`;
+      return html;
+    }
+
+    // ===== CHECKLIST SECTION =====
+    function buildChecklistSection(visa) {
+      const items = [
+        { text: 'Birth Certificate (or proof of expected due date / pregnancy)', always: true },
+        { text: 'Your passport with current visa', always: true },
+        { text: 'Visa grant notification letter (from VEVO or ImmiAccount)', always: true },
+        { text: 'Tax File Number (TFN) — yours and your partner\'s', always: true },
+        { text: 'Bank account details (BSB & account number)', always: true },
+        { text: 'Proof of income (payslips, tax return, or employer letter)', always: true },
+        { text: 'Partner\'s identity documents (if applicable)', always: true },
+        { text: 'Medicare card (or enrolment receipt)', always: true },
+        { text: 'Proof of Australian address (utility bill, rental agreement)', always: true },
+        { text: 'Immunisation history statement (for children — from Medicare)', always: true },
+        { text: 'Centrelink Customer Reference Number (CRN) — if you have one', always: true },
+        { text: 'myGov account linked to Centrelink', always: true },
+        { text: 'Proof of work hours (for Parental Leave Pay work test)', condition: visa.plp },
+        { text: 'Employer details & expected return-to-work date', condition: visa.plp },
+      ];
+
+      let html = `<div class="checklist-box"><h2>Centrelink Claim Checklist</h2><div class="checklist-body">`;
+      html += `<p style="font-size:0.88rem;color:#4a5568;margin-bottom:12px">Take these documents to your Centrelink appointment or have them ready when claiming online:</p>`;
+      items.forEach(item => {
+        if (item.always || item.condition) {
+          html += `<label class="checklist-item"><input type="checkbox"><span>${item.text}</span></label>`;
+        }
+      });
+      html += `</div></div>`;
+      return html;
+    }
+
+    // ===== SHARE SECTION =====
+    function buildShareSection() {
+      return `<div class="share-box"><h2>Save / Share Results</h2><div class="share-body">
+        <p style="font-size:0.88rem;color:#4a5568;margin-bottom:10px">Copy this link to save your inputs and share with others:</p>
+        <div class="share-url">
+          <input type="text" id="shareUrl" readonly onclick="this.select()">
+          <button onclick="copyShareURL()">Copy</button>
+        </div>
+        <div class="copy-success" id="copySuccess">Link copied to clipboard!</div>
+      </div></div>`;
+    }
+
+    function updateShareURL() {
+      const params = new URLSearchParams();
+      params.set('v', document.getElementById('visaType').value);
+      params.set('vd', document.getElementById('visaDate').value);
+      params.set('dd', document.getElementById('dueDate').value);
+      params.set('fi', document.getElementById('familyIncome').value);
+      params.set('li', document.getElementById('lowerIncome').value);
+      const children = getChildren();
+      params.set('ch', children.join(','));
+      const url = window.location.origin + window.location.pathname + '?' + params.toString();
+      const shareInput = document.getElementById('shareUrl');
+      if (shareInput) shareInput.value = url;
+    }
+
+    function copyShareURL() {
+      const input = document.getElementById('shareUrl');
+      input.select();
+      navigator.clipboard.writeText(input.value).then(() => {
+        const msg = document.getElementById('copySuccess');
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 3000);
+      });
+    }
+
+    // ===== LOAD FROM URL =====
+    function loadFromURL() {
+      const params = new URLSearchParams(window.location.search);
+      if (!params.has('v')) return false;
+
+      if (params.has('v')) document.getElementById('visaType').value = params.get('v');
+      if (params.has('vd')) document.getElementById('visaDate').value = params.get('vd');
+      if (params.has('dd')) document.getElementById('dueDate').value = params.get('dd');
+      if (params.has('fi')) document.getElementById('familyIncome').value = params.get('fi');
+      if (params.has('li')) document.getElementById('lowerIncome').value = params.get('li');
+
+      if (params.has('ch')) {
+        const children = params.get('ch').split(',');
+        const list = document.getElementById('childrenList');
+        // Set first child
+        if (children.length > 0) {
+          list.querySelector('select').value = children[0];
+        }
+        // Add additional children
+        for (let i = 1; i < children.length; i++) {
+          addChild();
+          const selects = list.querySelectorAll('.child-entry select');
+          selects[selects.length - 1].value = children[i];
+        }
+      }
+
+      updateVisaInfo();
+      return true;
+    }
+
     function resultRow(label, amount, status, note) {
       const noteHtml = note ? ` <small style="color:#718096">${note}</small>` : '';
       const amountStr = status === 'na' ? 'N/A' : `$${amount.toFixed(2)}`;
@@ -879,10 +1611,14 @@
       </div>`;
     }
 
-    // Pre-fill
-    document.getElementById('visaDate').value = '2025-04-30';
-    document.getElementById('dueDate').value = '2026-04-14';
+    // ===== INIT =====
+    const loadedFromURL = loadFromURL();
+    if (!loadedFromURL) {
+      document.getElementById('visaDate').value = '2025-04-30';
+      document.getElementById('dueDate').value = '2026-04-14';
+    }
     updateVisaInfo();
+    if (loadedFromURL) calculate();
   </script>
 </body>
 </html>
