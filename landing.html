@@ -9,6 +9,33 @@
   <meta property="og:title" content="Centrelink Payment Estimator — Free Calculator">
   <meta property="og:description" content="Instantly estimate your Centrelink family payments. Covers all visa types, Medicare eligibility, and payment timelines.">
   <meta property="og:type" content="website">
+  <link rel="canonical" href="https://centrelinkestimator.com.au">
+  <!-- Structured data for SEO -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Centrelink Payment Estimator",
+    "description": "Free calculator to estimate Centrelink family payments for Australian citizens, permanent residents and visa holders.",
+    "url": "https://centrelinkestimator.com.au",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "AUD" },
+    "inLanguage": ["en", "ar", "zh", "vi", "hi"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question", "name": "Can I get Centrelink on a temporary visa?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on the visa type. Partner visas (820/309) and regional provisional visas (491/494) can access family payments subject to NARWP. Most other temporary visas are not eligible."}},
+      {"@type": "Question", "name": "What is the NARWP waiting period?", "acceptedAnswer": {"@type": "Answer", "text": "The Newly Arrived Resident's Waiting Period (NARWP) is a 1-4 year waiting period before new visa holders can access certain Centrelink payments. FTB Part A has a 1-year NARWP, Parental Leave Pay has a 2-year NARWP."}},
+      {"@type": "Question", "name": "How much is Family Tax Benefit Part A?", "acceptedAnswer": {"@type": "Answer", "text": "FTB Part A maximum rate is $227.36 per fortnight per child (2025-26). It reduces when family income exceeds $62,634 and cuts off at $117,194."}},
+      {"@type": "Question", "name": "How much is Parental Leave Pay in Australia?", "acceptedAnswer": {"@type": "Answer", "text": "Parental Leave Pay is $882.75 per week for up to 20 weeks (2025-26 rate), totalling $17,655. You must meet the work test of 330 hours in 10 of the last 13 months."}}
+    ]
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -44,6 +71,18 @@
       font-size: 1.1rem;
       color: white;
     }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .nav-link {
+      color: rgba(255,255,255,0.7);
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: white; }
     .nav-cta {
       background: white;
       color: #1a365d;
@@ -54,6 +93,9 @@
       transition: transform 0.2s;
     }
     .nav-cta:hover { transform: translateY(-1px); }
+    @media (max-width: 768px) {
+      .nav-link { display: none; }
+    }
 
     /* Hero */
     .hero {
@@ -395,7 +437,13 @@
   <!-- Nav -->
   <nav id="nav">
     <span class="nav-logo">Centrelink Estimator</span>
-    <a href="centrelink-calculator.html" class="nav-cta">Open Calculator</a>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#visas" class="nav-link">Visas</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+      <a href="#resources" class="nav-link">Resources</a>
+      <a href="centrelink-calculator.html" class="nav-cta">Open Calculator</a>
+    </div>
   </nav>
 
   <!-- Hero -->
@@ -430,7 +478,7 @@
   </div>
 
   <!-- Features -->
-  <section class="features-section">
+  <section class="features-section" id="features">
     <div class="section-inner">
       <div class="section-title">
         <h2>Everything you need in one place</h2>
@@ -440,27 +488,27 @@
         <div class="feature-card">
           <div class="feature-icon" style="background:#ebf8ff;color:#2b6cb0">$</div>
           <h3>FTB Part A & B Calculator</h3>
-          <p>Income-tested estimates for both Family Tax Benefit parts, including per-child calculations and supplement amounts.</p>
+          <p>Income-tested estimates for both <a href="https://www.servicesaustralia.gov.au/family-tax-benefit" target="_blank" style="color:#2b6cb0;font-weight:600">Family Tax Benefit</a> parts, including per-child calculations and end-of-year supplement amounts.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:#faf5ff;color:#805ad5">+</div>
           <h3>Parental Leave Pay</h3>
-          <p>20 weeks of government-funded PLP with work test check. Shows exact start and end dates for your situation.</p>
+          <p>20 weeks of government-funded <a href="https://www.servicesaustralia.gov.au/parental-leave-pay" target="_blank" style="color:#805ad5;font-weight:600">Parental Leave Pay</a> at $882.75/week. Work test checker included with exact start and end dates.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:#f0fff4;color:#38a169">&#9825;</div>
           <h3>Newborn Supplement</h3>
-          <p>Upfront payment plus 13-week supplement. Automatically calculates whether you get PLP or Newborn Supplement.</p>
+          <p><a href="https://www.servicesaustralia.gov.au/newborn-upfront-payment-and-newborn-supplement" target="_blank" style="color:#38a169;font-weight:600">Newborn Upfront Payment</a> ($683) plus 13-week supplement (up to $2,003). Automatically determines if you get PLP or Newborn Supplement.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:#fff5f5;color:#e53e3e">&#9733;</div>
           <h3>Medicare Eligibility</h3>
-          <p>Instant check if your visa qualifies for Medicare, which card to apply for, and step-by-step enrolment instructions.</p>
+          <p>Instant check if your visa qualifies for <a href="https://www.servicesaustralia.gov.au/enrolling-medicare" target="_blank" style="color:#e53e3e;font-weight:600">Medicare</a>, which card to apply for, <a href="https://www.servicesaustralia.gov.au/reciprocal-health-care-agreements" target="_blank" style="color:#e53e3e">RHCA eligibility</a>, and step-by-step enrolment instructions.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:#fffaf0;color:#dd6b20">%</div>
           <h3>Child Care Subsidy</h3>
-          <p>CCS percentage based on family income with out-of-pocket cost examples. Know what you'll actually pay for childcare.</p>
+          <p><a href="https://www.servicesaustralia.gov.au/child-care-subsidy" target="_blank" style="color:#dd6b20;font-weight:600">Child Care Subsidy</a> percentage based on family income (up to 90%) with out-of-pocket cost examples. Know what you'll actually pay for childcare.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon" style="background:#ebf8ff;color:#319795">&#8986;</div>
@@ -516,7 +564,7 @@
   </section>
 
   <!-- Visa coverage -->
-  <section class="visa-section">
+  <section class="visa-section" id="visas">
     <div class="section-inner">
       <div class="section-title">
         <h2>Every visa type covered</h2>
@@ -561,7 +609,7 @@
   </section>
 
   <!-- FAQ -->
-  <section>
+  <section id="faq">
     <div class="section-inner">
       <div class="section-title">
         <h2>Frequently asked questions</h2>
@@ -569,19 +617,19 @@
       <div class="faq-list">
         <div class="faq-item">
           <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is this tool free?</div>
-          <div class="faq-a">Yes, completely free. No signup, no email required, no hidden fees. Just open the calculator and enter your details.</div>
+          <div class="faq-a">Yes, completely free. No signup, no email required, no hidden fees. Just <a href="centrelink-calculator.html" style="color:#2b6cb0;font-weight:600">open the calculator</a> and enter your details.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How accurate are the estimates?</div>
-          <div class="faq-a">The estimates use official 2025-26 Centrelink rates and income thresholds. However, actual payments depend on your individual circumstances. Always confirm with Centrelink on 136 150 before making financial decisions.</div>
+          <div class="faq-a">The estimates use official 2025-26 <a href="https://www.servicesaustralia.gov.au/family-tax-benefit" target="_blank" style="color:#2b6cb0">Centrelink rates</a> and income thresholds. However, actual payments depend on your individual circumstances. Always confirm with <a href="https://www.servicesaustralia.gov.au" target="_blank" style="color:#2b6cb0">Services Australia</a> on 136 150 before making financial decisions.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What is the NARWP waiting period?</div>
-          <div class="faq-a">The Newly Arrived Resident's Waiting Period (NARWP) is a 1-4 year waiting period that applies to most new visa holders before they can access certain Centrelink payments. FTB Part A has a 1-year NARWP, while Parental Leave Pay has a 2-year NARWP. Our calculator automatically works out where you are in the waiting period.</div>
+          <div class="faq-a">The <a href="https://www.servicesaustralia.gov.au/newly-arrived-residents-waiting-period" target="_blank" style="color:#2b6cb0">Newly Arrived Resident's Waiting Period (NARWP)</a> is a 1-4 year waiting period that applies to most new visa holders before they can access certain Centrelink payments. <a href="https://www.servicesaustralia.gov.au/family-tax-benefit" target="_blank" style="color:#2b6cb0">FTB Part A</a> has a 1-year NARWP, while <a href="https://www.servicesaustralia.gov.au/parental-leave-pay" target="_blank" style="color:#2b6cb0">Parental Leave Pay</a> has a 2-year NARWP. Humanitarian visa holders (subclasses 200-204, 866) are <strong>exempt</strong> from NARWP. Our <a href="centrelink-calculator.html" style="color:#2b6cb0;font-weight:600">calculator</a> automatically works out where you are in the waiting period.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I get Centrelink on a temporary visa?</div>
-          <div class="faq-a">It depends on the visa type. Partner visas (820/309) and regional provisional visas (491/494) can access family payments subject to NARWP. Most other temporary visas (student, visitor, working holiday) are not eligible. Our tool checks eligibility for every visa subclass.</div>
+          <div class="faq-a">It depends on the visa type. <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/partner-onshore/temporary-820" target="_blank" style="color:#2b6cb0">Partner visas (820/309)</a> and <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-work-regional-702" target="_blank" style="color:#2b6cb0">regional provisional visas (491/494)</a> can access family payments subject to NARWP. Most other temporary visas (student 500, visitor 600, working holiday 417/462) are <strong>not eligible</strong>. You may be eligible for <a href="https://www.servicesaustralia.gov.au/special-benefit" target="_blank" style="color:#2b6cb0">Special Benefit</a> in cases of severe financial hardship. <a href="centrelink-calculator.html" style="color:#2b6cb0;font-weight:600">Check your visa now</a>.</div>
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is my data stored?</div>
@@ -589,8 +637,64 @@
         </div>
         <div class="faq-item">
           <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is this affiliated with Centrelink or Services Australia?</div>
-          <div class="faq-a">No. This is an independent tool built to help families understand their potential entitlements. It is not affiliated with Services Australia, Centrelink, or the Australian Government.</div>
+          <div class="faq-a">No. This is an independent tool built to help families understand their potential entitlements. It is not affiliated with <a href="https://www.servicesaustralia.gov.au" target="_blank" style="color:#2b6cb0">Services Australia</a>, Centrelink, or the Australian Government. For official information, visit <a href="https://www.servicesaustralia.gov.au/families" target="_blank" style="color:#2b6cb0">servicesaustralia.gov.au/families</a> or call 136 150.</div>
         </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much is Family Tax Benefit Part A?</div>
+          <div class="faq-a"><a href="https://www.servicesaustralia.gov.au/family-tax-benefit" target="_blank" style="color:#2b6cb0">FTB Part A</a> maximum rate is <strong>$227.36 per fortnight per child</strong> (2025-26). It reduces when combined family income exceeds $62,634/year and cuts off completely at $117,194. You also receive the FTB Part A supplement of $938.05 per child at the end of the financial year. <a href="centrelink-calculator.html" style="color:#2b6cb0;font-weight:600">Calculate your FTB now</a>.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How much is Parental Leave Pay in 2025-26?</div>
+          <div class="faq-a"><a href="https://www.servicesaustralia.gov.au/parental-leave-pay" target="_blank" style="color:#2b6cb0">Parental Leave Pay</a> is <strong>$882.75 per week for up to 20 weeks</strong>, totalling up to $17,655. To qualify, you must have worked at least 330 hours in 10 of the 13 months before birth (about 1 day per week). This includes part-time, casual, and self-employed work. Visa holders must also have served the 2-year <a href="https://www.servicesaustralia.gov.au/newly-arrived-residents-waiting-period" target="_blank" style="color:#2b6cb0">NARWP</a>. <a href="centrelink-calculator.html" style="color:#2b6cb0;font-weight:600">Check your eligibility</a>.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Resources -->
+  <section class="features-section" id="resources">
+    <div class="section-inner">
+      <div class="section-title">
+        <h2>Official government resources</h2>
+        <p>Direct links to Services Australia and Department of Home Affairs for further reading.</p>
+      </div>
+      <div class="features-grid" style="grid-template-columns: repeat(3, 1fr)">
+        <a href="https://www.servicesaustralia.gov.au/family-tax-benefit" target="_blank" class="feature-card" style="text-decoration:none">
+          <h3 style="color:#2b6cb0">Family Tax Benefit</h3>
+          <p>Official FTB rates, eligibility criteria, and how to claim on Services Australia.</p>
+        </a>
+        <a href="https://www.servicesaustralia.gov.au/parental-leave-pay" target="_blank" class="feature-card" style="text-decoration:none">
+          <h3 style="color:#805ad5">Parental Leave Pay</h3>
+          <p>PLP eligibility, work test details, and how to apply through myGov.</p>
+        </a>
+        <a href="https://www.servicesaustralia.gov.au/newborn-upfront-payment-and-newborn-supplement" target="_blank" class="feature-card" style="text-decoration:none">
+          <h3 style="color:#38a169">Newborn Supplement</h3>
+          <p>Newborn Upfront Payment and Newborn Supplement rates and claiming process.</p>
+        </a>
+        <a href="https://www.servicesaustralia.gov.au/child-care-subsidy" target="_blank" class="feature-card" style="text-decoration:none">
+          <h3 style="color:#dd6b20">Child Care Subsidy</h3>
+          <p>CCS rates, activity test, and how to estimate your out-of-pocket costs.</p>
+        </a>
+        <a href="https://www.servicesaustralia.gov.au/enrolling-medicare" target="_blank" class="feature-card" style="text-decoration:none">
+          <h3 style="color:#e53e3e">Medicare Enrolment</h3>
+          <p>How to enrol in Medicare, eligibility for visa holders, and card types.</p>
+        </a>
+        <a href="https://www.servicesaustralia.gov.au/parenting-payment" target="_blank" class="feature-card" style="text-decoration:none">
+          <h3 style="color:#319795">Parenting Payment</h3>
+          <p>Income support for primary carers of children. Single and partnered rates.</p>
+        </a>
+        <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing" target="_blank" class="feature-card" style="text-decoration:none">
+          <h3 style="color:#667eea">Australian Visa List</h3>
+          <p>Complete list of all visa subclasses on the Department of Home Affairs website.</p>
+        </a>
+        <a href="https://www.servicesaustralia.gov.au/special-benefit" target="_blank" class="feature-card" style="text-decoration:none">
+          <h3 style="color:#9f7aea">Special Benefit</h3>
+          <p>Payment for people in severe financial hardship who can't access other payments.</p>
+        </a>
+        <a href="https://my.gov.au" target="_blank" class="feature-card" style="text-decoration:none">
+          <h3 style="color:#2f855a">myGov Portal</h3>
+          <p>Create a myGov account to link Centrelink, Medicare, and manage your claims online.</p>
+        </a>
       </div>
     </div>
   </section>
