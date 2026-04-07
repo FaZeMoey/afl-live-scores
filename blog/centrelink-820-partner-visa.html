@@ -415,6 +415,44 @@
     footer a { color: #63b3ed; }
     footer p { margin-bottom: 8px; }
 
+    /* Rail ads (side skyscrapers) */
+    .ad-rail {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 160px;
+      z-index: 50;
+    }
+    .ad-rail-left { left: 12px; }
+    .ad-rail-right { right: 12px; }
+    .ad-rail .mock-ad {
+      width: 160px;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 16px 10px;
+    }
+    .ad-rail .mock-ad-sidebar-img {
+      width: 130px;
+      height: 130px;
+      background: #e2e8f0;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      color: #a0aec0;
+    }
+    .ad-rail .mock-ad-headline { font-size: 0.78rem; }
+    .ad-rail .mock-ad-desc { font-size: 0.7rem; max-width: 140px; }
+    .ad-rail .mock-ad-url { font-size: 0.65rem; }
+    @media (max-width: 1440px) {
+      .ad-rail { display: none; }
+    }
+
     @media (max-width: 860px) {
       .page-wrap { flex-direction: column; }
       .toc-sidebar { display: none; }
@@ -439,6 +477,44 @@
       <a href="../centrelink-calculator.html" class="nav-cta">Open Calculator</a>
     </div>
   </nav>
+
+  <!-- Ad: Left rail (160x600 skyscraper) -->
+  <div class="ad-rail ad-rail-left">
+    <div class="mock-ad">
+      <span class="mock-ad-label">Ad</span>
+      <div class="mock-ad-sidebar-img">160x600</div>
+      <div class="mock-ad-inner" style="padding:0 4px">
+        <div class="mock-ad-headline">Visa Holders: Open a Bank Account</div>
+        <div class="mock-ad-url">ad &middot; commbank.com.au</div>
+        <div class="mock-ad-desc">No proof of address needed. Apply online today.</div>
+      </div>
+      <div class="mock-ad-sidebar-img" style="height:100px">Ad space</div>
+      <div class="mock-ad-inner" style="padding:0 4px">
+        <div class="mock-ad-headline">Tax Return for Visa Holders</div>
+        <div class="mock-ad-url">ad &middot; taxback.com</div>
+        <div class="mock-ad-desc">Average refund $2,600. Get yours in 10 days.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ad: Right rail (160x600 skyscraper) -->
+  <div class="ad-rail ad-rail-right">
+    <div class="mock-ad">
+      <span class="mock-ad-label">Ad</span>
+      <div class="mock-ad-sidebar-img">160x600</div>
+      <div class="mock-ad-inner" style="padding:0 4px">
+        <div class="mock-ad-headline">Send Money to Family</div>
+        <div class="mock-ad-url">ad &middot; remitly.com</div>
+        <div class="mock-ad-desc">First transfer fee-free. Arrives in minutes.</div>
+      </div>
+      <div class="mock-ad-sidebar-img" style="height:100px">Ad space</div>
+      <div class="mock-ad-inner" style="padding:0 4px">
+        <div class="mock-ad-headline">Cheap Flights Home</div>
+        <div class="mock-ad-url">ad &middot; skyscanner.com.au</div>
+        <div class="mock-ad-desc">Compare 100s of airlines. Book the cheapest fare.</div>
+      </div>
+    </div>
+  </div>
 
   <!-- Ad: Leaderboard -->
   <div style="background:#fafafa;padding:12px 24px 0;border-bottom:1px solid #eee">
