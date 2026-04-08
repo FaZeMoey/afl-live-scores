@@ -1,0 +1,39 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
+      ]
+    }
+  ],
+  "redirects": [
+    { "source": "/landing.html", "destination": "/", "permanent": true },
+    { "source": "/landing", "destination": "/", "permanent": true },
+    { "source": "/centrelink-calculator.html", "destination": "/money-tax/centrelink-calculator", "permanent": true },
+    { "source": "/centrelink-calculator", "destination": "/money-tax/centrelink-calculator", "permanent": true },
+    { "source": "/tools/tax-calculator.html", "destination": "/money-tax/tax-calculator", "permanent": true },
+    { "source": "/tools/tax-calculator", "destination": "/money-tax/tax-calculator", "permanent": true },
+    { "source": "/tools/rent-calculator.html", "destination": "/money-tax/rent-calculator", "permanent": true },
+    { "source": "/tools/rent-calculator", "destination": "/money-tax/rent-calculator", "permanent": true },
+    { "source": "/tools/payment-calendar.html", "destination": "/money-tax/payment-calendar", "permanent": true },
+    { "source": "/tools/payment-calendar", "destination": "/money-tax/payment-calendar", "permanent": true },
+    { "source": "/tools/visa-pathway.html", "destination": "/visas/visa-pathway", "permanent": true },
+    { "source": "/tools/visa-pathway", "destination": "/visas/visa-pathway", "permanent": true },
+    { "source": "/tools/narwp-countdown.html", "destination": "/visas/narwp-countdown", "permanent": true },
+    { "source": "/tools/narwp-countdown", "destination": "/visas/narwp-countdown", "permanent": true },
+    { "source": "/tools/medicare-comparison.html", "destination": "/health/medicare-comparison", "permanent": true },
+    { "source": "/tools/medicare-comparison", "destination": "/health/medicare-comparison", "permanent": true },
+    { "source": "/tools/bulk-billing-finder.html", "destination": "/health/bulk-billing-finder", "permanent": true },
+    { "source": "/tools/bulk-billing-finder", "destination": "/health/bulk-billing-finder", "permanent": true },
+    { "source": "/tools/baby-cost-calculator.html", "destination": "/family/baby-cost-calculator", "permanent": true },
+    { "source": "/tools/baby-cost-calculator", "destination": "/family/baby-cost-calculator", "permanent": true },
+    { "source": "/tools/childcare-calculator.html", "destination": "/family/childcare-calculator", "permanent": true },
+    { "source": "/tools/childcare-calculator", "destination": "/family/childcare-calculator", "permanent": true },
+    { "source": "/tools/school-finder.html", "destination": "/family/school-finder", "permanent": true },
+    { "source": "/tools/school-finder", "destination": "/family/school-finder", "permanent": true }
+  ]
+}
